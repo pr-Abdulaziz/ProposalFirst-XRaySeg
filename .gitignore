@@ -110,3 +110,6 @@ slurm-*.out
 !/output/environment_audit_2026-10-24/requirements.freeze.txt
 !/output/figures_png/
 !/output/diagrams/
+# Publish only supplied paper PDFs; editable files and review notes stay local.
+/paper/*
+!/paper/*.pdf
