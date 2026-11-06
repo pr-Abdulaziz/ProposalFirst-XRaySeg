@@ -1,0 +1,447 @@
+                                         Prohibited Items Segmentation via Occlusion-aware
+                                                         Bilayer Modeling
+                                                                        Yunhan Ren1,2 , Ruihuang Li1 , Lingbo Liu2 , Changwen Chen1,*
+                                                              1
+                                                            Department of Computing, The Hong Kong Polytechnic University, Hong Kong, China
+                                                  2
+                                                  Research Institute of Multiple Agents and Embodied Intelligence, Pengcheng Laboratory, Shenzhen, China
+                                              yunhan.ren@connect.polyu.hk, csrhli@comp.polyu.edu.hk, liulingbo918@gmail.com, changwen.chen@polyu.edu.hk
+
+
+                                            Abstract—Instance segmentation of prohibited items in secu-
+                                         rity X-ray images is a critical yet challenging task. This is mainly
+                                         caused by the significant appearance gap between prohibited
+arXiv:2506.11661v1 [cs.CV] 13 Jun 2025
+
+
+
+
+                                         items in X-ray images and natural objects, as well as the severe
+                                         overlapping among objects in X-ray images. To address these
+                                         issues, we propose an occlusion-aware instance segmentation
+                                         pipeline designed to identify prohibited items in X-ray images.
+                                         Specifically, to bridge the representation gap, we integrate the
+                                         Segment Anything Model (SAM) into our pipeline, taking advan-
+                                         tage of its rich priors and zero-shot generalization capabilities.
+                                         To address the overlap between prohibited items, we design
+                                         an occlusion-aware bilayer mask decoder module that explicitly
+                                         models the occlusion relationships. To supervise occlusion estima-      (a) Intra-class variations   (b) Overlapping items   (c) Complex scenarios
+                                         tion, we manually annotated occlusion areas of prohibited items        Fig. 1. Unique characteristics of X-ray images where multiple prohibited
+                                         in two large-scale X-ray image segmentation datasets, PIDray           items with intra-class variations overlap with each other, causing difficulties
+                                         and PIXray. We then reorganized these additional annotations           in distinguishing and segmenting them.
+                                         together with the original information as two occlusion-annotated
+                                         datasets, PIDray-A and PIXray-A. Extensive experimental results
+                                         on these occlusion-annotated datasets demonstrate the effec-           occlusion are essential for accurately detecting and segmenting
+                                         tiveness of our proposed method. The datasets and codes are            prohibited items in X-ray images [6], [7].
+                                         available at: https://github.com/Ryh1218/Occ.                             To this end, we propose an occlusion-aware instance seg-
+                                            Index Terms—X-ray inspection, prohibited item segmentation,         mentation pipeline specifically designed for segmenting pro-
+                                         Segment Anything Model, occlusion handling
+                                                                                                                hibited items in X-ray images. To precisely capture the gen-
+                                                                  I. I NTRODUCTION                              eral representation of X-ray images and fully adapt to the
+                                                                                                                appearance patterns of prohibited items, we incorporate the
+                                            Security inspection is a critical process in various real-world
+                                                                                                                Segment Anything Model (SAM) into our pipeline, leveraging
+                                         contexts, such as airports and train stations [1], [2]. Typically,
+                                                                                                                its rich image priors and powerful generalization capabilities
+                                         human inspectors are responsible for examining scanned X-ray
+                                                                                                                [8]. Recent advances in applying SAM across various research
+                                         images generated by security inspection machines to identify
+                                                                                                                fields have demonstrated its effectiveness in object recognition
+                                         potentially prohibited items. With the advancement of deep
+                                                                                                                and generalization. For example, recent work by [9] employs
+                                         learning technologies, the computer vision community has
+                                                                                                                prompt learning methods to harness SAM’s capabilities for
+                                         made efforts to achieve automatic object detection and seg-
+                                                                                                                instance segmentation tasks in remote sensing applications.
+                                         mentation by applying general instance segmentation models
+                                                                                                                Additionally, studies have explored SAM’s application in med-
+                                         [3]–[5].
+                                                                                                                ical image segmentation, showing promising results despite
+                                            However, these methods, primarily designed for natural
+                                                                                                                certain limitations when compared to specialized medical
+                                         images, face two main challenges when applied to X-ray
+                                                                                                                segmentation models [10]. Furthermore, integrating SAM with
+                                         images: (1) Objects in X-ray images exhibit a significant
+                                                                                                                other advanced techniques, such as generative adversarial net-
+                                         appearance gap compared to those in natural images, which
+                                                                                                                works, has been proposed to enhance its performance on pose
+                                         is primarily caused by different materials absorbing X-rays to
+                                                                                                                estimation [11]. These ongoing research efforts provide a solid
+                                         varying degrees. (2) Objects in X-ray images often overlap
+                                                                                                                foundation for adopting SAM to address specific challenges.
+                                         with other items while showing substantial intra-class varia-
+                                         tions, as illustrated in Fig. 1. These complexities challenge             Specifically, inspired by [9], our pipeline employs a frozen
+                                         traditional pipelines in understanding the semantic meanings           SAM Image Encoder as its backbone to generate precise
+                                         and spatial relationships of prohibited items within X-ray             image representations. It then converts the Region of Interest
+                                         images. Therefore, deep learning frameworks with strong gen-           (ROI) features generated by Mask R-CNN into prompts and
+                                         eralization capabilities and specialized techniques for handling       encodes them using the SAM Prompt Encoder. The SAM
+                                                                                                                Mask Decoder is utilized to regress the mask predictions based
+                                           ∗ Corresponding author.                                              on the image representations and prompts. To minimize the
+                                                                                                                                        Pliers
+                             SAM                                                         SAM Mask                SAM Mask
+                                        RPN, ROI
+                            Encoder                                                       Decoder                 Decoder
+                                                                                                                                                 Hammer
+                                                                                      Occluder Modeling       Occludee Prediction
+
+         Input Image
+                                       Mask R-CNN                                          Occlusion-aware Mask Decoder
+
+Fig. 2. Demonstration of the proposed pipeline. A frozen SAM Encoder extracts features from input images. Then, RPN and ROI Align predict the normalized
+ROI features v̂i . Φcls , Φreg and Φprompt represents the semantic head, localization head, and prompt head. They obtain category predictions, IoU predictions,
+and sparse prompt embeddings from ROI features, respectively. The proposed occlusion-aware bilayer mask decoder then takes prompt embeddings and image
+embeddings to segment the target objects with the guidance of their occluding objects.
+
+influence of overlap between prohibited items, inspired by                       vidual object [15]. Two-stage instance segmentation methods
+[6], [7], we design an occlusion-aware bilayer mask decoder                      typically consist of a region proposal phase followed by a clas-
+module that explicitly distinguishes overlapping areas among                     sification and refinement process. Among two-stage methods,
+prohibited items. Specifically, we employ two sequential SAM                     the Mask R-CNN series [16] serve as robust baselines for sub-
+Mask Decoders with separate training objectives: the first                       sequent advancements. This method first detects the bounding
+decoder estimates the occlusion area for each target object,                     boxes of target objects and then performs semantic segmenta-
+while the second regresses the binary mask of the target                         tion within each ROI area [6]. To enhance feature interaction,
+item guided by the predicted occlusion area. The intermediate                    PANet [17] integrates a bottom-up pathway grounded in
+optimized image embeddings and prompt embeddings from                            Feature Pyramid Network (FPN) [18]. Meanwhile, Cascade R-
+the first decoder serve as guidance for explicitly modeling                      CNN [19] employs a sequential architecture of detection heads
+occlusion relationships. To effectively train the first decoder,                 with different IoUs (Intersection over Union) to generate high-
+corresponding ground-truth annotations of each occlusion                         precision bounding boxes. Expanding the cascading strategy,
+area are required, while none of the existing prohibited in-                     Hybrid Task Cascade [20] introduces a multitask, multistage
+stance segmentation X-ray datasets contain such information.                     hybrid structure that enriches contextual information, leading
+Therefore, we introduce two large-scale occlusion-annotated                      to superior performance.
+datasets, PIDray-A and PIXray-A, derived from the large-
+scale X-ray image segmentation datasets PIDray and PIXray                        B. Occlusion Handling
+[12]–[14]. For each prohibited item, we manually annotate the                       Traditional occlusion handling methods typically involve
+overlapping areas of other prohibited objects and record the                     sophisticated algorithms that exploit symmetry and consis-
+segmentation masks of these areas as additional annotation                       tency in stereo matching [21] or incorporate contextual in-
+information. Consequently, the proposed datasets maintain the                    formation into random field models for object recognition and
+same number of images as their baseline versions but include                     segmentation [22]. Advanced methods also include predicting
+additional occlusion annotations to supervise the occlusion-                     occlusion overlap order by building a scoring histogram [23]
+aware mask decoder. To demonstrate the effectiveness of our                      or incorporating top-down category-specific reasoning and
+proposed pipeline, we conduct extensive experiments on the                       shape prediction into an energy minimization framework [24].
+two occlusion-annotated datasets. The experimental results                       Additionally, [6], [7] explicitly model occluding and occluded
+indicate the superiority of our pipeline compared to the state-                  objects separately, using graph convolutional networks to
+of-the-art segmentation methods.                                                 process ROI features of occluding objects and then guide the
+   In summary, this paper will contribute in the following                       segmentation of target occluded objects.
+ways:
+   • We propose an occlusion-aware instance segmentation
+                                                                                 C. Prohibited Item Segmentation Benchmarks
+      pipeline designed for automatic security inspection.                          Recently, several datasets have been proposed to facilitate
+   • We design an occlusion-aware bilayer mask decoder                           research on prohibited item detection. [25] and [26] contain
+      module with a guidance mechanism to effectively handle                     prohibited items with complicated backgrounds and overlap-
+      occlusion between prohibited items.                                        ping, but the numbers of images and prohibited items are
+   • We create two large-scale security datasets with extra                      insufficient. Similarly, [27] introduces a large-scale security
+      occlusion annotations to meet the need for ground-truth                    inspection dataset named SIXray, but only a small proportion
+      annotations of occlusion areas.                                            of images (0.84%) contain prohibited items. In response to
+                                                                                 the need for prohibited item segmentation in real-world sce-
+                   II. R ELATED W ORK
+                                                                                 narios, [12] and [13] present a large-scale benchmark, PIDray,
+A. Instance Segmentation                                                         consisting of 124,486 X-ray images, with 47,677 of them
+  Instance segmentation is concerned with locating objects                       containing prohibited items across 12 categories. Additionally,
+within images and generating a semantic mask for each indi-                      the PIXray dataset [14] is proposed with 15 classes of 15,201
+prohibited items, which are all annotated with instance-level                                                 Occluder Mask Decoder                        Mask MLP
+                                                                                                 Two-way Transformers
+masks. These datasets provide robust experimental references                                       Image-token Attn.           Conv
+                                                                                                                                                                  Sigmoid
+                                                                                                                                                              Linear
+for our research.                                                                                        FFN
+                                                                                                                                                                  ReLU
+                                                                                                                                                            Hid_Linear   ×L
+                                                                                                                               Token-                             ReLU
+                                                                                                   Token-image Attn.
+                                                                                                                               image      MLP                 Linear
+                         III. M ETHODOLOGY                                                             Self Attn.               Attn.
+
+
+A. Model Architecture                                                                                                                          Occludee Mask Decoder
+                                                                                                                                Two-way Transformers
+   Our proposed framework is based on Mask R-CNN [16],                                                                            Image-token Attn.              Conv
+                                                                                                                                          FFN
+incorporating SAM Image Encoder [8] as the backbone,                                                                              Token-image Attn.
+                                                                                                                                                                Token-
+                                                                                                                                                                image       MLP
+along with its prompt encoder to transform ROI features                                                                                 Self Attn.               Attn.
+
+generated by Mask R-CNN into SAM-style prompt em-
+bedding. An occlusion-aware mask decoder module is pro-                            Fig. 3. A detailed implementation of the bilayer occlusion-aware mask
+posed for decoding the prompted image features to semantic                         decoder structure. Two mask decoders separately predict the masks of the
+masks while distinguishing the occlusion relationships be-                         occluder and occludee, providing information about occlusion relationships
+                                                                                   as one of the learning objectives for the pipeline.
+tween prohibited items. Fig. 2 demonstrates our proposed
+pipeline. Formally, consider a training dataset Dtrain =
+                                                                                   the occludee, and its output guides the subsequent decoder
+(x1 , Y1 ), (x2 , Y2 ), . . . , (xN , YN ), where xi ∈ RH×W ×3 rep-
+                                                                                   in generating the occludee’s prediction.
+resents an image while Yi = {(bi , ci , mi , mei )} represents
+                                                                                       2) The occluder decoder: The occluder decoder Φr aims
+corresponding ground-truth information set. Specifically, bi ∈
+                                                                                   to explicitly model the occlusion between the occluder and
+Rni ×4 stands for ni bounding box annotations of prohibited
+                                                                                   occludee using the SAM mask decoder. Formally, it takes
+items in image xi , ci ∈ Rni ×C represents the corresponding
+                                                                                   the sparse prompt embedding fisparse and image embedding
+set of semantic labels, mi ∈ Rni ×H×W stands for semantic
+                                                                                   fiimg as inputs to produce the overlapping area prediction of
+mask of each prohibited item, and mei ∈ Rni ×H×W represents
+                                                                                   the occluder mask, denoted as m̂ei . Simultaneously, benefiting
+the part of the semantic masks of other annotated object which
+                                                                                   from the SAM mask decoder’s involvement, fisparse and fiimg are
+overlapping the area of bi , if it has any. In our pipeline, for an
+                                                                                   optimized in terms of global information, with their optimized
+input image xi , its image representation feature fiimg , predicted
+                                                                                   versions denoted as frsparse and frimg .
+regional proposals ôi , and normalized ROI features v̂i are
+                                                                                       3) The residual guidance mechanism: Unlike BCNet,
+defined as:
+                      fiimg = Φenc (xi )                                           which uses only simple GCN-optimized ROI features for
+                                                                                   guidance, we incorporate information from both image and
+                        ôi = Φrpn (fiimg )                                  (1)   prompt embeddings. Specifically, we element-wise add these
+                        v̂i = Φroi (fiimg + PE, ôi )                              transformer-optimized embeddings (frsparse and frimg ) to the
+                                                                                   original embeddings separately before feeding them into the
+, where Φenc is a frozen SAM image encoder, PE is positional
+                                                                                   occludee mask decoder for mask regression. This residual
+encoding to retain spatial information, Φrpn and Φroi are
+                                                                                   guidance mechanism ensures the occlusion area is explicitly
+standard RPN and ROI align in Mask R-CNN pipeline.
+                                                                                   emphasized through cross-attention, helping the model learn
+   Predicted ROI features v̂i are then processed by the seman-                     occlusion relationships and thereby improving overall perfor-
+tic head Φcls , the localization head Φreg , and the prompt head                   mance.
+Φprompt to produce the category prediction ĉi , the bounding box                      4) The occludee decoder: Finally, the occludee decoder Φe
+prediction b̂i and the SAM-format prompt embedding fisparse .                      employs another SAM mask decoder to generate the final
+   To accurately estimate the target object mask predictions                       occludee prediction, using the refined embeddings feimg and
+m̂i while avoiding being influenced by its occluding object                        fesparse as inputs. The above process can be expressed as
+mask m̂ei , we introduce an occlusion-aware bilayer mask                           follows:
+decoder architecture, inspired by [6], which is designed to
+explicitly model the relationships between the occluding object                           m̂ei , frimg , frsparse = Φr (Cat(tmask , tIoU , fisparse ), fiimg )
+(occluder) and the target object (occludee). The occlusion-                                     feimg , fesparse = fiimg + frimg , fisparse + frsparse                            (3)
+aware mask decoder Φm explicitly models the relationships                                                   m̂i = Φe (Cat(tmask , tIoU , fesparse ), feimg )
+between m̂i and m̂ei (if any exist):
+                                                                                   , where tmask and tIoU are learnable tokens and are con-
+      {ĉi , b̂i , fisparse } = {Φcls (v̂i ), Φreg (v̂i ), Φprompt (v̂i )}         catenated with prompt embeddings, Cat(·) represents con-
+                                                                             (2)
+               m̂i , m̂ei = Φm (fiimg , fisparse )                                 catenate operation. To ensure the accuracy of the occluder
+                                                                                   mask decoder during training, its intermediate occlusion area
+                                                                                   mask prediction m̂ei is used to compare with ground-truth
+B. Bilayer Mask Decoder
+                                                                                   annotations as an extra learning objective.
+  1) Module structure: Fig. 3 illustrates the structure of
+our proposed bilayer mask decoder, which consists of two                           C. End-to-end Parameter Learning
+sequentially connected SAM mask decoders. The first decoder                         Based on the Mask R-CNN architecture [16], instance seg-
+predicts the mask of the area where the occluder overlaps                          mentation can be formed as an end-to-end parameter learning
+                             TABLE I
+  S TATISTICAL DETAILS OF THE PID RAY-A AND PIX RAY-A DATASETS
+
+                                PIDray-A                PIXray-A
+  Type     Count                       Test
+                    Train                              Train     Test
+                               Easy   Hard    Hide
+           Total    76913     24758   9746    13069    3560      1486    Fig. 4. Occlusion annotations in the proposed PIDray-A dataset. Green
+           Anno     29454      9482   3733     5005    3560      1486    masks denote the target object (occludee) mask annotations, while red masks
+ Images                                                                  represent the background object (occluder) annotations for each occludee.
+           Multi     7411       0     3733      3      2891      1193
+           Occlu    4785        0     2434      0      1550      654
+            Total   39708      9482   8892    5008    10709      4508    test set of PIDray is additionally divided into three subsets:
+  Annos
+            Extra   11080       0     5585     0      4114       1765    the easy subset contains images with only one exposed pro-
+                                                                         hibited item, the hard subset includes images with multiple
+                                                                         prohibited items, and the hidden subset contains images with
+problem. This process is guided by a multi-task loss function
+                                                                         one prohibited object that is deliberately concealed to test
+L, which simultaneously optimizes the RPN’s region proposal
+                                                                         the model’s ability under extreme circumstances. As for the
+loss Lrpn and the ROI’s object recognition loss. The ROI object
+                                                                         PIXray dataset [14], it contains 5,046 X-ray images, all of
+recognition loss has three components: classification loss Lcls ,
+                                                                         which have one or more prohibited items. In total, the PIXray
+bounding box regression loss Lreg , and mask prediction loss
+                                                                         dataset includes 15,201 prohibited items with bounding boxes
+Lseg . We adopt Lrpn , Lcls and Lreg from [16].
+                                                                         and semantic mask annotations across 15 object categories. In
+   In our framework, we modify the Lseg with extra occluder
+                                                                         our experiment, we use an 8:2 train-test split for PIXray.
+mask loss. The original mask prediction loss, denoted as Lpred ,
+                                                                            To optimize the occluder mask decoder, ground-truth oc-
+is typically computed using the Binary Cross Entropy loss,
+                                                                         cluder annotations are necessary for calculating Lseg . Con-
+defined as:
+                                                                         sequently, we add additional occlusion annotations for con-
+                                   w  h
+                             1 XX                                        traband items in PIDray and PIXray, reorganizing them into
+   Lpred (m̂i , mi ) = −                [mi,j,k log(m̂i,j,k )            two occlusion-annotated datasets. Specifically, we first identify
+                            w · h j=1                              (4)
+                                      k=1
+                                                                         items whose masks have at least 5% of their area covered by
+                             +(1 − mi,j,k ) log(1 − m̂i,j,k )]           other objects’ bounding boxes and mark them as occludees.
+, where m̂i and mi are the predicted mask and the ground-                Then, we verify whether these occludees’ masks intersect
+truth mask, w and h are the width and height of the mask,                with their occluders’ masks, recording the intersecting mask
+respectively, and the loss is taken over all pixels (j, k) in the        area as occlusion annotations. For cases without intersections,
+mask.                                                                    we discard them as non-occluding instances. Fig. 4 demon-
+   In our proposed pipeline, an additional objective loss is             strates the example visualization of occlusion annotations on
+implemented to let both the occludee mask prediction m̂i and             representative X-ray images, indicating the extra emphasis
+occluder mask prediction m̂ei contribute to the overall mask             of our pipeline on occluding areas. Statistic details of the
+prediction loss. Formally, the segmentation loss Lseg is defined         proposed PIDray-A and PIXray-A datasets are presented in
+as:                                                                      Tab. I. Specifically, the ’Anno,’ ’Multi,’ and ’Occlu’ rows
+          Lseg = Lpred (m̂i , mi ) + λ · Lpred (m̂ei , mei )  (5)        indicate whether the images contain prohibited items, multiple
+                                                                         prohibited items, or occluded items, respectively. The ’Extra’
+, where λ is a hyperparameter that balances the contributions            row indicates the number of prohibited items with additional
+of the occluder and occludee losses.                                     occlusion annotations. It can be concluded that more than half
+   The total loss is the weighted sum of the above losses:               of images with more than one prohibited item suffer from
+              M                 N                                        overlapping of prohibited items, indicating that an occlusion-
+          1 X i      1 X j
+  L=          Lrpn +     (Lcls + 1j (Ljreg + Ljseg ))              (6)   aware instance segmentation pipeline is highly demanded.
+          M i        N j
+                                                                         B. Implementation details
+, where 1 represents the indicator function that is used to                In line with the commonly used COCO metrics, we employ
+validate positive matches.                                               mean average precision (mAP) to evaluate our model’s perfor-
+                       IV. E XPERIMENTS                                  mance. Specifically, we focus on mAP at three IoU thresholds:
+                                                                         T = 0.5, T = 0.75, and {T } = (0.50 : 0.05 : 0.95), for
+A. Datasets                                                              both bounding boxes and masks, denoted as APb and APm .
+  We primarily evaluate our instance segmentation model                  All input images are resized to a resolution of 512 × 512
+on the proposed occlusion-annotated PIDray-A and PIXray-                 to generate visual patches for the SAM Image Encoder. To
+A datasets, which are modified based on the large-scale X-               balance computational cost and model performance, we adopt
+ray image datasets PIDray and PIXray. The PIDray dataset                 ViT-Large as the backbone of SAM. The hyperparameter λ for
+[12], [13] consists of 124,486 X-ray images, including 47,677            segmentation loss calculation is set to 0.25. For optimization,
+images that contain prohibited items in 12 categories. The               we use the AdamW optimizer with an initial learning rate of
+                                                            TABLE II
+          E XPERIMENTAL RESULTS OF OBJECT DETECTION AND INSTANCE SEGMENTATION ON THE PID RAY-A AND PIX RAY-A DATASETS
+
+                                              PIDray-A                                                  PIXray-A
+              Model
+                           APb     APb50   APb75   APm       50
+                                                           APm       75
+                                                                   APm       APb       APb50      APb75         APm         50
+                                                                                                                          APm       75
+                                                                                                                                  APm
+           Mask R-CNN       58.7   76.2     67.2    50.2    73.4    58.2      65.2     91.1           75.3      56.1      86.7    61.7
+         Cascade MR-CNN     65.0   78.1     72.1    53.6    76.0    62.4      71.8     91.2           81.0      57.1      86.2    63.1
+            PIDrayNet       66.6   81.7     74.3    53.4    78.6    61.4      72.4     91.6           81.3      57.7      87.1    64.1
+            RSPrompter      66.0   83.1     74.3    56.5    81.4    64.4      72.0     94.3           83.1      58.9      90.1    66.4
+            Our Model       67.5   84.3     75.8    57.6    82.6    65.8      72.0     94.4           83.7      58.9      90.6    66.2
+
+
+                                                                                              TABLE III
+1e−6 . After a warm-up phase of 50 iterations, during which           E XPERIMENTAL RESULTS ON THE SUBSETS OF PID RAY-A DATASET
+the learning rate linearly increases to 1e−4 , we apply a Cosine
+                                                                                                         APb                      APm
+Annealing scheduler [28] to gradually decay it back to 1e−6                Method
+over the training period, ensuring stable training. To augment                                 Easy      Hard     Hide     Easy   Hard   Hide
+the training data, we employ horizontal flipping and random             Mask R-CNN             66.2      58.6      43.8    59.2   50.1   35.5
+                                                                      Cascade MR-CNN           71.9      63.2      46.8    60.7   52.0   36.2
+jittering, implemented via the MMDetection framework. All                 SDANet               72.5      63.7      48.0    61.1   51.7   37.0
+experiments are conducted on a single NVIDIA A800 Tensor                 PIDrayNet             74.5      64.8      53.0    61.4   51.9   39.7
+Core GPU with 80GB VRAM, using a batch size of 64. We                    RSPrompter            74.1      67.2      45.3    65.7   58.8   33.2
+                                                                         Our Model             75.7      68.3      47.1    67.1   60.0   34.3
+train the model for 50 epochs on the PIDray-A dataset and 60
+epochs on the PIXray-A dataset.
+                                                                        Ground Truth          PIDrayNet          RSPrompter       Our Model
+
+C. Experiment Results
+    We quantitatively compare our proposed methods with other
+state-of-the-art methods. Specifically, we compare our models
+with Mask R-CNN [16], Cascade Mask R-CNN [19], SDANet
+[13], and the PIDray baseline [12] (namely PIDrayNet). More-
+over, we run RSPrompter [9] with the same backbone to
+indicate the impact of the proposed occlusion-aware bilayer
+mask decoder. The results of these comparisons are detailed
+in Tab. II, where our proposed model achieves the optimal
+results on 10 out of 12 metrics while obtaining suboptimal         Fig. 5. Qualitative results on the PIDray-A dataset to demonstrate the model’s
+results on the other 2 metrics. Specifically, on the PIDray-       ability in segmenting occluded prohibited items.
+A dataset, our proposed model achieves 0.9% improvements
+compared with suboptimal results on both bounding box mAP          D. Ablation Study
+and semantic mask mAP. Regarding the PIXray-A dataset,                1) Impact on occluded prohibited items: To demonstrate
+our model obtains either optimal or suboptimal results. These      the effect of the proposed occlusion handling module, we
+results demonstrate the effectiveness of our proposed model        further divide the training set of the PIDray-A into a smaller
+on automatic instance segmentation of prohibited items.            training set, the validation subset, and the occlusion subset.
+    We also demonstrate the results on subsets of the PIDray-A     The validation subset contains images and annotations without
+dataset, as shown in Tab. III. Our proposed model performs the     occlusion, while the occlusion subset contains only occluding
+best results on 4 out of 6 subsets. However, our model shows       images and annotations. For simplicity, we discard X-ray
+no clear advantage in detecting and segmenting hidden objects.     images with no prohibited items. The approximate proportions
+We assume that this is primarily because the PIDrayNet uses        of the split training set, validation subset, and occlusion subset
+specialized X-ray image optimizing tricks for hidden object        are (0.78 : 0.12 : 0.1).
+filtering, while our model relies on a simple RPN for detection.      We train our proposed pipeline, RSPrompter, and PIDrayNet
+    In addition, we provide a qualitative comparison between       on the split training set and test their performances on the
+PIDrayNet, RSPrompter, and our proposed pipeline in Fig.           validation subset and the occlusion subset to show their
+5. When distinguishing two overlapping power banks, our            effectiveness in dealing with common and occluded prohibited
+pipeline is the only model that can identify the occlusion and     items separately. As shown in Tab. IV, our proposed pipeline
+successfully segment the two objects separately. Additionally,     outperforms all other models on the validation subset. Com-
+ours is the only model that correctly predicts the mask of         pared to PIDrayNet and RSPrompter, our model achieves 1.5%
+the covered hammer handle. These results indicate the effec-       and 0.1% enhancements in bounding box precision, as well as
+tiveness of our pipeline in distinguishing occlusions among        3.2% and 0.1% improvements in semantic mask precision. For
+prohibited items.                                                  the occlusion subset, our proposed pipeline achieves optimal
+                          TABLE IV
+   A BLATION STUDY ON OCCLUDING AND NON - OCCLUSION SUBSETS                                     ACKNOWLEDGMENTS
+   Set      Model     APb     AP50     AP75    APm      AP50    AP75      This research has been supported by the National Natural
+                                b        b                m       m
+                                                                        Science Foundation of China under Grant No. 62306258, the
+            PIDNet    77.2     88.1    84.8     67.3    87.5    80.0
+   Val       RSP      78.6     91.9    88.1     70.6    91.1    82.8    Major Key Project of PCL (Grant No. PCL2024A04), and the
+             Ours     78.7     92.0    88.2     70.7    91.4    83.1    Hong Kong Polytechnic University start-up fund ZVVK.
+            PIDNet    49.8     64.0    55.2     37.8    60.7    40.3
+  Occ        RSP      46.7     67.7    54.4     39.4    63.0    42.5
+                                                                                                      R EFERENCES
+             Ours     47.5     67.9    55.4     40.3    64.1    44.1     [1] Samet Akcay and Toby Breckon, “Towards automatic threat detection:
+                                                                             A survey of advances of deep learning within x-ray security imaging,”
+                                                                             Pattern Recognition, vol. 122, pp. 108245, 2022.
+                           TABLE V                                       [2] Domingo Mery, Daniel Saavedra, et al., “X-ray baggage inspection with
+ A BLATION STUDY OF THE OCCLUDER MASK DECODER AND RESIDUAL                   computer vision: A survey,” IEEE Access, vol. 8, pp. 145620–145633,
+                             FEATURE GUIDANCE                                2020.
+                                                                         [3] Ruyi Ji, Longyin Wen, et al., “Attention convolutional binary neural tree
+ Occluder     Guide    APb      AP50    AP75     APm     AP50    AP75        for fine-grained visual categorization,” in CVPR, 2020.
+                                  b       b                m       m
+                                                                         [4] Zhi Tian, Chunhua Shen, et al., “FCOS: Fully convolutional one-stage
+    %          %       66.1     83.2    74.2     56.6    81.3    64.7        object detection,” in CVPR, 2019.
+    !          %       66.6     83.5    74.9     56.9    81.8    64.8    [5] Congcong Li, Dawei Du, et al., “Spatial attention pyramid network for
+                                                                             unsupervised domain adaptation,” in ECCV, 2020.
+    !          !       67.5     84.3    75.8     57.6    82.6    65.8
+                                                                         [6] Lei Ke, Yu-Wing Tai, et al., “Deep occlusion-aware instance segmenta-
+                                                                             tion with overlapping BiLayers,” in CVPR, 2021.
+                                                                         [7] Lei Ke, Yu-Wing Tai, et al., “Occlusion-aware instance segmentation
+                                                                             via BiLayer network architectures,” IEEE TPAMI, vol. 45, no. 8, pp.
+performances on 5 out of 6 metrics, highlighting the significant             10197–10211, 2023.
+potential of our proposed bilayer mask decoder structure and             [8] Alexander Kirillov, Eric Mintun, et al., “Segment anything,” in ICCV,
+occluder guidance operation.                                                 2023.
+                                                                         [9] Keyan Chen, Chenyang Liu, et al., “Rsprompter: Learning to prompt
+   2) Impact of the occlusion-aware bilayer mask decoder                     for remote sensing instance segmentation based on visual foundation
+module: We further examine the impact of the occlusion-                      model,” IEEE TGRS, 2024.
+aware bilayer mask decoder module in our proposed pipeline.             [10] Jun Ma, Yuting He, et al., “Segment anything in medical images,” Nature
+                                                                             Communications, vol. 15, pp. 654, 2024.
+We first evaluate the performances with and without the resid-          [11] Jiehong Lin, Lihua Liu, et al., “Sam-6d: Segment anything model meets
+ual feature addition strategy and also explore the performance               zero-shot 6d object pose estimation,” in CVPR, 2024.
+when the occluder mask decoder is removed entirely, resulting           [12] Libo Zhang, Lutao Jiang, et al., “PIDray: A large-scale x-ray benchmark
+                                                                             for real-world prohibited item detection,” IJCV, vol. 131, no. 12, pp.
+in a simple SAM Mask Decoder. Tab. V demonstrates the                        3170–3192, 2023.
+results, where the ’Occluder’ column represents whether the             [13] Boying Wang, Libo Zhang, et al., “Towards real-world prohibited item
+occluder mask decoder is added, and the ’Guide’ column                       detection: A large-scale x-ray benchmark,” in ICCV, 2021.
+                                                                        [14] Bowen Ma, Tong Jia, et al., “Automated segmentation of prohibited
+indicates whether the residual feature guidance is applied. The              items in x-ray baggage images using dense de-overlap attention snake,”
+results indicate that the occluder mask decoder and residual                 IEEE TMM, vol. 25, pp. 4374–4386, 2022.
+feature guidance operation together improve the overall per-            [15] Shervin Minaee, Yuri Boykov, et al., “Image segmentation using deep
+                                                                             learning: A survey,” IEEE TPAMI, vol. 44, no. 7, pp. 3523–3542, 2022.
+formance of our proposed pipeline by more than 1% on every              [16] Kaiming He, Georgia Gkioxari, et al., “Mask r-CNN,” in ICCV, 2017.
+metric, indicating the effectiveness of our proposed module.            [17] Shu Liu, Lu Qi, et al., “Path aggregation network for instance
+                                                                             segmentation,” in CVPR, 2018.
+                             V. C ONCLUSION                             [18] Tsung-Yi Lin, Piotr Dollár, et al., “Feature pyramid networks for object
+                                                                             detection,” in CVPR, 2017.
+   In this paper, we first highlight two critical differences           [19] Zhaowei Cai and Nuno Vasconcelos, “Cascade r-cnn: Delving into high
+                                                                             quality object detection,” in CVPR, 2018.
+between prohibited items in X-ray images and natural objects:           [20] Kai Chen, Jiangmiao Pang, et al., “Hybrid task cascade for instance
+the appearance gap and the severe overlapping. To address                    segmentation,” in CVPR, 2019.
+these challenges, we present an occlusion-aware instance                [21] Jian Sun, Yin Li, et al., “Symmetric stereo matching for occlusion
+                                                                             handling,” in CVPR, 2005.
+segmentation pipeline based on Mask R-CNN. Specifically,                [22] John Winn and Jamie Shotton, “The layout consistent random field for
+to generalize the priors of natural objects to prohibited X-                 recognizing and segmenting partially occluded objects,” in CVPR, 2006.
+ray items, we leverage the extensive pre-trained knowledge              [23] Joseph Tighe, Marc Niethammer, et al., “Scene parsing with object
+                                                                             instances and occlusion ordering,” in CVPR, 2014.
+and strong zero-shot generalization capability of the Segment           [24] Yi-Ting Chen, Xiaokai Liu, et al., “Multi-instance object segmentation
+Anything Model. For handling occlusion, we propose an                        with occlusion handling,” in CVPR, 2015.
+occlusion-aware bilayer mask decoder that explicitly models             [25] Samet Akcay and Toby P. Breckon, “An evaluation of region based
+                                                                             object detection strategies within x-ray baggage security imagery,” in
+the occlusion relationships. Specifically, it uses one decoder               ICIP, 2017.
+to estimate the occlusion areas directly and adopts another             [26] Yanlu Wei, Renshuai Tao, et al., “Occluded prohibited items detection:
+standalone decoder to segment the target object guided by the                An x-ray security inspection benchmark and de-occlusion attention
+                                                                             module,” in ACM MM, 2020.
+estimated occlusion areas. To supervise occlusion area estima-          [27] Caijing Miao, Lingxi Xie, et al., “Sixray: A large-scale security
+tion, we introduce two large-scale X-ray datasets, PIDray-A                  inspection x-ray benchmark for prohibited item discovery in overlapping
+and PIXray-A, which are annotated with additional ground-                    images,” in CVPR, 2019.
+                                                                        [28] Ilya Loshchilov and Frank Hutter, “Sgdr: Stochastic gradient descent
+truth occlusion information. Experimental results on these                   with warm restarts,” in ICLR, 2022.
+datasets demonstrate the effectiveness of our pipeline.
+

@@ -1,0 +1,68 @@
+{
+  "rule": "More hard qualitative examples in the style of fig_qualitative (point-refinement variants report).\n\nSame faithful candidate rule as the original figure (preserved predictions, released polygons;\nnothing edited): GT instance box >= 24 px, image with 2-6 GT instances, focus IoU = best same-class\nmask IoU at score >= 0.05, kept only if that best mask also scores >= 0.30 for every method, and both\npoint-refinement variants reach focus IoU >= 0.70.\nDifferent rows from the original figure (images 1121, 144, 1167 excluded):\n  one row per hard category (the four with the lowest mean mask AP across the six reported methods),\n  largest margin within that category, each in a different image.\nRows are selected FOR improvement and do not represent average performance.",
+  "candidates": 550,
+  "hard_categories": [
+    "Dart",
+    "Saw_blade",
+    "Knife",
+    "Screwdriver"
+  ],
+  "rows": [
+    {
+      "row": "Hard class: Dart",
+      "image_id": 650,
+      "focus_annotation_id": 1902,
+      "focus_category": "Dart",
+      "margin_over_best_other": 0.028917708414550658,
+      "methods": {
+        "Occ Adaptation": 0.6153846153846154,
+        "PIDray R0/R1 Adaptation": 0.6713881019830028,
+        "Best prior baseline (Cascade + Bilayer)": 0.6475644699140402,
+        "Ours\u2014Transformer Point Refinement": 0.7003058103975535,
+        "Ours\u2014MLP Point Refinement": 0.7020648967551623
+      }
+    },
+    {
+      "row": "Hard class: Saw_blade",
+      "image_id": 812,
+      "focus_annotation_id": 2423,
+      "focus_category": "Saw_blade",
+      "margin_over_best_other": 0.05863585768673385,
+      "methods": {
+        "Occ Adaptation": 0.2648502700049092,
+        "PIDray R0/R1 Adaptation": 0.6590839225330464,
+        "Best prior baseline (Cascade + Bilayer)": 0.6275478690549722,
+        "Ours\u2014Transformer Point Refinement": 0.7177197802197802,
+        "Ours\u2014MLP Point Refinement": 0.7465880893300249
+      }
+    },
+    {
+      "row": "Hard class: Knife",
+      "image_id": 910,
+      "focus_annotation_id": 2746,
+      "focus_category": "Knife",
+      "margin_over_best_other": 0.04147399331690682,
+      "methods": {
+        "Occ Adaptation": 0.0,
+        "PIDray R0/R1 Adaptation": 0.691333982473223,
+        "Best prior baseline (Cascade + Bilayer)": 0.7648766328011611,
+        "Ours\u2014Transformer Point Refinement": 0.806350626118068,
+        "Ours\u2014MLP Point Refinement": 0.8340486409155937
+      }
+    },
+    {
+      "row": "Hard class: Screwdriver",
+      "image_id": 833,
+      "focus_annotation_id": 2496,
+      "focus_category": "Screwdriver",
+      "margin_over_best_other": 0.04393098720629396,
+      "methods": {
+        "Occ Adaptation": 0.872996300863132,
+        "PIDray R0/R1 Adaptation": 0.898316203804942,
+        "Best prior baseline (Cascade + Bilayer)": 0.8806388948845241,
+        "Ours\u2014Transformer Point Refinement": 0.942247191011236,
+        "Ours\u2014MLP Point Refinement": 0.9425235743152223
+      }
+    }
+  ]
+}

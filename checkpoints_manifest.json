@@ -1,0 +1,326 @@
+{
+  "release_tag": "paper-checkpoints-v1",
+  "checkpoint_rule": "Final epoch of each run; no validation selection",
+  "files": [
+    {
+      "dataset": "pixray",
+      "method": "01",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_01_seed_42_epoch_50.pth",
+      "size_bytes": 764480235
+    },
+    {
+      "dataset": "pixray",
+      "method": "01",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_01_seed_123_epoch_50.pth",
+      "size_bytes": 764480555
+    },
+    {
+      "dataset": "pixray",
+      "method": "01",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_01_seed_2026_epoch_50.pth",
+      "size_bytes": 764482411
+    },
+    {
+      "dataset": "pixray",
+      "method": "02",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_02_seed_42_epoch_50.pth",
+      "size_bytes": 1167320715
+    },
+    {
+      "dataset": "pixray",
+      "method": "02",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_02_seed_123_epoch_50.pth",
+      "size_bytes": 1167320011
+    },
+    {
+      "dataset": "pixray",
+      "method": "02",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_02_seed_2026_epoch_50.pth",
+      "size_bytes": 1167322699
+    },
+    {
+      "dataset": "pixray",
+      "method": "03",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_03_seed_42_epoch_50.pth",
+      "size_bytes": 1179932788
+    },
+    {
+      "dataset": "pixray",
+      "method": "03",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_03_seed_123_epoch_50.pth",
+      "size_bytes": 1179931380
+    },
+    {
+      "dataset": "pixray",
+      "method": "03",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_03_seed_2026_epoch_50.pth",
+      "size_bytes": 1179934132
+    },
+    {
+      "dataset": "pixray",
+      "method": "04",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_04_seed_42_epoch_50.pth",
+      "size_bytes": 1179991732
+    },
+    {
+      "dataset": "pixray",
+      "method": "04",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_04_seed_123_epoch_50.pth",
+      "size_bytes": 1179987892
+    },
+    {
+      "dataset": "pixray",
+      "method": "04",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_04_seed_2026_epoch_50.pth",
+      "size_bytes": 1179990580
+    },
+    {
+      "dataset": "pixray",
+      "method": "05",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_05_seed_42_epoch_50.pth",
+      "size_bytes": 1559452281
+    },
+    {
+      "dataset": "pixray",
+      "method": "05",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_05_seed_123_epoch_50.pth",
+      "size_bytes": 1559433721
+    },
+    {
+      "dataset": "pixray",
+      "method": "05",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_05_seed_2026_epoch_50.pth",
+      "size_bytes": 1559433593
+    },
+    {
+      "dataset": "pixray",
+      "method": "06",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_06_seed_42_epoch_50.pth",
+      "size_bytes": 1608030827
+    },
+    {
+      "dataset": "pixray",
+      "method": "06",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_06_seed_123_epoch_50.pth",
+      "size_bytes": 1608025643
+    },
+    {
+      "dataset": "pixray",
+      "method": "06",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_06_seed_2026_epoch_50.pth",
+      "size_bytes": 1608045547
+    },
+    {
+      "dataset": "pixray",
+      "method": "07",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_07_seed_42_epoch_50.pth",
+      "size_bytes": 1279244364
+    },
+    {
+      "dataset": "pixray",
+      "method": "07",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_07_seed_123_epoch_50.pth",
+      "size_bytes": 1279241804
+    },
+    {
+      "dataset": "pixray",
+      "method": "07",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_07_seed_2026_epoch_50.pth",
+      "size_bytes": 1279243020
+    },
+    {
+      "dataset": "pixray",
+      "method": "08",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_08_seed_42_epoch_50.pth",
+      "size_bytes": 1199751744
+    },
+    {
+      "dataset": "pixray",
+      "method": "08",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_08_seed_123_epoch_50.pth",
+      "size_bytes": 1199743360
+    },
+    {
+      "dataset": "pixray",
+      "method": "08",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_08_seed_2026_epoch_50.pth",
+      "size_bytes": 1199753280
+    },
+    {
+      "dataset": "pixray",
+      "method": "09",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_09_seed_42_epoch_50.pth",
+      "size_bytes": 1202369231
+    },
+    {
+      "dataset": "pixray",
+      "method": "09",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_09_seed_123_epoch_50.pth",
+      "size_bytes": 1202362191
+    },
+    {
+      "dataset": "pixray",
+      "method": "09",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_09_seed_2026_epoch_50.pth",
+      "size_bytes": 1202365135
+    },
+    {
+      "dataset": "pixray",
+      "method": "09M",
+      "seed": 42,
+      "epoch": 50,
+      "asset_name": "pixray_method_09M_seed_42_epoch_50.pth",
+      "size_bytes": 1202363279
+    },
+    {
+      "dataset": "pixray",
+      "method": "09M",
+      "seed": 123,
+      "epoch": 50,
+      "asset_name": "pixray_method_09M_seed_123_epoch_50.pth",
+      "size_bytes": 1202359759
+    },
+    {
+      "dataset": "pixray",
+      "method": "09M",
+      "seed": 2026,
+      "epoch": 50,
+      "asset_name": "pixray_method_09M_seed_2026_epoch_50.pth",
+      "size_bytes": 1202357775
+    },
+    {
+      "dataset": "pidray",
+      "method": "01",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_01_seed_42_epoch_10.pth",
+      "size_bytes": 777887531
+    },
+    {
+      "dataset": "pidray",
+      "method": "02",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_02_seed_42_epoch_10.pth",
+      "size_bytes": 1190348683
+    },
+    {
+      "dataset": "pidray",
+      "method": "03",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_03_seed_42_epoch_10.pth",
+      "size_bytes": 1202997364
+    },
+    {
+      "dataset": "pidray",
+      "method": "04",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_04_seed_42_epoch_10.pth",
+      "size_bytes": 1203035892
+    },
+    {
+      "dataset": "pidray",
+      "method": "05",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_05_seed_42_epoch_10.pth",
+      "size_bytes": 1572908409
+    },
+    {
+      "dataset": "pidray",
+      "method": "06",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_06_seed_42_epoch_10.pth",
+      "size_bytes": 1622672491
+    },
+    {
+      "dataset": "pidray",
+      "method": "07",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_07_seed_42_epoch_10.pth",
+      "size_bytes": 1305809740
+    },
+    {
+      "dataset": "pidray",
+      "method": "08",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_08_seed_42_epoch_10.pth",
+      "size_bytes": 1224051008
+    },
+    {
+      "dataset": "pidray",
+      "method": "09",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_09_seed_42_epoch_10.pth",
+      "size_bytes": 1237606223
+    },
+    {
+      "dataset": "pidray",
+      "method": "09M",
+      "seed": 42,
+      "epoch": 10,
+      "asset_name": "pidray_method_09M_seed_42_epoch_10.pth",
+      "size_bytes": 1237585999
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+ "rule": "Dataset figure: one PIXray training image per class (15 panels).\n\nSelection rule (no manual picking): for each class, one image drawn at random (fixed seed 2026, for\nreproducibility) from the training images that contain exactly one annotated instance of that class\nand no other object, so the class of each panel is unambiguous. The whole image is shown, letterboxed to a common panel; the instance's released\npolygon is drawn as a translucent fill with an outline. Nothing is edited.\n\n    python scripts/figures/make_dataset_class_examples.py\nWrites output/figures_png/dataset/fig_pixray_class_examples.{png,pdf,json}.",
+ "panels": [
+  {
+   "category_id": 0,
+   "name": "Bat",
+   "image_id": 2663,
+   "file_name": "151258435.png",
+   "annotation_id": 8134,
+   "width": 920,
+   "height": 448,
+   "box": [
+    180.4,
+    61.4,
+    592.6,
+    61.199999999999996
+   ],
+   "class_median_box_area": 73592.16500000001,
+   "single_instance_candidates": 52,
+   "train_instances": 618,
+   "test_instances": 289
+  },
+  {
+   "category_id": 1,
+   "name": "Battery",
+   "image_id": 3023,
+   "file_name": "155526477.png",
+   "annotation_id": 9041,
+   "width": 760,
+   "height": 448,
+   "box": [
+    380.0,
+    195.0,
+    39.69999999999999,
+    71.5
+   ],
+   "class_median_box_area": 2728.4400000000005,
+   "single_instance_candidates": 13,
+   "train_instances": 875,
+   "test_instances": 360
+  },
+  {
+   "category_id": 2,
+   "name": "Dart",
+   "image_id": 384,
+   "file_name": "092508701.png",
+   "annotation_id": 1100,
+   "width": 760,
+   "height": 448,
+   "box": [
+    297.6,
+    279.5,
+    54.099999999999966,
+    33.80000000000001
+   ],
+   "class_median_box_area": 1387.2500000000005,
+   "single_instance_candidates": 45,
+   "train_instances": 677,
+   "test_instances": 323
+  },
+  {
+   "category_id": 3,
+   "name": "Fireworks",
+   "image_id": 935,
+   "file_name": "095336742.png",
+   "annotation_id": 2740,
+   "width": 980,
+   "height": 448,
+   "box": [
+    428.4,
+    194.1,
+    154.80000000000007,
+    111.9
+   ],
+   "class_median_box_area": 12629.960000000003,
+   "single_instance_candidates": 49,
+   "train_instances": 698,
+   "test_instances": 282
+  },
+  {
+   "category_id": 4,
+   "name": "Gun",
+   "image_id": 1635,
+   "file_name": "102146880.png",
+   "annotation_id": 4883,
+   "width": 780,
+   "height": 448,
+   "box": [
+    216.2,
+    122.8,
+    94.5,
+    160.8
+   ],
+   "class_median_box_area": 15327.0,
+   "single_instance_candidates": 51,
+   "train_instances": 765,
+   "test_instances": 292
+  },
+  {
+   "category_id": 5,
+   "name": "Hammer",
+   "image_id": 156,
+   "file_name": "090952835.png",
+   "annotation_id": 388,
+   "width": 960,
+   "height": 448,
+   "box": [
+    243.5,
+    166.2,
+    97.89999999999998,
+    129.5
+   ],
+   "class_median_box_area": 8350.320000000005,
+   "single_instance_candidates": 45,
+   "train_instances": 708,
+   "test_instances": 322
+  },
+  {
+   "category_id": 6,
+   "name": "Knife",
+   "image_id": 2585,
+   "file_name": "150258957.png",
+   "annotation_id": 7989,
+   "width": 900,
+   "height": 448,
+   "box": [
+    453.7,
+    78.1,
+    111.90000000000003,
+    31.900000000000006
+   ],
+   "class_median_box_area": 9645.93,
+   "single_instance_candidates": 46,
+   "train_instances": 813,
+   "test_instances": 330
+  },
+  {
+   "category_id": 7,
+   "name": "Lighter",
+   "image_id": 3248,
+   "file_name": "184424986.png",
+   "annotation_id": 9578,
+   "width": 920,
+   "height": 448,
+   "box": [
+    227.9,
+    229.2,
+    92.1,
+    47.69999999999999
+   ],
+   "class_median_box_area": 3558.0700000000024,
+   "single_instance_candidates": 35,
+   "train_instances": 679,
+   "test_instances": 265
+  },
+  {
+   "category_id": 8,
+   "name": "Pliers",
+   "image_id": 1817,
+   "file_name": "102857648.png",
+   "annotation_id": 5478,
+   "width": 780,
+   "height": 448,
+   "box": [
+    357.6,
+    86.6,
+    156.0,
+    115.6
+   ],
+   "class_median_box_area": 16561.979999999996,
+   "single_instance_candidates": 46,
+   "train_instances": 699,
+   "test_instances": 264
+  },
+  {
+   "category_id": 9,
+   "name": "Pressure_vessel",
+   "image_id": 2133,
+   "file_name": "104112924.png",
+   "annotation_id": 6482,
+   "width": 700,
+   "height": 448,
+   "box": [
+    198.2,
+    49.2,
+    278.40000000000003,
+    92.2
+   ],
+   "class_median_box_area": 27233.285000000003,
+   "single_instance_candidates": 48,
+   "train_instances": 660,
+   "test_instances": 297
+  },
+  {
+   "category_id": 10,
+   "name": "Razor_blade",
+   "image_id": 3109,
+   "file_name": "160706068.png",
+   "annotation_id": 9206,
+   "width": 760,
+   "height": 448,
+   "box": [
+    500.8,
+    175.7,
+    50.69999999999999,
+    33.0
+   ],
+   "class_median_box_area": 1424.8000000000018,
+   "single_instance_candidates": 44,
+   "train_instances": 609,
+   "test_instances": 271
+  },
+  {
+   "category_id": 11,
+   "name": "Saw_blade",
+   "image_id": 2615,
+   "file_name": "150736050.png",
+   "annotation_id": 8034,
+   "width": 800,
+   "height": 448,
+   "box": [
+    317.4,
+    156.2,
+    302.9,
+    48.10000000000002
+   ],
+   "class_median_box_area": 24817.920000000006,
+   "single_instance_candidates": 46,
+   "train_instances": 691,
+   "test_instances": 287
+  },
+  {
+   "category_id": 12,
+   "name": "Scissors",
+   "image_id": 1827,
+   "file_name": "102918871.png",
+   "annotation_id": 5509,
+   "width": 920,
+   "height": 448,
+   "box": [
+    460.6,
+    333.0,
+    155.5,
+    10.5
+   ],
+   "class_median_box_area": 10983.719999999996,
+   "single_instance_candidates": 51,
+   "train_instances": 685,
+   "test_instances": 290
+  },
+  {
+   "category_id": 13,
+   "name": "Screwdriver",
+   "image_id": 105,
+   "file_name": "090508240.png",
+   "annotation_id": 263,
+   "width": 800,
+   "height": 448,
+   "box": [
+    290.7,
+    212.1,
+    197.0,
+    142.79999999999998
+   ],
+   "class_median_box_area": 12928.519999999997,
+   "single_instance_candidates": 50,
+   "train_instances": 706,
+   "test_instances": 287
+  },
+  {
+   "category_id": 14,
+   "name": "Wrench",
+   "image_id": 698,
+   "file_name": "094429465.png",
+   "annotation_id": 2073,
+   "width": 740,
+   "height": 448,
+   "box": [
+    151.6,
+    208.5,
+    157.79999999999998,
+    157.10000000000002
+   ],
+   "class_median_box_area": 15899.845000000001,
+   "single_instance_candidates": 48,
+   "train_instances": 826,
+   "test_instances": 349
+  }
+ ]
+}

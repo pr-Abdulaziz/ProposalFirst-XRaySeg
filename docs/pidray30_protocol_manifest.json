@@ -1,0 +1,46 @@
+{
+  "protocol": "PIDray-30",
+  "selection_fraction": 0.3,
+  "selection_seed": 42,
+  "train_images": 23074,
+  "test_images": {
+    "easy": 24758,
+    "hard": 9746,
+    "hidden": 13069,
+    "total": 47573
+  },
+  "annotation_files": {
+    "data/PIDray/annotations/train.json": {
+      "bytes": 18280086,
+      "sha256": "fcc0164d5d7f70fc14817b814bc5fa44e2016438ba6b2bb3dbd25d3b92e62f5a"
+    },
+    "data/PIDray/annotations/test_easy.json": {
+      "bytes": 10417178,
+      "sha256": "7c829eb2445920dc1f167d24490baff252a6564490e59c82cafc3fa4cd90aa92"
+    },
+    "data/PIDray/annotations/test_hard.json": {
+      "bytes": 8139864,
+      "sha256": "c5e3a3309acbbaa3a32365efd075b5d1aa86e0540c16ae3dcb99cdc0223e8e25"
+    },
+    "data/PIDray/annotations/test_hidden.json": {
+      "bytes": 4851207,
+      "sha256": "7012987cc0098eeb4c41fbd3f6528a256edee3ea20f56746694593c8d21d0c92"
+    },
+    "data/PIDray-A/annotations/train_occ.json": {
+      "bytes": 26665995,
+      "sha256": "f2d8e57523eae1074e24ea4ea2a68a1dcf866714d9ce3da70beeac86e432b563"
+    },
+    "data/PIDray-A/annotations/test_easy_occ.json": {
+      "bytes": 10701638,
+      "sha256": "a6c8d8f64bb54fd90df6e8c2801bee9b7dc6cbafeba89caa88ebbdff9505abe2"
+    },
+    "data/PIDray-A/annotations/test_hard_occ.json": {
+      "bytes": 8406624,
+      "sha256": "12fb9e8fdd5800edd31bf3c40ccdf01bb4ecb939876028e1cbd47c605c730ebe"
+    },
+    "data/PIDray-A/annotations/test_hidden_occ.json": {
+      "bytes": 5001447,
+      "sha256": "f88ea942b83bdaea1b31164b231062c61517c743252feb2d5f691f00161d759b"
+    }
+  }
+}
