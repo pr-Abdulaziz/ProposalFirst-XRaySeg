@@ -1,5 +1,4 @@
-*.sh text eol=lf
-*.py text eol=lf
-*.md text eol=lf
-*.json text eol=lf
-*.drawio text eol=lf
+# Historical experiment manifests hash exact source/configuration bytes.
+# Preserve those bytes across Windows and Linux; automatic line-ending
+# conversion would make otherwise identical clones fail provenance checks.
+* -text
