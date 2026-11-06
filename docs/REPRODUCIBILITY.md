@@ -1,6 +1,6 @@
 # Reproducing the paper experiments
 
-This is the successor guide for the historical PIXray point-refinement study. The main entry point is `scripts/research.py`. It audits assets or prepares a portable config; it never submits a job or starts training automatically.
+This is the successor guide for the historical PIXray point-refinement study. For the research context and model equations, start with [the project context guide](README.md). The main entry point is `scripts/research.py`. It audits assets or prepares a portable config; it never submits a job or starts training automatically.
 
 ## 1. Understand the scope
 
@@ -61,7 +61,7 @@ python -B -m unittest discover -s tests -p test_research_cli.py -v
 
 Exit status 0 means the checked assets pass. Exit status 2 means assets are incomplete or arguments are invalid. Audit checks config/source/annotation hashes, weight presence, and missing/zero-byte image files. It does not decode images, rehash large weights by default, establish accuracy or validate a GPU runtime.
 
-At this handoff: PIXray assets pass; PIDray remains incomplete because many image files are zero bytes. The D: copy also lacks the `paper/` manuscript folder and has incomplete historical result/report files. Code restoration does not reconstruct those data or results. Use the exact-file lists in `output/cleanup_2026-11-06/` and restore verified originals rather than creating replacement labels or fabricated metrics.
+At this handoff: PIXray assets pass; PIDray remains incomplete because many image files are zero bytes. The supplied paper PDFs are now included under `paper/`; editable DOCX files and private review notes are excluded. Some historical result/report payloads in the D: copy remain incomplete. Code restoration does not reconstruct those data or results. Use the exact-file lists in `output/cleanup_2026-11-06/` and restore verified originals rather than creating replacement labels or fabricated metrics.
 
 ## 4. Use a supported execution environment
 
