@@ -5,7 +5,7 @@
 **Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement**<br>
 Abdulaziz Alqahtani and Qasim Umer
 
-[Manuscript PDF (v2)](paper/main_paper_juri_v2.pdf) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
+[Project page](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) · [Manuscript PDF (v2)](paper/main_paper_juri_v2.pdf) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
 
 This project studies whether refining uncertain mask locations improves the segmentation of prohibited items in X-ray baggage images. It extends **Cascade Mask R-CNN with ResNet-101 and AttFPN** using a shared point refiner and compares **Transformer** and **MLP** processors under a common experimental protocol.
 
@@ -80,6 +80,7 @@ python scripts/research.py prepare --dataset pixray --method 09 --seed 42 --name
 | [PIXray frozen campaign](output/pixray_multiseed_bs4_e50_2026-09-14/) | Three-seed paper protocol and resolved configurations |
 | [Separate PIDray campaign](output/pidray_bs2_e10_2026-09-22/) | Recorded one-seed extension; separate from the paper evidence |
 | [Architecture figures](docs/architecture/README_figures.md) | Existing PNG/SVG/PDF diagrams and drawing sources |
+| [Project page source](site/) | Static site published with GitHub Pages by `.github/workflows/pages.yml`; preview locally with `python -m http.server --directory site` |
 | [Checkpoint inventory](CHECKPOINTS.md) | Final-checkpoint identities and actual binary availability |
 
 ## Paper PDFs

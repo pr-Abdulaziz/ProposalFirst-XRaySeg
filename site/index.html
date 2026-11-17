@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shared Point-Based Mask Refinement for X-Ray Instance Segmentation</title>
+  <meta name="description" content="A shared point refiner on Cascade Mask R-CNN improves mask AP for prohibited-item segmentation in X-ray baggage images (PIXray).">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hero">
+  <p class="eyebrow">X-ray baggage instance segmentation</p>
+  <h1>Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement</h1>
+  <p class="authors">Abdulaziz Alqahtani<sup>1,*</sup>, Qasim Umer<sup>1,2</sup></p>
+  <p class="affil">
+    <span><sup>1</sup> Department of Information and Computer Science, King Fahd University of Petroleum &amp; Minerals, Saudi Arabia</span>
+    <span><sup>2</sup> Interdisciplinary Research Center for Intelligent Secure Systems, KFUPM, Saudi Arabia</span>
+    <span><sup>*</sup> Corresponding author</span>
+  </p>
+
+  <nav class="links" aria-label="Project links">
+    <!-- arXiv: replace href and remove aria-disabled/class "is-disabled" once the preprint is posted. -->
+    <a class="btn btn-arxiv is-disabled" aria-disabled="true" title="Preprint link coming soon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4l14 16M19 4L5 20"/></svg>
+      <span>arXiv</span><small>soon</small>
+    </a>
+    <a class="btn btn-paper" href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg/blob/main/paper/main_paper_juri_v2.pdf">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+      <span>Paper</span>
+    </a>
+    <a class="btn btn-code" href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg">
+      <svg class="fill" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>Code</span>
+    </a>
+    <a class="btn btn-weights" href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg/releases/tag/paper-checkpoints-v1">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
+      <span>Checkpoints</span>
+    </a>
+    <a class="btn btn-docs" href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg/blob/main/docs/REPRODUCIBILITY.md">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>
+      <span>Reproduce</span>
+    </a>
+  </nav>
+
+  <nav class="toc" aria-label="Sections">
+    <a href="#abstract">Abstract</a>
+    <a href="#introduction">Introduction</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#experiments">Experimental setup</a>
+    <a href="#results">Results</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ ABSTRACT ============ -->
+  <section id="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Overlapping projections and complex object contours make prohibited items difficult to delineate in X-ray
+      baggage images. This study investigates shared point-based mask refinement to improve instance segmentation
+      within Cascade Mask R-CNN. The framework combines a ResNet-101 backbone with an attention-based feature pyramid
+      and progressively updates uncertain mask locations, increasing mask resolution from 28&nbsp;&times;&nbsp;28 to
+      112&nbsp;&times;&nbsp;112. A single refinement module is shared across cascade stages and refinement levels,
+      with transformer and multilayer perceptron (MLP) variants used to examine the role of interactions among
+      selected points. Ten configurations were evaluated on the official PIXray split across three training seeds
+      using the original target-instance annotations for evaluation. The transformer and MLP refiners achieved mean
+      mask average precision (AP) of 71.79 and 72.47, respectively, compared with 70.50 for the unrefined detector,
+      yielding gains of 1.29 and 1.97 AP points. The MLP achieved the highest mean mask AP among the evaluated
+      configurations. Both variants also improved boundary agreement on commonly detected objects, supporting improved
+      mask delineation, while detection diagnostics did not establish a corresponding positive gain. These findings
+      demonstrate that shared point-based refinement can improve segmentation quality in the tested cascade
+      architecture using existing target-mask annotations, without additional occluder supervision. Evaluation on
+      independent X-ray datasets is needed to determine how well these improvements generalize.
+    </p>
+    <p class="keywords"><strong>Keywords:</strong> X-ray baggage inspection; prohibited items; instance segmentation; point-based mask refinement; uncertainty-guided sampling; PIXray.</p>
+  </section>
+
+  <!-- ============ INTRODUCTION ============ -->
+  <section id="introduction">
+    <h2>1. Introduction</h2>
+    <p>
+      Automated detection and segmentation can support security screening, but X-ray imagery is harder than ordinary
+      photographs: objects overlap in projection, appearance varies with material, and clutter hides the features
+      needed to tell prohibited items from their surroundings. A correct detection box also does not guarantee an
+      accurate mask. In the detector studied here each instance starts as a coarse 28&nbsp;&times;&nbsp;28 grid, so
+      where projected objects overlap or have thin parts, the mask can omit parts of the object or include
+      neighboring material.
+    </p>
+    <p>
+      Uncertainty-guided refinement allocates extra prediction capacity to selected locations, including those near
+      boundaries, instead of recomputing the whole mask at higher resolution. PointRend established this form of
+      point-based refinement; RefineMask and Mask Transfiner extend it with fine-grained features and
+      transformer-based processing. Building on this work, our contribution is the shared, progressive integration of
+      point refinement across the stages of a Cascade Mask R-CNN with ResNet-101 and AttFPN (the <em>Parent</em>),
+      together with a controlled comparison of two point processors. PIXray is the common benchmark because its
+      official split provides both boxes and instance masks for the same objects; it is one dataset with an
+      all-positive test set, so it cannot assess clean-baggage rejection or generalization across scanners or sites.
+    </p>
+
+    <h3>Objectives</h3>
+    <ol class="objectives">
+      <li>Integrate <strong>shared, progressive point refinement</strong> across the stages of a Cascade Mask R-CNN with ResNet-101 and AttFPN.</li>
+      <li>Run a <strong>controlled comparison of two point processors</strong>, Transformer and MLP, within an otherwise identical refiner.</li>
+      <li>Check whether gains reflect <strong>mask delineation</strong> rather than better detection, under unchanged target-mask supervision.</li>
+    </ol>
+
+    <div class="two-col">
+      <div>
+        <h3>Research questions</h3>
+        <ul class="qa">
+          <li><b>RQ1</b> Does shared point refinement improve mask AP over the Parent?</li>
+          <li><b>RQ2</b> How does attention among selected points affect mask AP relative to point-wise processing, and are the two variants equivalent within the study&rsquo;s tolerance?</li>
+          <li><b>RQ3</b> Does point refinement improve mask delineation, as assessed by stricter mask-overlap criteria and boundary agreement?</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Hypotheses</h3>
+        <ul class="qa">
+          <li><b>H1</b> Each refiner achieves a positive mask-AP gain over the Parent.</li>
+          <li><b>H2</b> The mean mask-AP difference between the MLP and Transformer refiners lies within the study&rsquo;s equivalence bounds of &minus;1 to +1 AP point.</li>
+          <li><b>H3</b> Relative to the Parent, point refinement produces a larger gain in mask AP<sub>75</sub> than in mask AP<sub>50</sub>.</li>
+          <li><b>H4</b> Relative to the Parent, point refinement improves boundary IoU on objects matched by both compared experiments in every evaluated seed.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">H3 and H4 are evaluated separately for the Transformer and MLP refiners. Box AP and detection coverage were examined after scoring as diagnostics, to see whether the mask-quality gains came with changes in detection performance.</p>
+  </section>
+
+  <!-- ============ METHODOLOGY ============ -->
+  <section id="methodology">
+    <h2>2. Methodology</h2>
+
+    <h3>2.1 Dataset</h3>
+    <p>
+      Experiments use <strong>PIXray</strong>: pseudo-colored X-ray baggage images annotated for 15 prohibited-item
+      categories. The official split is used without modification: 3,560 training images (10,709 instances) and 1,486
+      test images (4,508 instances), 5,046 images and 15,217 instances in all. Every image holds at least one
+      prohibited item. Each object has a category label, a bounding box and a polygon instance mask, which serves as
+      its target mask; the annotations are retained unchanged.
+    </p>
+    <p>
+      PIXray-A adds occluder annotations. Only the Occ bilayer SAM and Bilayer FCN baselines use these occluder masks,
+      and only during training; all other models, including both refiners, train on the original target-instance
+      masks. Every model is evaluated against the original PIXray target-instance annotations of the official test split.
+    </p>
+    <figure>
+      <img src="assets/fig1_dataset_examples.png" width="815" height="541" loading="lazy"
+           alt="Training examples of the 15 PIXray categories with ground-truth mask outlines">
+      <figcaption><strong>Figure 1.</strong> Training-set examples of the 15 PIXray categories with ground-truth mask outlines.</figcaption>
+    </figure>
+
+    <h3>2.2 Data preprocessing and augmentation</h3>
+    <p>
+      All models share the same augmentation, sampled independently per training image: horizontal flip with
+      probability 0.5; resize preserving aspect ratio at a nominal 512&nbsp;&times;&nbsp;512 scale multiplied by a
+      ratio from [0.5, 1.5]; and a random crop to at most 512&nbsp;&times;&nbsp;512 (crops without instances are
+      allowed). Boxes are recomputed from the transformed masks, images are converted from BGR to RGB and normalized
+      with the standard channel means and standard deviations, and batches are padded to multiples of 32. At inference
+      images are resized to fit 512&nbsp;&times;&nbsp;512 and padded; no test-time augmentation is used.
+    </p>
+
+    <h3>2.3 Base instance-segmentation framework</h3>
+    <p>
+      The Parent is Cascade Mask R-CNN with an ImageNet-pretrained <strong>ResNet-101</strong> and
+      <strong>AttFPN</strong>, a feature pyramid with channel and spatial attention that outputs five 256-channel
+      levels, P2&ndash;P6 (strides 4&ndash;64). The backbone stem and first residual stage are frozen and
+      batch-normalization statistics stay fixed. The finest level, P2, feeds the point refiner.
+    </p>
+    <figure>
+      <img src="assets/fig2_backbone_attfpn.png" width="1261" height="405" loading="lazy"
+           alt="ResNet-101 backbone and AttFPN feature hierarchy">
+      <figcaption><strong>Figure 2.</strong> ResNet-101 backbone and AttFPN feature hierarchy.</figcaption>
+    </figure>
+    <p>
+      The three cascade stages use assignment IoU thresholds 0.5, 0.6 and 0.7. Each stage has its own mask head that
+      maps 256&nbsp;&times;&nbsp;14&nbsp;&times;&nbsp;14 RoI features to class-specific 15&nbsp;&times;&nbsp;28&nbsp;&times;&nbsp;28
+      coarse-mask logits. Training combines the RPN losses with cascade classification, box-regression and coarse-mask
+      losses (stage weights 1, 0.5, 0.25). At inference, stage scores are averaged and final-stage boxes go through
+      class-wise NMS; each stage&rsquo;s mask for a final detection is refined, converted to probabilities, averaged
+      across stages, projected into the detection box and thresholded at 0.5.
+    </p>
+    <figure>
+      <img src="assets/fig3_inference_pipeline.png" width="1437" height="580" loading="lazy"
+           alt="Overall inference pipeline with shared point refinement">
+      <figcaption><strong>Figure 3.</strong> Overall inference pipeline with shared point refinement.</figcaption>
+    </figure>
+
+    <h3>2.4 Uncertainty-guided mask refinement</h3>
+    <p>
+      Following PointRend, a shared point-refinement module progressively refines each stage&rsquo;s 28&nbsp;&times;&nbsp;28
+      coarse mask to 56&nbsp;&times;&nbsp;56 and then 112&nbsp;&times;&nbsp;112, using image features, coarse-mask
+      predictions, point coordinates and the refinement level. Each level updates logits at selected uncertain
+      locations and keeps the interpolated values elsewhere. <strong>The refiner is shared across all three cascade
+      stages and both refinement levels; the coarse mask heads remain separate.</strong>
+    </p>
+
+    <h4>Point selection and embedding</h4>
+    <p>
+      The current mask of each RoI is upsampled to the level&rsquo;s resolution, and uncertainty is the distance of a
+      logit from zero. Selection uses this <em>evolving</em> mask, so the second level already contains the first
+      level&rsquo;s updates:
+    </p>
+    <p class="eq"><i>U</i><span class="ss"><span>(<i>s</i>,&thinsp;<i>r</i>)</span></span>(<i>u</i>) = &minus;&#8239;|&#8239;<i>M</i>&#771;<span class="ss"><span>(<i>s</i>,&thinsp;<i>r</i>)</span><span><i>c</i></span></span>(<i>u</i>)&#8239;|, &nbsp; <i>r</i> &isin; {56, 112}</p>
+    <p>
+      Here <i>M</i>&#771; is the upsampled logits before the current update and <i>c</i> is the assigned ground-truth
+      class in training or the predicted class at inference. Training selects 196 unique points per positive RoI and
+      level: the 147 most uncertain of 588 uniformly sampled candidates, plus 49 uniformly sampled from the remaining
+      grid locations. Inference selects the 784 most uncertain points. Each selected point becomes a 128-dimensional
+      token from four inputs: the P2 image feature <i>f</i> (256-d, bilinearly sampled), the <em>original</em>
+      28&nbsp;&times;&nbsp;28 coarse logits <i>m</i> of the same stage (15-d), normalized RoI-relative coordinates
+      <i>u</i> and a learned refinement-level embedding <i>e</i><sub><i>r</i></sub>:
+    </p>
+    <p class="eq"><i>z</i><sub><i>i</i></sub> = LN[&#8239;&phi;<sub><i>f</i></sub>(<i>f</i><sub><i>i</i></sub>) + &phi;<sub><i>m</i></sub>(<i>m</i><sub><i>i</i></sub>) + &phi;<sub><i>p</i></sub>(<i>u</i><sub><i>i</i></sub>) + <i>e</i><sub><i>r</i></sub>&#8239;] &nbsp;&isin;&nbsp; &#8477;<sup>128</sup></p>
+    <p>
+      The image branch is a linear 256&rarr;128 projection; the mask and coordinate branches use two linear layers
+      with GELU (15&rarr;64&rarr;128 and 2&rarr;128&rarr;128). Projection weights are shared across stages and
+      levels, and no cascade-stage embedding is used.
+    </p>
+
+    <h4>Refinement variants and mask update</h4>
+    <p>
+      The <i>P</i> tokens of one RoI, <i>Z</i><sup>(0)</sup> &isin; &#8477;<sup><i>P</i>&times;128</sup>, pass through
+      two pre-normalization residual blocks:
+    </p>
+    <p class="eq"><i>H</i><sup>(<i>b</i>)</sup> = <i>Z</i><sup>(<i>b</i>&minus;1)</sup> + Mix<sub><i>b</i></sub>(LN<sub><i>b</i>,1</sub>(<i>Z</i><sup>(<i>b</i>&minus;1)</sup>))<br>
+      <i>Z</i><sup>(<i>b</i>)</sup> = <i>H</i><sup>(<i>b</i>)</sup> + FFN<sub><i>b</i></sub>(LN<sub><i>b</i>,2</sub>(<i>H</i><sup>(<i>b</i>)</sup>)), &nbsp; <i>b</i> &isin; {1, 2}</p>
+    <p>
+      <strong>The two variants differ only in Mix.</strong> In the Transformer refiner, Mix is multi-head
+      self-attention (four heads of 32 channels) that operates only among the points of the same RoI. In the MLP
+      refiner, Mix is a point-wise 128&rarr;256&rarr;128 MLP with GELU, so points are processed independently. Both use
+      the same 128&rarr;512&rarr;128 feed-forward network, layer normalization and residual connections, with no
+      dropout. The two blocks have separate parameters, while the complete refiner is reused across stages and levels.
+      A final LayerNorm and a linear 128&rarr;15 decoder give class logits at each selected point; these
+      <em>replace</em> the interpolated values rather than being added as residual corrections. The updated
+      56&nbsp;&times;&nbsp;56 grid is upsampled and refined again to give 112&nbsp;&times;&nbsp;112. Each variant adds
+      about 0.46&nbsp;M parameters and is trained jointly with the detector.
+    </p>
+    <figure>
+      <img src="assets/fig4_transformer_processor.png" width="1437" height="408" loading="lazy"
+           alt="Transformer processor with two sequential blocks, four attention heads and a feed-forward network">
+      <figcaption><strong>Figure 4.</strong> Transformer point processor with two sequential blocks and separate parameters.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/fig5_mlp_processor.png" width="1428" height="405" loading="lazy"
+           alt="MLP processor with two sequential blocks and independent point processing">
+      <figcaption><strong>Figure 5.</strong> MLP point processor with two sequential blocks and separate parameters.</figcaption>
+    </figure>
+
+    <h3>2.5 Training objective</h3>
+    <p>
+      Point supervision supplements the base-detector losses and applies to positive RoIs at both refinement levels of
+      every cascade stage. Targets are sampled bilinearly from the augmented ground-truth instance masks (so they can
+      be soft near boundaries) and scored with binary cross-entropy on the assigned class channel:
+    </p>
+    <p class="eq"><i>L</i><span class="ss"><span><i>s</i>,&thinsp;<i>r</i></span><span>point</span></span> = <span class="frac"><span>1</span><span><i>K</i><sub><i>s</i></sub><i>P</i></span></span> &Sigma;<span class="ss"><span><i>K</i><sub><i>s</i></sub></span><span><i>k</i>=1</span></span> &Sigma;<span class="ss"><span>&nbsp;</span><span><i>i</i>&isin;<i>S</i></span></span> BCEWithLogits(&#8239;<i>&ell;</i><sub><i>i</i></sub>[<i>c</i><sub><i>k</i></sub>],&nbsp;<i>g</i><sub><i>k</i></sub>(<i>p</i><sub><i>i</i></sub>)&#8239;)</p>
+    <p>
+      <i>K</i><sub><i>s</i></sub> is the number of positive RoIs at stage <i>s</i>, <i>P</i> = 196 is the training point
+      budget per RoI and level, <i>S</i> is the selected point set, <i>c</i><sub><i>k</i></sub> the assigned class,
+      <i>&ell;</i> the decoded logits, and <i>g</i><sub><i>k</i></sub> the assigned augmented ground-truth mask evaluated
+      at point <i>p</i><sub><i>i</i></sub>. A stage with no positive RoIs contributes no point loss. Averaging the two
+      levels gives the complete objective:
+    </p>
+    <p class="eq"><i>L</i> = <i>L</i><sub>base</sub> + &frac12; &Sigma;<span class="ss"><span>3</span><span><i>s</i>=1</span></span> <i>w</i><sub><i>s</i></sub>&#8239;(<i>L</i><span class="ss"><span><i>s</i>,&thinsp;56</span><span>point</span></span> + <i>L</i><span class="ss"><span><i>s</i>,&thinsp;112</span><span>point</span></span>), &nbsp; (<i>w</i><sub>1</sub>, <i>w</i><sub>2</sub>, <i>w</i><sub>3</sub>) = (1, 0.5, 0.25)</p>
+    <p>
+      <i>L</i><sub>base</sub> is the existing RPN loss plus the weighted cascade classification, box-regression and
+      coarse-mask losses. The two levels count equally, stage weights are applied once, and no extra point-loss
+      multiplier is tuned.
+    </p>
+
+    <h3>2.6 Compared baselines</h3>
+    <p>
+      The two refiners are compared with eight reference experiments: Mask R-CNN and Cascade Mask R-CNN with standard
+      feature pyramids; the AttFPN Parent and its recall-RPN and PIDray R0/R1 adaptations; and three SAM or bilayer
+      experiments (RSPrompter with SAM and LoRA, Occ bilayer SAM, and Bilayer FCN). Only Occ bilayer SAM and Bilayer
+      FCN use PIXray-A occluder masks in training. The references are adaptations to this shared setting with a common,
+      untuned training budget, so their rankings describe these implementations.
+    </p>
+  </section>
+
+  <!-- ============ EXPERIMENTAL SETUP ============ -->
+  <section id="experiments">
+    <h2>3. Experimental setup</h2>
+
+    <h3>3.1 Implementation and training</h3>
+    <p>
+      All experiments are implemented in MMDetection with the shared settings below and no architecture-specific tuning
+      of the training budget. Each run is evaluated with its final-epoch checkpoint, without validation-based model
+      selection. Activation checkpointing was enabled in the SAM image encoder of Occ bilayer SAM to reduce training
+      memory. Shared seed labels do not imply identical initialization or augmentation streams across architectures.
+    </p>
+    <dl class="settings">
+      <div><dt>Batch size</dt><dd>4</dd></div>
+      <div><dt>Epochs</dt><dd>50</dd></div>
+      <div><dt>Optimizer / LR</dt><dd>AdamW, 1&nbsp;&times;&nbsp;10<sup>&minus;4</sup>; weight decay 0.05; betas (0.9, 0.999)</dd></div>
+      <div><dt>Schedule</dt><dd>linear warm-up (25 iterations); epoch-wise cosine decay, configured minimum 1&nbsp;&times;&nbsp;10<sup>&minus;7</sup></dd></div>
+      <div><dt>Precision</dt><dd>training: FP16 AMP with dynamic loss scaling; evaluation: FP32 without autocast</dd></div>
+      <div><dt>Gradient clipping</dt><dd>L2 norm 1.0</dd></div>
+      <div><dt>Seeds / runs</dt><dd>42, 123, 2026; 30 training runs</dd></div>
+      <div><dt>Checkpoint rule</dt><dd>final epoch (50); no validation-based selection</dd></div>
+      <div><dt>Inference thresholds</dt><dd>score &ge; 0.05; NMS IoU 0.5; &le; 100 detections; mask threshold 0.5</dd></div>
+      <div><dt>Hardware</dt><dd>1 &times; NVIDIA RTX 4090, 24&nbsp;GB</dd></div>
+    </dl>
+
+    <h3>3.2 Statistical analysis</h3>
+    <ul class="plain">
+      <li><strong>Primary outcome:</strong> official COCOeval mask AP, averaged over IoU 0.50&ndash;0.95 and 15 categories, on the 1,486 test images against the original target annotations (predictions kept at score &ge; 0.05).</li>
+      <li><strong>Reporting:</strong> means over seeds 42, 123 and 2026 with sample SD; paired effects are means of within-seed differences; 95% CIs from 2,000 paired seed-and-image bootstrap replicates.</li>
+      <li><strong>Tests:</strong> 5,000 two-sided paired image permutations for primary mask-AP differences, with Holm correction within each test family. Positive effect claims require a positive estimate, adjusted p &lt; 0.05 and an unadjusted 95% CI above zero.</li>
+      <li><strong>H2:</strong> the 90% bootstrap interval is compared with &plusmn;1-AP equivalence bounds, a study-specific tolerance that has not been externally validated; an approximate TOST p-value is reconstructed from the 95% interval.</li>
+      <li><strong>H3 / H4:</strong> whether the gain is larger at AP<sub>75</sub> than at AP<sub>50</sub>; and the paired boundary-IoU difference (contour band 2% of the image diagonal) on objects matched by both compared experiments in every seed. This endpoint replaces the planned Boundary AP, which was not computed.</li>
+      <li><strong>Diagnostics:</strong> box AP and detection coverage (one-to-one same-class matching at score &ge; 0.5, box IoU &ge; 0.5), examined after scoring and left unadjusted; they test neither equivalence nor noninferiority.</li>
+    </ul>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="results">
+    <h2>4. Results</h2>
+
+    <h3>4.1 Overall performance and refiner comparison</h3>
+    <p>
+      The MLP refiner achieved the highest mean mask AP among the ten experiments, followed by the Transformer
+      refiner; both exceeded the Parent under the same original target-mask supervision. Bilayer FCN was the
+      highest-scoring reference, but it and Occ bilayer SAM use extra occluder annotations, so reference rankings are
+      descriptive.
+    </p>
+    <div class="table-wrap">
+      <table class="results">
+        <caption><strong>Table 2.</strong> Mean PIXray test performance across ten experiments.</caption>
+        <thead>
+          <tr><th>Experiment</th><th class="num">Mask AP &plusmn; SD</th><th class="num">95% CI</th><th class="num">AP<sub>50</sub></th><th class="num">AP<sub>75</sub></th><th class="num">AR<sub>100</sub></th><th class="num">Box AP</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mask R-CNN</td><td class="num">68.15 &plusmn; 0.05</td><td class="num">[67.6, 69.1]</td><td class="num">93.6</td><td class="num">78.0</td><td class="num">71.9</td><td class="num">77.1</td></tr>
+          <tr><td>Cascade Mask R-CNN</td><td class="num">70.20 &plusmn; 0.04</td><td class="num">[69.6, 71.0]</td><td class="num">93.9</td><td class="num">80.7</td><td class="num">73.2</td><td class="num">81.1</td></tr>
+          <tr class="parent"><td>Cascade + AttFPN (Parent)</td><td class="num">70.50 &plusmn; 0.06</td><td class="num">[69.9, 71.3]</td><td class="num">94.0</td><td class="num">81.1</td><td class="num">73.4</td><td class="num">81.5</td></tr>
+          <tr><td>Parent + recall RPN</td><td class="num">70.24 &plusmn; 0.22</td><td class="num">[69.7, 71.1]</td><td class="num">94.2</td><td class="num">80.6</td><td class="num">73.3</td><td class="num">81.5</td></tr>
+          <tr><td>RSPrompter (SAM + LoRA)</td><td class="num">62.45 &plusmn; 0.11</td><td class="num">[61.9, 63.3]</td><td class="num">92.9</td><td class="num">70.9</td><td class="num">65.7</td><td class="num">76.2</td></tr>
+          <tr><td>Occ bilayer SAM&dagger;</td><td class="num">62.66 &plusmn; 0.10</td><td class="num">[62.1, 63.5]</td><td class="num">93.0</td><td class="num">70.8</td><td class="num">65.9</td><td class="num">76.1</td></tr>
+          <tr><td>Bilayer FCN&dagger;</td><td class="num">70.65 &plusmn; 0.08</td><td class="num">[70.1, 71.5]</td><td class="num">94.3</td><td class="num">81.4</td><td class="num">73.7</td><td class="num"><b>81.6</b></td></tr>
+          <tr><td>Parent + PIDray R0/R1</td><td class="num">70.36 &plusmn; 0.12</td><td class="num">[69.8, 71.2]</td><td class="num">94.1</td><td class="num">80.9</td><td class="num">73.3</td><td class="num">81.5</td></tr>
+          <tr class="ours"><td>Transformer refiner (ours)</td><td class="num">71.79 &plusmn; 0.19</td><td class="num">[71.1, 72.6]</td><td class="num">94.1</td><td class="num">81.2</td><td class="num">74.7</td><td class="num">81.2</td></tr>
+          <tr class="ours"><td>MLP refiner (ours)</td><td class="num"><b>72.47 &plusmn; 0.08</b></td><td class="num">[71.9, 73.3]</td><td class="num"><b>94.3</b></td><td class="num"><b>82.4</b></td><td class="num"><b>75.3</b></td><td class="num">81.3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Three-seed means (0&ndash;100); sample SD across seeds; seed-and-image bootstrap CIs. Bold: highest unrounded column means. &dagger; Extra occluder supervision.</p>
+
+    <p>
+      Both refiners exceeded the Parent in every seed, supporting H1 with gains of 1.29 AP for the Transformer and 1.97
+      for the MLP (both Holm-adjusted p &lt; 0.001). The MLP exceeded the Transformer by 0.69 AP, but the 90% CI
+      [0.49, 0.88] satisfied the study&rsquo;s &plusmn;1-AP equivalence criterion.
+    </p>
+    <figure class="narrow">
+      <img src="assets/fig6_mask_ap_by_seed.png" width="967" height="682" loading="lazy"
+           alt="Mask AP means with 95% bootstrap confidence intervals for the Parent, Transformer and MLP refiners, with lines joining same-seed results">
+      <figcaption><strong>Figure 6.</strong> Mask AP means and 95% seed-and-image bootstrap CIs; lines connect same-seed results.</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table class="results">
+        <caption><strong>Table 3.</strong> Paired mask-AP differences for H1 and H2 (AP points).</caption>
+        <thead>
+          <tr><th>Hypothesis</th><th>Paired comparison</th><th class="num">&Delta; by seed 42 / 123 / 2026</th><th class="num">Mean paired &Delta; [95% CI]</th><th class="num">Permutation p</th><th class="num">Holm p</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>H1</td><td>Transformer &minus; Parent</td><td class="num">+1.42 / +1.12 / +1.33</td><td class="num">+1.29 [+0.99, +1.54]</td><td class="num">&lt;0.001</td><td class="num">&lt;0.001</td></tr>
+          <tr><td>H1</td><td>MLP &minus; Parent</td><td class="num">+2.06 / +1.94 / +1.93</td><td class="num">+1.97 [+1.75, +2.20]</td><td class="num">&lt;0.001</td><td class="num">&lt;0.001</td></tr>
+          <tr><td>H2: observed difference</td><td>MLP &minus; Transformer</td><td class="num">+0.64 / +0.82 / +0.60</td><td class="num">+0.69 [+0.45, +0.92]</td><td class="num">&lt;0.001</td><td class="num">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">CI: paired seed-and-image bootstrap; p: paired image permutation; Holm over the two H1 tests. H2 equivalence: 90% CI [+0.49, +0.88] within &plusmn;1 AP (approximate TOST p = 0.005). &mdash; not adjusted.</p>
+
+    <h3>4.2 Mask quality and detection diagnostics</h3>
+    <p>
+      The AP<sub>75</sub>-minus-AP<sub>50</sub> gain contrast supported H3 for the MLP refiner (+1.07 AP points;
+      Holm-adjusted p = 0.008) but was inconclusive for the Transformer (+0.11 AP; Holm-adjusted p = 0.798). Both
+      supported H4 through increased boundary IoU (both Holm-adjusted p &lt; 0.001), but their separate common-match
+      samples prevent a direct processor comparison on identical objects. The larger gains at stricter mask-IoU
+      thresholds in Figure 7 are descriptive and do not replace the H3 test.
+    </p>
+    <p>
+      All four diagnostic point estimates were slightly negative, and their 95% confidence intervals included zero.
+      These analyses did not establish either a positive detection gain or unchanged detection performance. For
+      Transformer box AP, the percentile-bootstrap interval includes zero before rounding despite the separate
+      normal-approximation p-value of 0.045; the discrepancy reflects the different procedures and is not treated as a
+      confirmed reduction.
+    </p>
+    <figure class="narrow">
+      <img src="assets/fig7_gain_by_iou.png" width="642" height="482" loading="lazy"
+           alt="Mask-AP gain over the Parent across mask IoU thresholds for both refiners">
+      <figcaption><strong>Figure 7.</strong> Mask-AP gain over the Parent by IoU threshold; shading indicates seed range.</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table class="results">
+        <caption><strong>Table 4.</strong> Paired changes in mask quality and detection relative to the Parent.</caption>
+        <thead>
+          <tr><th>Analysis</th><th>Outcome</th><th>Refiner</th><th class="num">Mean &Delta; [95% CI]</th><th>Test</th><th class="num">p</th><th class="num">Holm p</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>H3</td><td>&Delta;AP75 &minus; &Delta;AP50</td><td>Transformer</td><td class="num">+0.11 [&minus;0.81, +0.88]</td><td>Normal approximation*</td><td class="num">0.798</td><td class="num">0.798</td></tr>
+          <tr><td>H3</td><td>&Delta;AP75 &minus; &Delta;AP50</td><td>MLP</td><td class="num">+1.07 [+0.30, +1.76]</td><td>Normal approximation*</td><td class="num">0.004</td><td class="num">0.008</td></tr>
+          <tr><td>H4</td><td>Boundary IoU</td><td>Transformer</td><td class="num">+0.71 [+0.64, +0.79]</td><td>Image-cluster sign-flip</td><td class="num">&lt;0.001</td><td class="num">&lt;0.001</td></tr>
+          <tr><td>H4</td><td>Boundary IoU</td><td>MLP</td><td class="num">+1.14 [+1.07, +1.21]</td><td>Image-cluster sign-flip</td><td class="num">&lt;0.001</td><td class="num">&lt;0.001</td></tr>
+          <tr class="diag"><td>Diagnostic</td><td>Box AP</td><td>Transformer</td><td class="num">&minus;0.27 [&minus;0.52, +0.00]</td><td>Normal approximation*</td><td class="num">0.045</td><td class="num">&mdash;</td></tr>
+          <tr class="diag"><td>Diagnostic</td><td>Box AP</td><td>MLP</td><td class="num">&minus;0.18 [&minus;0.50, +0.15]</td><td>Normal approximation*</td><td class="num">0.284</td><td class="num">&mdash;</td></tr>
+          <tr class="diag"><td>Diagnostic</td><td>Detection coverage</td><td>Transformer</td><td class="num">&minus;0.22 [&minus;0.46, +0.01]</td><td>Image-cluster sign-flip</td><td class="num">0.069</td><td class="num">&mdash;</td></tr>
+          <tr class="diag"><td>Diagnostic</td><td>Detection coverage</td><td>MLP</td><td class="num">&minus;0.17 [&minus;0.39, +0.05]</td><td>Image-cluster sign-flip</td><td class="num">0.178</td><td class="num">&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">&Delta;: refiner &minus; Parent (AP points; percentage points otherwise). *Normal approximation; Holm: joint H3&ndash;H4. AP: 1,486 images &times; 3 seeds; diagnostics unadjusted; sign-flip tests clustered by image.</p>
+
+    <h4>Hypothesis outcomes</h4>
+    <ul class="outcomes">
+      <li><b>H1</b><span class="tag ok">Supported</span><span class="why">Both refiners beat the Parent in every seed (+1.29 and +1.97 AP).</span></li>
+      <li><b>H2</b><span class="tag ok">Supported</span><span class="why">MLP is +0.69 AP over Transformer, inside the &plusmn;1 AP bounds.</span></li>
+      <li><b>H3</b><span class="tag mix">Partly</span><span class="why">Supported for the MLP; inconclusive for the Transformer.</span></li>
+      <li><b>H4</b><span class="tag ok">Supported</span><span class="why">Boundary IoU improved for both on their matched-object samples.</span></li>
+    </ul>
+
+    <h3>4.3 Per-class and qualitative results</h3>
+    <p>
+      Table 5 reports absolute class AP across all ten experiments. In separate paired comparisons with the Parent, the
+      MLP had positive gains in 14 of 15 classes (eight meeting the Holm-adjusted criterion) and the Transformer in 11
+      (seven meeting it). These tests use approximate p-values, with corrections across 15 classes per contrast. Dart
+      had the lowest Parent AP and did not improve with either refiner.
+    </p>
+    <div class="table-wrap">
+      <table class="results compact">
+        <caption><strong>Table 5.</strong> Three-seed mean per-class mask AP across ten experiments.</caption>
+        <thead>
+          <tr><th>Class</th><th class="num">n</th><th class="num">Mask R-CNN</th><th class="num">Cascade</th><th class="num">Parent</th><th class="num">Recall RPN</th><th class="num">RSPrompter</th><th class="num">Occ SAM&dagger;</th><th class="num">Bilayer FCN&dagger;</th><th class="num">R0/R1</th><th class="num">Transformer</th><th class="num">MLP</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Dart</td><td class="num">323</td><td class="num">37.0</td><td class="num">37.4</td><td class="num">38.0</td><td class="num">38.1</td><td class="num">20.0</td><td class="num">20.2</td><td class="num"><b>38.8</b></td><td class="num">37.8</td><td class="num">37.7</td><td class="num">37.7</td></tr>
+          <tr><td>Saw blade</td><td class="num">287</td><td class="num">43.2</td><td class="num">47.8</td><td class="num">48.2</td><td class="num">47.8</td><td class="num">38.7</td><td class="num">39.0</td><td class="num">48.5</td><td class="num">48.5</td><td class="num">47.8</td><td class="num"><b>52.5</b></td></tr>
+          <tr><td>Knife</td><td class="num">330</td><td class="num">53.1</td><td class="num">56.3</td><td class="num">56.5</td><td class="num">56.2</td><td class="num">45.4</td><td class="num">45.7</td><td class="num">56.7</td><td class="num">56.3</td><td class="num">57.0</td><td class="num"><b>57.9</b></td></tr>
+          <tr><td>Screwdriver</td><td class="num">287</td><td class="num">56.7</td><td class="num">59.6</td><td class="num">60.4</td><td class="num">59.8</td><td class="num">52.7</td><td class="num">53.1</td><td class="num">60.6</td><td class="num">60.0</td><td class="num"><b>63.7</b></td><td class="num">63.1</td></tr>
+          <tr><td>Pliers</td><td class="num">264</td><td class="num">59.0</td><td class="num">61.7</td><td class="num">61.8</td><td class="num">61.0</td><td class="num">51.1</td><td class="num">51.1</td><td class="num">61.6</td><td class="num">61.3</td><td class="num">62.5</td><td class="num"><b>66.1</b></td></tr>
+          <tr><td>Lighter</td><td class="num">265</td><td class="num">66.6</td><td class="num">68.5</td><td class="num">68.7</td><td class="num">68.2</td><td class="num">59.0</td><td class="num">58.9</td><td class="num">68.9</td><td class="num">68.7</td><td class="num"><b>69.7</b></td><td class="num">69.2</td></tr>
+          <tr><td>Razor blade</td><td class="num">271</td><td class="num">69.6</td><td class="num">69.9</td><td class="num">70.1</td><td class="num">70.3</td><td class="num">61.2</td><td class="num">61.3</td><td class="num">70.3</td><td class="num">69.9</td><td class="num">70.0</td><td class="num"><b>70.3</b></td></tr>
+          <tr><td>Wrench</td><td class="num">349</td><td class="num">67.0</td><td class="num">70.8</td><td class="num">71.3</td><td class="num">71.0</td><td class="num">66.2</td><td class="num">66.5</td><td class="num">71.8</td><td class="num">71.3</td><td class="num">73.2</td><td class="num"><b>74.2</b></td></tr>
+          <tr><td>Scissors</td><td class="num">290</td><td class="num">73.7</td><td class="num">75.7</td><td class="num">75.7</td><td class="num">75.1</td><td class="num">62.1</td><td class="num">63.1</td><td class="num">75.8</td><td class="num">75.6</td><td class="num">77.1</td><td class="num"><b>77.3</b></td></tr>
+          <tr><td>Fireworks</td><td class="num">282</td><td class="num">74.8</td><td class="num">76.5</td><td class="num">77.2</td><td class="num">76.7</td><td class="num">73.9</td><td class="num">73.8</td><td class="num">76.6</td><td class="num">76.8</td><td class="num"><b>78.4</b></td><td class="num">78.3</td></tr>
+          <tr><td>Battery</td><td class="num">360</td><td class="num">79.0</td><td class="num">80.0</td><td class="num">80.4</td><td class="num">80.0</td><td class="num">74.0</td><td class="num">73.7</td><td class="num">80.4</td><td class="num">80.0</td><td class="num">80.4</td><td class="num"><b>80.4</b></td></tr>
+          <tr><td>Gun</td><td class="num">292</td><td class="num">83.3</td><td class="num">84.7</td><td class="num">84.9</td><td class="num">84.7</td><td class="num">80.5</td><td class="num">80.9</td><td class="num">85.0</td><td class="num">84.8</td><td class="num">86.1</td><td class="num"><b>86.2</b></td></tr>
+          <tr><td>Hammer</td><td class="num">322</td><td class="num">84.2</td><td class="num">85.8</td><td class="num">85.4</td><td class="num">85.8</td><td class="num">78.4</td><td class="num">78.5</td><td class="num">85.5</td><td class="num">85.4</td><td class="num"><b>86.5</b></td><td class="num">86.3</td></tr>
+          <tr><td>Pressure vessel</td><td class="num">297</td><td class="num">86.3</td><td class="num">89.2</td><td class="num">89.2</td><td class="num">89.0</td><td class="num">84.8</td><td class="num">85.2</td><td class="num">89.6</td><td class="num">89.2</td><td class="num">91.9</td><td class="num"><b>92.5</b></td></tr>
+          <tr><td>Bat</td><td class="num">289</td><td class="num">88.7</td><td class="num">89.2</td><td class="num">89.7</td><td class="num">89.8</td><td class="num">88.8</td><td class="num">88.9</td><td class="num">89.6</td><td class="num">89.6</td><td class="num">94.7</td><td class="num"><b>95.1</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Absolute mask AP (%); n = test objects. Parent = Cascade + AttFPN; Recall RPN and R0/R1 extend the Parent; Occ SAM = Occ bilayer SAM. &dagger; Extra occluder supervision. Bold: highest unrounded mean (descriptive). For Battery and Razor blade, the MLP has the highest unrounded mean despite ties after rounding.</p>
+
+    <p>
+      Figure 8 shows selected seed-42 successes and failures. Both refiners improved the Bat outline, while the crowded
+      Wrench example shows deterioration, particularly with Transformer refinement. The printed values are
+      single-object IoUs from seed 42; these examples illustrate the quantitative findings without estimating
+      population-level performance.
+    </p>
+    <figure>
+      <img src="assets/fig8_qualitative.png" width="1187" height="1122" loading="lazy"
+           alt="Qualitative comparison of ground truth, Parent, Bilayer FCN, R0/R1, Transformer refiner and MLP refiner on selected successes and failures">
+      <figcaption><strong>Figure 8.</strong> Selected refinement successes and failures (seed 42). &ldquo;Best prior&rdquo; denotes the adapted Bilayer FCN&dagger; experiment.</figcaption>
+    </figure>
+
+    <h3>4.4 Computational cost</h3>
+    <p>
+      The refiners add about 0.46&nbsp;M parameters to the Parent and required longer mean training, with somewhat
+      lower measured end-to-end throughput. The SAM-based experiments have much larger total parameter counts but fewer
+      trainable parameters because their encoders are adapted with LoRA; they also have the lowest measured throughput.
+      Parent + PIDray R0/R1 stayed close to the Parent&rsquo;s training duration. These comparisons describe measured
+      cost and do not establish significant timing differences.
+    </p>
+    <div class="table-wrap">
+      <table class="results">
+        <caption><strong>Table 6.</strong> Model size, mean training time, and evaluation throughput.</caption>
+        <thead>
+          <tr><th>Experiment</th><th class="num">Total parameters</th><th class="num">Training hours, mean</th><th class="num">End-to-end images/s, mean &plusmn; SD</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mask R-CNN</td><td class="num">63,038,634</td><td class="num">1.46</td><td class="num">33.7 &plusmn; 4.0</td></tr>
+          <tr><td>Cascade Mask R-CNN</td><td class="num">96,066,744</td><td class="num">2.71</td><td class="num">26.1 &plusmn; 1.2</td></tr>
+          <tr class="parent"><td>Cascade + AttFPN (Parent)</td><td class="num">97,103,679</td><td class="num">2.99</td><td class="num">24.6 &plusmn; 0.3</td></tr>
+          <tr><td>Parent + recall RPN</td><td class="num">97,107,534</td><td class="num">3.07</td><td class="num">23.9 &plusmn; 3.2</td></tr>
+          <tr><td>RSPrompter (SAM + LoRA)</td><td class="num">332,667,534</td><td class="num">4.80</td><td class="num">14.4 &plusmn; 0.3</td></tr>
+          <tr><td>Occ bilayer SAM&dagger;</td><td class="num">336,725,874</td><td class="num">7.21</td><td class="num">14.3 &plusmn; 1.6</td></tr>
+          <tr><td>Bilayer FCN&dagger;</td><td class="num">105,173,841</td><td class="num">4.14</td><td class="num">21.0 &plusmn; 0.3</td></tr>
+          <tr><td>Parent + PIDray R0/R1</td><td class="num">98,684,224</td><td class="num">2.88</td><td class="num">23.5 &plusmn; 0.2</td></tr>
+          <tr class="ours"><td>Transformer refiner (ours)</td><td class="num">97,562,062</td><td class="num">5.22</td><td class="num">22.3 &plusmn; 2.8</td></tr>
+          <tr class="ours"><td>MLP refiner (ours)</td><td class="num">97,561,806</td><td class="num">4.87</td><td class="num">23.3 &plusmn; 2.8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Training hours: three-seed mean. Throughput: mean &plusmn; SD across three seeds at evaluation batch size 1, including loading, inference, scoring and writing; not model-only latency. &dagger; Extra occluder supervision; Occ bilayer SAM used activation checkpointing. Costs are descriptive.</p>
+
+    <div class="callout">
+      <strong>Scope.</strong>
+      These results are for the tested PIXray configuration: one Parent architecture, three seeds, and an all-positive
+      test set. They do not establish clean-baggage rejection, cross-dataset generalization or higher efficiency, and
+      the individual contributions of point selection, progressive resolution, shared weights and the point loss
+      remain unisolated. Values are reported from the manuscript, not re-measured from a fresh clone.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>
+    Datasets are not included. The checkpoint release currently contains the inventory only.
+    See the <a href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg">repository</a> and the
+    <a href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg/blob/main/paper/main_paper_juri_v2.pdf">paper</a>
+    for the full methodology, references and interpretation.
+  </p>
+</footer>
+
+</body>
+</html>
