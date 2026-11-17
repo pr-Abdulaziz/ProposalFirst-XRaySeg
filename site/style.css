@@ -130,9 +130,14 @@ h1 {
 }
 
 .btn-arxiv   { --btn: var(--c-arxiv); }
-.btn-paper   { --btn: var(--c-paper); }
 .btn-code    { --btn: var(--c-code); }
-.btn-weights { --btn: var(--c-weights); }
+.btn-weights {
+  --btn: var(--c-weights);
+  background: linear-gradient(90deg, #52c274, #1e9e48);
+}
+/* The logo file includes a white sticker margin, so draw it larger and
+   pull the margins in to keep the button the same height as the others. */
+.btn img.hf { width: 28px; height: 28px; flex: none; margin: -5px -2px -5px -6px; }
 .btn-docs    { --btn: var(--c-docs); }
 
 .btn.is-disabled {
