@@ -5,7 +5,7 @@
 **Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement**<br>
 Abdulaziz Alqahtani and Qasim Umer
 
-[Project page](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) · [Manuscript PDF (v2)](paper/main_paper_juri_v2.pdf) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
+[Project page](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) · [arXiv:2611.20476](https://arxiv.org/abs/2611.20476) · [Manuscript PDF (v2)](paper/main_paper_juri_v2.pdf) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
 
 This project studies whether refining uncertain mask locations improves the segmentation of prohibited items in X-ray baggage images. It extends **Cascade Mask R-CNN with ResNet-101 and AttFPN** using a shared point refiner and compares **Transformer** and **MLP** processors under a common experimental protocol.
 
