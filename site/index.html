@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Shared Point-Based Mask Refinement for X-Ray Instance Segmentation</title>
   <meta name="description" content="A shared point refiner on Cascade Mask R-CNN improves mask AP for prohibited-item segmentation in X-ray baggage images (PIXray).">
+  <meta name="author" content="Abdulaziz Alqahtani, Qasim Umer">
+  <meta name="copyright" content="Copyright 2026 Abdulaziz Alqahtani and Qasim Umer. All rights reserved.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -45,6 +47,7 @@
     <a href="#methodology">Methodology</a>
     <a href="#experiments">Experimental setup</a>
     <a href="#results">Results</a>
+    <a href="#citation">Citation</a>
   </nav>
 </header>
 
@@ -502,6 +505,25 @@
       remain unisolated. Values are reported from the manuscript, not re-measured from a fresh clone.
     </div>
   </section>
+
+  <!-- ============ CITATION ============ -->
+  <section id="citation">
+    <h2>Citation</h2>
+    <p>If you use this work, please cite the paper (<a href="https://arxiv.org/abs/2611.20476">arXiv:2611.20476</a>).</p>
+    <div class="bibtex">
+      <button type="button" class="copy-btn" id="copy-bibtex">Copy BibTeX</button>
+      <pre><code id="bibtex-text">@misc{alqahtani2026improving,
+  title         = {Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement},
+  author        = {Alqahtani, Abdulaziz and Umer, Qasim},
+  year          = {2026},
+  eprint        = {2611.20476},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  doi           = {10.48550/arXiv.2611.20476},
+  url           = {https://arxiv.org/abs/2611.20476}
+}</code></pre>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -511,7 +533,32 @@
     <a href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg/blob/main/paper/main_paper_juri_v2.pdf">paper</a>
     for the full methodology, references and interpretation.
   </p>
+  <p class="copyright">
+    &copy; 2026 Abdulaziz Alqahtani and Qasim Umer. All rights reserved. The text, figures and tables on this page
+    may not be copied or republished without written permission. Third-party code and logos remain under their own
+    licenses (see <a href="https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg/blob/main/THIRD_PARTY_NOTICES.md">third-party notices</a>);
+    the Hugging Face logo is a trademark of Hugging Face, Inc.
+  </p>
 </footer>
+
+<script>
+  // Copy-BibTeX button; the page still works without it.
+  (function () {
+    var btn = document.getElementById('copy-bibtex');
+    var src = document.getElementById('bibtex-text');
+    if (!btn || !src) return;
+    btn.addEventListener('click', function () {
+      var text = src.textContent;
+      var done = function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy BibTeX'; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () {});
+      }
+    });
+  })();
+</script>
 
 </body>
 </html>

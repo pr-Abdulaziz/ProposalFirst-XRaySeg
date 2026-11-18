@@ -101,6 +101,29 @@ These files are retained for context. Use the v2 manuscript and the correspondin
 
 </details>
 
+## Citation
+
+If you use this work, please cite the paper ([arXiv:2611.20476](https://arxiv.org/abs/2611.20476)). GitHub's "Cite this repository" button reads [`CITATION.cff`](CITATION.cff).
+
+```bibtex
+@misc{alqahtani2026improving,
+  title         = {Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement},
+  author        = {Alqahtani, Abdulaziz and Umer, Qasim},
+  year          = {2026},
+  eprint        = {2611.20476},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  doi           = {10.48550/arXiv.2611.20476},
+  url           = {https://arxiv.org/abs/2611.20476}
+}
+```
+
+## License and copyright
+
+Copyright (c) 2026 Abdulaziz Alqahtani and Qasim Umer. **All rights reserved.** The manuscript, figures, project page and the authors' own code may not be copied, redistributed or republished without written permission; see [`LICENSE`](LICENSE) for the exact terms and what is allowed (viewing, GitHub forks, citation, fair use).
+
+This repository also contains third-party code (OpenMMLab MMDetection and MMPretrain under Apache-2.0, and the Occ project under MIT) that stays under its own licenses; see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
 ## Availability and validation
 
 - **Source/configuration integrity:** the restored paper code and all 40 frozen PIXray/PIDray resolved configs match their recorded historical hashes. Git preserves their exact bytes across operating systems.
