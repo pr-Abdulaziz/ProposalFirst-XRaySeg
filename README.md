@@ -5,7 +5,7 @@
 **Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement**<br>
 Abdulaziz Alqahtani and Qasim Umer
 
-[Project page](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) · [arXiv:2611.20476](https://arxiv.org/abs/2611.20476) · [Manuscript PDF (v2)](paper/main_paper_juri_v2.pdf) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
+[Project page](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) · [arXiv:2611.20476](https://arxiv.org/abs/2611.20476) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
 
 This project studies whether refining uncertain mask locations improves the segmentation of prohibited items in X-ray baggage images. It extends **Cascade Mask R-CNN with ResNet-101 and AttFPN** using a shared point refiner and compares **Transformer** and **MLP** processors under a common experimental protocol.
 
@@ -39,7 +39,7 @@ Both variants use 128-dimensional tokens, two sequential blocks, a 512-wide feed
 
 ## Manuscript-reported results
 
-Official PIXray test split; **1,486 images, 15 categories, seeds 42/123/2026**. Values below are mask AP points, reported as mean ± sample standard deviation in [Table 2 of the v2 manuscript, PDF page 16](paper/main_paper_juri_v2.pdf#page=16).
+Official PIXray test split; **1,486 images, 15 categories, seeds 42/123/2026**. Values below are mask AP points, reported as mean ± sample standard deviation in [Table 2 of the paper](https://arxiv.org/abs/2611.20476).
 
 | Model | Mask AP | Gain over Parent |
 |---|---:|---:|
@@ -83,23 +83,9 @@ python scripts/research.py prepare --dataset pixray --method 09 --seed 42 --name
 | [Project page source](site/) | Static site published with GitHub Pages by `.github/workflows/pages.yml`; preview locally with `python -m http.server --directory site` |
 | [Checkpoint inventory](CHECKPOINTS.md) | Final-checkpoint identities and actual binary availability |
 
-## Paper PDFs
+## Paper
 
-The current supplied manuscript is [main_paper_juri_v2.pdf](paper/main_paper_juri_v2.pdf). Its filename does not establish publication or acceptance status; no venue or DOI is asserted here. Only PDFs from `paper/` are published. Editable DOCX files and private review notes are excluded.
-
-<details>
-<summary>Earlier manuscript versions and historical reports</summary>
-
-- [Previous manuscript PDF](paper/main_paper_juri.pdf)
-- [Historical point-refinement variants summary](paper/Improving_XRay_Instance_Segmentation_Point_Refinement_Variants.pdf)
-- [Historical results summary](paper/main_results.pdf)
-- [Historical supplementary evaluation report](paper/PIXray_Supplementary_Evaluation_Report.pdf)
-- [Earlier point-refinement report](paper/Point_Based_Mask_Refinement_XRay_Instance_Segmentation.pdf)
-- [Alternate earlier point-refinement report](paper/Point_Based_Mask_Refinement_XRay_Instance_Segmentation1.pdf)
-
-These files are retained for context. Use the v2 manuscript and the corresponding frozen campaign when interpreting the main result table above; older reports may describe earlier settings.
-
-</details>
+The paper is available as [arXiv:2611.20476](https://arxiv.org/abs/2611.20476). Use it together with the frozen campaign when interpreting the result table above. Manuscript files are not stored in this repository.
 
 ## Citation
 

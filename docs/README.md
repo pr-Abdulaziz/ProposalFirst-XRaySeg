@@ -1,6 +1,6 @@
 # Project context and technical guide
 
-[Repository home](../README.md) · [Manuscript PDF (v2)](../paper/main_paper_juri_v2.pdf) · [Reproduce the experiments](REPRODUCIBILITY.md) · [Checkpoint status](../CHECKPOINTS.md)
+[Repository home](../README.md) · [arXiv:2611.20476](https://arxiv.org/abs/2611.20476) · [Reproduce the experiments](REPRODUCIBILITY.md) · [Checkpoint status](../CHECKPOINTS.md)
 
 This guide connects the research question, implemented model and experiment records. It describes the shared point-refinement study in the supplied manuscript, **Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement**, by Abdulaziz Alqahtani and Qasim Umer. Equations and implementation contracts are grounded in the code; the reported performance numbers come from the manuscript. The separate PIDray campaign and older prototype branches have their own boundaries.
 
@@ -169,7 +169,7 @@ Both campaigns preserve their own preprocessing, point-sampling seeds and annota
 
 ## Findings and interpretation
 
-The [v2 manuscript, Table 2, PDF page 16](../paper/main_paper_juri_v2.pdf#page=16) reports:
+The [paper, Table 2](https://arxiv.org/abs/2611.20476) reports:
 
 | Model | PIXray mask AP, mean ± sample SD | Gain over Parent |
 |---|---:|---:|
@@ -200,7 +200,7 @@ The SAM/hybrid modules retained elsewhere in the project support baseline and hi
 
 ## Reproduction workflow
 
-1. Read the [v2 manuscript](../paper/main_paper_juri_v2.pdf) and choose a paper configuration.
+1. Read the [paper](https://arxiv.org/abs/2611.20476) and choose a paper configuration.
 2. Clone the code and run the five standard-library [contract tests](../tests/test_research_cli.py).
 3. Create the documented Linux Python/CUDA/MMCV environment. Run the CPU/GPU checks described in the [reproduction guide](REPRODUCIBILITY.md#4-use-a-supported-execution-environment).
 4. Obtain the datasets and pretrained weights externally; preserve their annotation semantics and recorded hashes.

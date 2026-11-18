@@ -5,7 +5,8 @@ COVERED WORK
 This notice covers the original work of the copyright holders in this
 repository, including without limitation:
 
-  - the manuscript text, figures, tables and diagrams (paper/, docs/);
+  - the manuscript text, figures, tables and diagrams, wherever they appear in
+    this repository (for example docs/);
   - the project web page (site/);
   - the source code, configurations, scripts and tests written by the
     copyright holders (for example projects/, scripts/, tests/, and the

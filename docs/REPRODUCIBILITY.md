@@ -61,7 +61,7 @@ python -B -m unittest discover -s tests -p test_research_cli.py -v
 
 Exit status 0 means the checked assets pass. Exit status 2 means assets are incomplete or arguments are invalid. Audit checks config/source/annotation hashes, weight presence, and missing/zero-byte image files. It does not decode images, rehash large weights by default, establish accuracy or validate a GPU runtime.
 
-At this handoff: PIXray assets pass; PIDray remains incomplete because many image files are zero bytes. The supplied paper PDFs are now included under `paper/`; editable DOCX files and private review notes are excluded. Some historical result/report payloads in the D: copy remain incomplete. Code restoration does not reconstruct those data or results. Use the exact-file lists in `output/cleanup_2026-11-06/` and restore verified originals rather than creating replacement labels or fabricated metrics.
+At this handoff: PIXray assets pass; PIDray remains incomplete because many image files are zero bytes. The paper itself is not stored in this repository; see arXiv:2611.20476. Some historical result/report payloads in the D: copy remain incomplete. Code restoration does not reconstruct those data or results. Use the exact-file lists in `output/cleanup_2026-11-06/` and restore verified originals rather than creating replacement labels or fabricated metrics.
 
 ## 4. Use a supported execution environment
 
