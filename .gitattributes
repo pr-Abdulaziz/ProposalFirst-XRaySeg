@@ -1,0 +1,4 @@
+# Historical experiment manifests hash exact source/configuration bytes.
+# Preserve those bytes across Windows and Linux; automatic line-ending
+# conversion would make otherwise identical clones fail provenance checks.
+* -text

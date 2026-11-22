@@ -1,0 +1,14 @@
+% Table A6 (from ablation/summary.json)
+\begin{tabular}{lcccccc}\toprule
+ & \multicolumn{3}{c}{Transformer refiner} & \multicolumn{3}{c}{MLP refiner}\\
+Variant & AP & $\Delta$ vs full [95\% CI] & $\Delta$ vs Parent [95\% CI] & AP & $\Delta$ vs full [95\% CI] & $\Delta$ vs Parent [95\% CI]\\\midrule
+Full refiner (published: 784 points, 2 levels, all stages) & 71.79 & — & +1.29 [+0.99, +1.54] & 72.47 & — & +1.97 [+1.75, +2.20]\\
+Refinement disabled & 70.61 & $-$1.18 [$-$1.45, $-$0.85] & +0.11 [$-$0.12, +0.34] & 70.58 & $-$1.90 [$-$2.05, $-$1.75] & +0.08 [$-$0.16, +0.30]\\
+Random instead of uncertain points (784) & 71.53 & $-$0.26 [$-$0.49, +0.07] & +1.03 [+0.81, +1.25] & 71.46 & $-$1.01 [$-$1.12, $-$0.86] & +0.97 [+0.76, +1.21]\\
+Refine final cascade stage only & 71.43 & $-$0.36 [$-$0.57, $-$0.03] & +0.93 [+0.73, +1.19] & 71.59 & $-$0.88 [$-$0.99, $-$0.76] & +1.10 [+0.88, +1.33]\\
+One refinement level (28$\to$56) & 72.45 & +0.66 [+0.45, +0.96] & +1.95 [+1.71, +2.19] & 72.35 & $-$0.12 [$-$0.17, $-$0.07] & +1.85 [+1.63, +2.08]\\
+196 points (training budget) & 71.14 & $-$0.64 [$-$0.75, $-$0.51] & +0.65 [+0.34, +0.94] & 72.16 & $-$0.31 [$-$0.39, $-$0.23] & +1.66 [+1.43, +1.90]\\
+392 points & 71.18 & $-$0.61 [$-$0.75, $-$0.46] & +0.68 [+0.34, +1.01] & 72.37 & $-$0.10 [$-$0.14, $-$0.04] & +1.88 [+1.66, +2.12]\\
+1{,}568 points & 72.26 & +0.47 [+0.28, +0.72] & +1.76 [+1.51, +2.00] & 72.50 & +0.03 [$-$0.01, +0.07] & +2.00 [+1.78, +2.24]\\
+\bottomrule\end{tabular}
+% Mask AP (%), mean of three seeds; Parent = 70.50. Δ: mean of per-seed paired differences; 95% CI: two-level paired bootstrap (seeds, then images; B = 2,000). Post-hoc, inference-time analyses of the trained checkpoints on the official test split; no model was retrained and no setting was selected from these results.

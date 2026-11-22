@@ -1,0 +1,16 @@
+# Dependencies installed after PyTorch, MMCV, and MMEngine.
+einops==0.7.0
+transformers==4.38.1
+peft==0.8.2
+numpy==1.24.0
+opencv-python==4.8.1.78
+pycocotools==2.0.7
+scipy>=1.10,<1.13
+scikit-image==0.21.0
+shapely>=2.0,<3.0
+terminaltables==3.1.10
+tqdm>=4.65
+matplotlib>=3.7
+mat4py==0.6.0
+openpyxl>=3.1,<4.0
+yapf==0.40.2

@@ -1,0 +1,73 @@
+{
+ "n_objects": 4508,
+ "band_px": {
+  "min": 14,
+  "median": 18.0,
+  "max": 26
+ },
+ "size_bins_all": {
+  "small": 153,
+  "medium": 1683,
+  "large": 2672
+ },
+ "comparisons": {
+  "09-03": {
+   "matched": 4121,
+   "excluded": 387,
+   "excluded_missed_by_parent_all_seeds": 216,
+   "excluded_by_size": {
+    "small": 42,
+    "medium": 217,
+    "large": 128
+   },
+   "matched_by_size": {
+    "small": 111,
+    "medium": 1466,
+    "large": 2544
+   },
+   "delta_biou_by_size": {
+    "small": 0.17378619461479322,
+    "medium": 0.16158375922654508,
+    "large": 1.056213679904327
+   },
+   "delta_iou_by_size": {
+    "small": 0.17378619461479322,
+    "medium": 0.16658221337744564,
+    "large": 0.8694944469776866
+   },
+   "band_ge_half_side_share": 0.1982528512496967,
+   "band_ge_half_side_small": 111,
+   "parent_mean_biou_matched": 85.51462789918536,
+   "parent_mean_iou_matched": 86.58189723757387
+  },
+  "09M-03": {
+   "matched": 4123,
+   "excluded": 385,
+   "excluded_missed_by_parent_all_seeds": 216,
+   "excluded_by_size": {
+    "small": 41,
+    "medium": 221,
+    "large": 123
+   },
+   "matched_by_size": {
+    "small": 112,
+    "medium": 1462,
+    "large": 2549
+   },
+   "delta_biou_by_size": {
+    "small": 0.1677329845280845,
+    "medium": 0.24070783263832607,
+    "large": 1.6962142384744563
+   },
+   "delta_iou_by_size": {
+    "small": 0.1677329845280845,
+    "medium": 0.23512299592751726,
+    "large": 1.495133647235216
+   },
+   "band_ge_half_side_share": 0.19718651467378123,
+   "band_ge_half_side_small": 112,
+   "parent_mean_biou_matched": 85.52382483035015,
+   "parent_mean_iou_matched": 86.59979471109344
+  }
+ }
+}

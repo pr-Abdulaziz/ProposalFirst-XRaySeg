@@ -1,0 +1,123 @@
+{
+ "01": {
+  "name": "Mask R-CNN, ResNet-101 + FPN",
+  "total": 63038634,
+  "trainable": 62813290,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 3344384,
+   "rpn_head": 593935,
+   "roi_head": 16600155
+  }
+ },
+ "02": {
+  "name": "Cascade Mask R-CNN, ResNet-101 + FPN",
+  "total": 96066744,
+  "trainable": 95841400,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 3344384,
+   "rpn_head": 593935,
+   "roi_head": 49628265
+  }
+ },
+ "03": {
+  "name": "Cascade Mask R-CNN, ResNet-101 + AttFPN",
+  "total": 97103679,
+  "trainable": 96878335,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 4381319,
+   "rpn_head": 593935,
+   "roi_head": 49628265
+  }
+ },
+ "04": {
+  "name": "Cascade + AttFPN + recall-enhanced RPN",
+  "total": 97107534,
+  "trainable": 96882190,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 4381319,
+   "rpn_head": 597790,
+   "roi_head": 49628265
+  }
+ },
+ "05": {
+  "name": "RSPrompter-style SAM ViT-L + LoRA adaptation",
+  "total": 332667534,
+  "trainable": 27567758,
+  "frozen": 305099776,
+  "trainable_by_module": {
+   "backbone": 1572864,
+   "neck": 2839104,
+   "rpn_head": 597790,
+   "roi_head": 22558000
+  }
+ },
+ "06": {
+  "name": "Occ bilayer SAM (Occ paper method)",
+  "total": 336725874,
+  "trainable": 31626098,
+  "frozen": 305099776,
+  "trainable_by_module": {
+   "backbone": 1572864,
+   "neck": 2839104,
+   "rpn_head": 597790,
+   "roi_head": 26616340
+  }
+ },
+ "07": {
+  "name": "Bilayer FCN mask head on Method 04",
+  "total": 105173841,
+  "trainable": 104948497,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 4381319,
+   "rpn_head": 597790,
+   "roi_head": 57694572
+  }
+ },
+ "08": {
+  "name": "PIDray R0/R1 adapted to PIXray",
+  "total": 98684224,
+  "trainable": 98458880,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 4381319,
+   "rpn_head": 593935,
+   "roi_head": 49628265,
+   "r0_head": 1580545
+  }
+ },
+ "09": {
+  "name": "Transformer point refinement on Method 03",
+  "total": 97562062,
+  "trainable": 97336718,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 4381319,
+   "rpn_head": 593935,
+   "roi_head": 50086648
+  }
+ },
+ "09M": {
+  "name": "Matched MLP point-refinement control on Method 03",
+  "total": 97561806,
+  "trainable": 97336462,
+  "frozen": 225344,
+  "trainable_by_module": {
+   "backbone": 42274816,
+   "neck": 4381319,
+   "rpn_head": 593935,
+   "roi_head": 50086392
+  }
+ }
+}

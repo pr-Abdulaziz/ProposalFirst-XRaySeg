@@ -1,0 +1,75 @@
+{
+ "status": "PASS",
+ "gpu": "NVIDIA GeForce RTX 4090",
+ "finished": "2026-09-18T21:02:26",
+ "frozen_config_sha256": "745ae7cc47918b0ccd7d8be6e52f04a76970fe5887ba009c8ba3f344c7d1f60d",
+ "amended_config_sha256": "5034be49cf9a7401f089012f0d8e8048b039005eceb850395d4270455027ec4a",
+ "batch": "first two training images of the frozen train pipeline, batch 2, float16 autocast, train mode",
+ "checkpointed_layers": 24,
+ "losses": {
+  "loss": {
+   "plain": 4.122416019439697,
+   "checkpointed": 4.122416019439697,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "loss_rpn_cls": {
+   "plain": 0.6951024532318115,
+   "checkpointed": 0.6951024532318115,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "loss_rpn_bbox": {
+   "plain": 0.044492900371551514,
+   "checkpointed": 0.044492900371551514,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "loss_cls": {
+   "plain": 2.7053184509277344,
+   "checkpointed": 2.7053184509277344,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "acc": {
+   "plain": 6.25,
+   "checkpointed": 6.25,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "loss_bbox": {
+   "plain": 2.3841239453759044e-06,
+   "checkpointed": 2.3841239453759044e-06,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "loss_mask": {
+   "plain": 0.603091835975647,
+   "checkpointed": 0.603091835975647,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  },
+  "loss_mask_bo": {
+   "plain": 0.07440788298845291,
+   "checkpointed": 0.07440788298845291,
+   "rel_diff": 0.0,
+   "run_to_run_rel_diff": 0.0
+  }
+ },
+ "trainable_tensors_with_grad": 333,
+ "worst_grad_cosine": 0.9999973773956299,
+ "worst_grad_norm_rel_diff": 0.00013479047277689131,
+ "run_to_run_baseline": {
+  "worst_grad_cosine": 0.9999962449073792,
+  "worst_grad_norm_rel_diff": 0.0003499492255975287
+ },
+ "tolerances": {
+  "loss_rel": 0.0001,
+  "grad_cos_min": 0.9999,
+  "grad_norm_rel": 0.001
+ },
+ "peak_allocated_mb": {
+  "plain": 7520.931640625,
+  "checkpointed": 2617.8408203125
+ }
+}

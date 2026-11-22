@@ -1,0 +1,51 @@
+Copyright (c) 2026 Abdulaziz Alqahtani and Qasim Umer. All rights reserved.
+
+COVERED WORK
+
+This notice covers the original work of the copyright holders in this
+repository, including without limitation:
+
+  - the manuscript text, figures, tables and diagrams, wherever they appear in
+    this repository (for example docs/);
+  - the project web page (site/);
+  - the source code, configurations, scripts and tests written by the
+    copyright holders (for example projects/, scripts/, tests/, and the
+    frozen experiment configurations under output/).
+
+THIRD-PARTY MATERIAL IS NOT COVERED
+
+Parts of this repository come from other projects and remain under their
+owners' rights and licenses. They are listed in THIRD_PARTY_NOTICES.md, and
+the license texts are in the licenses/ folder. Nothing in this notice changes
+or limits the rights those licenses grant for that material, and this notice
+grants no rights in it. Where a file carries its own copyright or license
+header, that header applies to it.
+
+NO PERMISSION IS GRANTED
+
+Except as stated below, you may not copy, reproduce, redistribute, publish,
+modify, or create derivative works from the covered work, in whole or in part,
+including by copying it into another repository, website, paper or product,
+without the prior written permission of the copyright holders.
+
+WHAT IS ALLOWED
+
+  - Viewing this repository and forking it on GitHub, as permitted by GitHub's
+    Terms of Service. A fork does not grant any right to reuse the covered
+    work beyond what this notice allows.
+  - Citing the paper and quoting short excerpts with attribution, as permitted
+    by applicable law (for example fair use or fair dealing).
+  - Anything that applicable law permits regardless of license.
+
+To request permission, contact the authors through the paper
+(https://arxiv.org/abs/2611.20476) or open an issue on
+https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg.
+
+NO WARRANTY
+
+THE COVERED WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE COVERED WORK OR THE USE OR OTHER DEALINGS IN IT.

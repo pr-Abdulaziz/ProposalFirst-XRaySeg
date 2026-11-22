@@ -1,0 +1,3532 @@
+{
+ "campaign": "pixray_multiseed_bs4_e50_2026-09-14",
+ "created": "2026-09-14T17:01:47",
+ "protocol": {
+  "dataset": "official PIXray split: 3,560 train / 1,486 test images",
+  "physical_batch_per_gpu": 4,
+  "world_size": 1,
+  "accumulative_counts": 1,
+  "effective_batch": 4,
+  "optimizer": "AdamW lr=1e-4 weight_decay=0.05, betas/eps torch defaults (0.9, 0.999) / 1e-8, one parameter group; learning rate kept from the batch-16 protocol, not rescaled for the effective batch of 4",
+  "amp": "AmpOptimWrapper float16, dynamic GradScaler (defaults)",
+  "clip_grad": "global L2 max_norm=1.0 (after unscaling)",
+  "warmup": "LinearLR start_factor=0.001, iteration-based, 25 iterations x 4 = 100 images (historical: 50 iterations x 2 = 100 images)",
+  "cosine": "CosineAnnealingLR epoch-based, begin=1 end=50 T_max=50 eta_min=1e-7 (historical end=60 T_max=60; shortened with the schedule at the user's instruction, same shape)",
+  "max_epochs": 50,
+  "validation": "none",
+  "checkpoint_rule": "final epoch_50.pth; no best-checkpoint selection",
+  "train_loader": "DefaultSampler shuffle=True, no batch sampler, num_workers=2, persistent workers",
+  "test_loader": "batch 1, num_workers=2, DefaultSampler shuffle=False",
+  "randomness": "randomness.seed=<run seed>, deterministic=False, diff_rank_seed=False, cudnn_benchmark=False",
+  "point_refine_seed": "sha256('<campaign>/point_refine/<seed>')[:4] & 0x7fffffff",
+  "cuda_launch_blocking": "0 for every campaign run (historical tools/train.py forced 1; no effect on computation)"
+ },
+ "seeds": [
+  42,
+  123,
+  2026
+ ],
+ "run_order": [
+  {
+   "method": "01",
+   "seed": 42
+  },
+  {
+   "method": "01",
+   "seed": 123
+  },
+  {
+   "method": "01",
+   "seed": 2026
+  },
+  {
+   "method": "02",
+   "seed": 42
+  },
+  {
+   "method": "02",
+   "seed": 123
+  },
+  {
+   "method": "02",
+   "seed": 2026
+  },
+  {
+   "method": "03",
+   "seed": 42
+  },
+  {
+   "method": "03",
+   "seed": 123
+  },
+  {
+   "method": "03",
+   "seed": 2026
+  },
+  {
+   "method": "04",
+   "seed": 42
+  },
+  {
+   "method": "04",
+   "seed": 123
+  },
+  {
+   "method": "04",
+   "seed": 2026
+  },
+  {
+   "method": "07",
+   "seed": 42
+  },
+  {
+   "method": "07",
+   "seed": 123
+  },
+  {
+   "method": "07",
+   "seed": 2026
+  },
+  {
+   "method": "08",
+   "seed": 42
+  },
+  {
+   "method": "08",
+   "seed": 123
+  },
+  {
+   "method": "08",
+   "seed": 2026
+  },
+  {
+   "method": "09",
+   "seed": 42
+  },
+  {
+   "method": "09M",
+   "seed": 42
+  },
+  {
+   "method": "09",
+   "seed": 123
+  },
+  {
+   "method": "09M",
+   "seed": 123
+  },
+  {
+   "method": "09",
+   "seed": 2026
+  },
+  {
+   "method": "09M",
+   "seed": 2026
+  },
+  {
+   "method": "05",
+   "seed": 42
+  },
+  {
+   "method": "05",
+   "seed": 123
+  },
+  {
+   "method": "05",
+   "seed": 2026
+  },
+  {
+   "method": "06",
+   "seed": 42
+  },
+  {
+   "method": "06",
+   "seed": 123
+  },
+  {
+   "method": "06",
+   "seed": 2026
+  }
+ ],
+ "methods": [
+  {
+   "id": "01",
+   "slug": "m01_mask_rcnn_r101_fpn",
+   "name": "Mask R-CNN, ResNet-101 + FPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_b2_mask_rcnn_r101.py",
+   "historical_id": "B2",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "02",
+   "slug": "m02_cascade_r101_fpn",
+   "name": "Cascade Mask R-CNN, ResNet-101 + FPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_p1_cascade_fpn.py",
+   "historical_id": "P1",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "03",
+   "slug": "m03_cascade_r101_attfpn",
+   "name": "Cascade Mask R-CNN, ResNet-101 + AttFPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_p2_cascade_attfpn.py",
+   "historical_id": "P2",
+   "supervision": "original",
+   "family": "detector",
+   "role": "parent of 04, 08, 09, 09M",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "04",
+   "slug": "m04_cascade_attfpn_recall_rpn",
+   "name": "Cascade + AttFPN + recall-enhanced RPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_p3_cascade_attfpn_recall_rpn.py",
+   "historical_id": "P3",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "05",
+   "slug": "m05_rsprompter_sam_lora",
+   "name": "RSPrompter-style SAM ViT-L + LoRA adaptation",
+   "historical_config": "configs/occlusion/pixray_b5_rsprompter.py",
+   "historical_id": "B5",
+   "supervision": "original",
+   "family": "sam",
+   "role": "SAM comparison (not an untouched SAM release)",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "06",
+   "slug": "m06_occ_bilayer_sam",
+   "name": "Occ bilayer SAM (Occ paper method)",
+   "historical_config": "configs/occlusion/pixray_s2_occ_bisam.py",
+   "historical_id": "S2",
+   "supervision": "occ",
+   "family": "sam",
+   "role": "additional-supervision comparison",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "07",
+   "slug": "m07_bilayer_fcn_recall_rpn",
+   "name": "Bilayer FCN mask head on Method 04",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_b8_bilayer_fcn_recall_rpn.py",
+   "historical_id": "B8",
+   "supervision": "occ",
+   "family": "detector",
+   "role": "additional-supervision comparison",
+   "launchable": true,
+   "note": "keeps PIXray-A occluder supervision by user decision (2026-09-14); reported beside 06, not as a target-only method"
+  },
+  {
+   "id": "08",
+   "slug": "m08_pidray_r0r1",
+   "name": "PIDray R0/R1 adapted to PIXray",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_08_pidray_r0r1.py",
+   "historical_id": "",
+   "supervision": "original",
+   "family": "detector",
+   "role": "PIDray mechanism on Method 03",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "09",
+   "slug": "m09_point_refine_transformer",
+   "name": "Transformer point refinement on Method 03",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_09_point_refine.py",
+   "historical_id": "",
+   "supervision": "original",
+   "family": "detector",
+   "role": "proposed",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "09M",
+   "slug": "m09m_point_refine_mlp",
+   "name": "Matched MLP point-refinement control on Method 03",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_09m_point_refine_mlp.py",
+   "historical_id": "",
+   "supervision": "original",
+   "family": "detector",
+   "role": "matched control for 09",
+   "launchable": true,
+   "note": ""
+  }
+ ],
+ "registry_mapping": [
+  {
+   "id": "01",
+   "name": "Mask R-CNN, ResNet-101 + FPN",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_b2_mask_rcnn_r101.py",
+   "registry_config": "projects/proposal_first_pidray_occ/configs/pixray_b2_mask_rcnn_r101.py",
+   "registry_name": "Mask R-CNN, ResNet-101 + FPN",
+   "historical_id": "B2",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "02",
+   "name": "Cascade Mask R-CNN, ResNet-101 + FPN",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_p1_cascade_fpn.py",
+   "registry_config": "projects/proposal_first_pidray_occ/configs/pixray_p1_cascade_fpn.py",
+   "registry_name": "Cascade Mask R-CNN, ResNet-101 + FPN",
+   "historical_id": "P1",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "03",
+   "name": "Cascade Mask R-CNN, ResNet-101 + AttFPN",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_p2_cascade_attfpn.py",
+   "registry_config": "projects/proposal_first_pidray_occ/configs/pixray_p2_cascade_attfpn.py",
+   "registry_name": "Cascade Mask R-CNN, ResNet-101 + AttFPN",
+   "historical_id": "P2",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "04",
+   "name": "Cascade + AttFPN + recall-enhanced RPN",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_p3_cascade_attfpn_recall_rpn.py",
+   "registry_config": "projects/proposal_first_pidray_occ/configs/pixray_p3_cascade_attfpn_recall_rpn.py",
+   "registry_name": "Cascade Mask R-CNN, R-101 + AttFPN + recall-enhanced RPN",
+   "historical_id": "P3",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "05",
+   "name": "RSPrompter-style SAM ViT-L + LoRA adaptation",
+   "config": "configs/occlusion/pixray_b5_rsprompter.py",
+   "registry_config": "configs/occlusion/pixray_b5_rsprompter.py",
+   "registry_name": "RSPrompter, SAM ViT-L with LoRA",
+   "historical_id": "B5",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "06",
+   "name": "Occ bilayer SAM (Occ paper method)",
+   "config": "configs/occlusion/pixray_s2_occ_bisam.py",
+   "registry_config": "configs/occlusion/pixray_s2_occ_bisam.py",
+   "registry_name": "Occ bilayer SAM built on RSPrompter",
+   "historical_id": "S2",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "07",
+   "name": "Bilayer FCN mask head on Method 04",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_b8_bilayer_fcn_recall_rpn.py",
+   "registry_config": "projects/proposal_first_pidray_occ/configs/pixray_b8_bilayer_fcn_recall_rpn.py",
+   "registry_name": "Method 04 with a bilayer FCN mask head",
+   "historical_id": "B8",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "08",
+   "name": "PIDray R0/R1 adapted to PIXray",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_08_pidray_r0r1.py",
+   "registry_config": "projects/proposal_first_pidray_occ/configs/pixray_08_pidray_r0r1.py",
+   "registry_name": "PIDray R0/R1, adapted to PIXray",
+   "historical_id": "",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "09",
+   "name": "Transformer point refinement on Method 03",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_09_point_refine.py",
+   "registry_config": null,
+   "registry_name": "not in registry (09/09M are outside registry_seven)",
+   "historical_id": "",
+   "config_exists": true,
+   "matches_registry": true
+  },
+  {
+   "id": "09M",
+   "name": "Matched MLP point-refinement control on Method 03",
+   "config": "projects/proposal_first_pidray_occ/configs/pixray_09m_point_refine_mlp.py",
+   "registry_config": null,
+   "registry_name": "not in registry (09/09M are outside registry_seven)",
+   "historical_id": "",
+   "config_exists": true,
+   "matches_registry": true
+  }
+ ],
+ "runs": {
+  "m01_mask_rcnn_r101_fpn/seed_42": {
+   "method": "01",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m01_mask_rcnn_r101_fpn/seed_42.py",
+   "resolved_config_sha256": "d2a2986549f1f95d1475e8176be2937a4412e95fc57398f44ffd67423b1c4349",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m01_mask_rcnn_r101_fpn/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m01_mask_rcnn_r101_fpn/seed_123": {
+   "method": "01",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m01_mask_rcnn_r101_fpn/seed_123.py",
+   "resolved_config_sha256": "97c8f494635fab3aa180bc1ce2ec33cc30a8d14d4be9423d324362908ce0a39a",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m01_mask_rcnn_r101_fpn/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m01_mask_rcnn_r101_fpn/seed_2026": {
+   "method": "01",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m01_mask_rcnn_r101_fpn/seed_2026.py",
+   "resolved_config_sha256": "f54bcf27b2f98b3d339591373e386d8560c38850bae35773c9cf4593dcd9a0d7",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m01_mask_rcnn_r101_fpn/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m02_cascade_r101_fpn/seed_42": {
+   "method": "02",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m02_cascade_r101_fpn/seed_42.py",
+   "resolved_config_sha256": "9b01c1b0c0025911ee825ca8ed217d96c80f929937fd09da27e7108ab27df60d",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m02_cascade_r101_fpn/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m02_cascade_r101_fpn/seed_123": {
+   "method": "02",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m02_cascade_r101_fpn/seed_123.py",
+   "resolved_config_sha256": "0103fa89b8d868828e69d5f4b4767e28c35f64b6df10f38c658040a7c4df7033",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m02_cascade_r101_fpn/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m02_cascade_r101_fpn/seed_2026": {
+   "method": "02",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m02_cascade_r101_fpn/seed_2026.py",
+   "resolved_config_sha256": "ca800082f3a99f409eef32e0d87befe60bc003c2cff3cb662a0b16be65cfac11",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m02_cascade_r101_fpn/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m03_cascade_r101_attfpn/seed_42": {
+   "method": "03",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m03_cascade_r101_attfpn/seed_42.py",
+   "resolved_config_sha256": "ae96aa5e1fc9240fe24d7016f836aa97963ad3746a2df78078c5ab5e008073df",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m03_cascade_r101_attfpn/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m03_cascade_r101_attfpn/seed_123": {
+   "method": "03",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m03_cascade_r101_attfpn/seed_123.py",
+   "resolved_config_sha256": "2b6a49cbbd1c28f4f6c59df7ee3f3cef38622aa1acecaf7ac0134a2d416ad3d3",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m03_cascade_r101_attfpn/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m03_cascade_r101_attfpn/seed_2026": {
+   "method": "03",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m03_cascade_r101_attfpn/seed_2026.py",
+   "resolved_config_sha256": "9546dfdb1cf2999b397f6222a47473127e3646dfb11116d305f7f510d51baee3",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m03_cascade_r101_attfpn/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m04_cascade_attfpn_recall_rpn/seed_42": {
+   "method": "04",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m04_cascade_attfpn_recall_rpn/seed_42.py",
+   "resolved_config_sha256": "9608e4c20d5393ee705ff345daf9c38d2fb10c5a34fac7e686de4f404998d0d8",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m04_cascade_attfpn_recall_rpn/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m04_cascade_attfpn_recall_rpn/seed_123": {
+   "method": "04",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m04_cascade_attfpn_recall_rpn/seed_123.py",
+   "resolved_config_sha256": "271db68fe3bf2bde9b6b55101ab5635b7ba4ec4feb43ccece77bff0c0d88bc1a",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m04_cascade_attfpn_recall_rpn/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m04_cascade_attfpn_recall_rpn/seed_2026": {
+   "method": "04",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m04_cascade_attfpn_recall_rpn/seed_2026.py",
+   "resolved_config_sha256": "f3f122942d7afa88f4af58b49ed545ef99d8319d352affff8ffa23a9b9649584",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m04_cascade_attfpn_recall_rpn/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m05_rsprompter_sam_lora/seed_42": {
+   "method": "05",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m05_rsprompter_sam_lora/seed_42.py",
+   "resolved_config_sha256": "35ad8adbf680dcb60fbc293fc3954cbee0a433ec8966e6996e01bf69737acbf7",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m05_rsprompter_sam_lora/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "CLASSES",
+    "EXPERIMENT_SEED",
+    "accumulation_steps",
+    "backend_args",
+    "base_lr",
+    "batch_augments",
+    "batch_size",
+    "batch_size_per_gpu",
+    "code_root",
+    "crop_size",
+    "data_preprocessor",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "evaluator_ann_root",
+    "find_unused_parameters",
+    "hf_sam_pretrain_ckpt_path",
+    "hf_sam_pretrain_name",
+    "indices",
+    "mask_head",
+    "max_epochs",
+    "num_classes",
+    "num_workers",
+    "persistent_workers",
+    "physical_batch_size",
+    "project_root",
+    "prompt_shape",
+    "sam_checkpoint",
+    "sam_model_dir",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": null,
+      "batch_sampler": "ABSENT",
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "OcFeatureAggregator"
+    ],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "inherited_passthrough": "OcFeatureAggregator (parameter-free identity)",
+    "sam_init_checkpoints": [
+     "pretrained/sam_vit_large/pytorch_model_new.bin"
+    ],
+    "sam_adaptation": {
+     "peft_type": "LORA",
+     "r": 16,
+     "target_modules": [
+      "qkv"
+     ],
+     "lora_alpha": 32,
+     "lora_dropout": 0.05,
+     "bias": "none"
+    }
+   },
+   "problems": []
+  },
+  "m05_rsprompter_sam_lora/seed_123": {
+   "method": "05",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m05_rsprompter_sam_lora/seed_123.py",
+   "resolved_config_sha256": "0e0afb616fc0d9113bd9769f607fc6830fdba8e0fc234eb666a6e4d5dd9cef72",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m05_rsprompter_sam_lora/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "CLASSES",
+    "EXPERIMENT_SEED",
+    "accumulation_steps",
+    "backend_args",
+    "base_lr",
+    "batch_augments",
+    "batch_size",
+    "batch_size_per_gpu",
+    "code_root",
+    "crop_size",
+    "data_preprocessor",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "evaluator_ann_root",
+    "find_unused_parameters",
+    "hf_sam_pretrain_ckpt_path",
+    "hf_sam_pretrain_name",
+    "indices",
+    "mask_head",
+    "max_epochs",
+    "num_classes",
+    "num_workers",
+    "persistent_workers",
+    "physical_batch_size",
+    "project_root",
+    "prompt_shape",
+    "sam_checkpoint",
+    "sam_model_dir",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": null,
+      "batch_sampler": "ABSENT",
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "OcFeatureAggregator"
+    ],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "inherited_passthrough": "OcFeatureAggregator (parameter-free identity)",
+    "sam_init_checkpoints": [
+     "pretrained/sam_vit_large/pytorch_model_new.bin"
+    ],
+    "sam_adaptation": {
+     "peft_type": "LORA",
+     "r": 16,
+     "target_modules": [
+      "qkv"
+     ],
+     "lora_alpha": 32,
+     "lora_dropout": 0.05,
+     "bias": "none"
+    }
+   },
+   "problems": []
+  },
+  "m05_rsprompter_sam_lora/seed_2026": {
+   "method": "05",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m05_rsprompter_sam_lora/seed_2026.py",
+   "resolved_config_sha256": "d475604bbd7b3f73a23fa7510014d2e2eb84d409f88056a6cb95fa27be557ebe",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m05_rsprompter_sam_lora/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "CLASSES",
+    "EXPERIMENT_SEED",
+    "accumulation_steps",
+    "backend_args",
+    "base_lr",
+    "batch_augments",
+    "batch_size",
+    "batch_size_per_gpu",
+    "code_root",
+    "crop_size",
+    "data_preprocessor",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "evaluator_ann_root",
+    "find_unused_parameters",
+    "hf_sam_pretrain_ckpt_path",
+    "hf_sam_pretrain_name",
+    "indices",
+    "mask_head",
+    "max_epochs",
+    "num_classes",
+    "num_workers",
+    "persistent_workers",
+    "physical_batch_size",
+    "project_root",
+    "prompt_shape",
+    "sam_checkpoint",
+    "sam_model_dir",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": null,
+      "batch_sampler": "ABSENT",
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "OcFeatureAggregator"
+    ],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "inherited_passthrough": "OcFeatureAggregator (parameter-free identity)",
+    "sam_init_checkpoints": [
+     "pretrained/sam_vit_large/pytorch_model_new.bin"
+    ],
+    "sam_adaptation": {
+     "peft_type": "LORA",
+     "r": 16,
+     "target_modules": [
+      "qkv"
+     ],
+     "lora_alpha": 32,
+     "lora_dropout": 0.05,
+     "bias": "none"
+    }
+   },
+   "problems": []
+  },
+  "m06_occ_bilayer_sam/seed_42": {
+   "method": "06",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m06_occ_bilayer_sam/seed_42.py",
+   "resolved_config_sha256": "745ae7cc47918b0ccd7d8be6e52f04a76970fe5887ba009c8ba3f344c7d1f60d",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m06_occ_bilayer_sam/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "CLASSES",
+    "EXPERIMENT_SEED",
+    "accumulation_steps",
+    "backend_args",
+    "base_lr",
+    "batch_augments",
+    "batch_size",
+    "batch_size_per_gpu",
+    "code_root",
+    "crop_size",
+    "data_preprocessor",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "evaluator_ann_root",
+    "find_unused_parameters",
+    "hf_sam_pretrain_ckpt_path",
+    "hf_sam_pretrain_name",
+    "indices",
+    "mask_head",
+    "max_epochs",
+    "num_classes",
+    "num_workers",
+    "persistent_workers",
+    "physical_batch_size",
+    "project_root",
+    "prompt_shape",
+    "sam_checkpoint",
+    "sam_model_dir",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": null,
+      "batch_sampler": "ABSENT",
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray-A/annotations/train_occ.json",
+    "test_loader_annotations": "data/PIXray-A/annotations/test_occ.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "OcBatchFixedSizePad",
+     "OcDataPreprocessor",
+     "OcFeatureAggregator",
+     "OcLoadAnnotations",
+     "OcPackDetInputs",
+     "OcPrompterAnchorRoIPromptHead",
+     "OcRSSamMaskDecoder",
+     "OcRandomCrop",
+     "OcRandomFlip",
+     "PIXrayOcclusionDataset",
+     "WeightedOcPrompterAnchorMaskHead"
+    ],
+    "occluder_config_keys": [
+     "bo_loss_weight"
+    ],
+    "train_dataset_type": "PIXrayOcclusionDataset",
+    "sam_init_checkpoints": [
+     "pretrained/sam_vit_large/pytorch_model_new.bin"
+    ],
+    "sam_adaptation": {
+     "peft_type": "LORA",
+     "r": 16,
+     "target_modules": [
+      "qkv"
+     ],
+     "lora_alpha": 32,
+     "lora_dropout": 0.05,
+     "bias": "none"
+    }
+   },
+   "problems": []
+  },
+  "m06_occ_bilayer_sam/seed_123": {
+   "method": "06",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m06_occ_bilayer_sam/seed_123.py",
+   "resolved_config_sha256": "e04a4e106b4fdce284e4fdc48f2fade3e8caa26e5640c7b2182d923adbc7f0ab",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m06_occ_bilayer_sam/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "CLASSES",
+    "EXPERIMENT_SEED",
+    "accumulation_steps",
+    "backend_args",
+    "base_lr",
+    "batch_augments",
+    "batch_size",
+    "batch_size_per_gpu",
+    "code_root",
+    "crop_size",
+    "data_preprocessor",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "evaluator_ann_root",
+    "find_unused_parameters",
+    "hf_sam_pretrain_ckpt_path",
+    "hf_sam_pretrain_name",
+    "indices",
+    "mask_head",
+    "max_epochs",
+    "num_classes",
+    "num_workers",
+    "persistent_workers",
+    "physical_batch_size",
+    "project_root",
+    "prompt_shape",
+    "sam_checkpoint",
+    "sam_model_dir",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": null,
+      "batch_sampler": "ABSENT",
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray-A/annotations/train_occ.json",
+    "test_loader_annotations": "data/PIXray-A/annotations/test_occ.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "OcBatchFixedSizePad",
+     "OcDataPreprocessor",
+     "OcFeatureAggregator",
+     "OcLoadAnnotations",
+     "OcPackDetInputs",
+     "OcPrompterAnchorRoIPromptHead",
+     "OcRSSamMaskDecoder",
+     "OcRandomCrop",
+     "OcRandomFlip",
+     "PIXrayOcclusionDataset",
+     "WeightedOcPrompterAnchorMaskHead"
+    ],
+    "occluder_config_keys": [
+     "bo_loss_weight"
+    ],
+    "train_dataset_type": "PIXrayOcclusionDataset",
+    "sam_init_checkpoints": [
+     "pretrained/sam_vit_large/pytorch_model_new.bin"
+    ],
+    "sam_adaptation": {
+     "peft_type": "LORA",
+     "r": 16,
+     "target_modules": [
+      "qkv"
+     ],
+     "lora_alpha": 32,
+     "lora_dropout": 0.05,
+     "bias": "none"
+    }
+   },
+   "problems": []
+  },
+  "m06_occ_bilayer_sam/seed_2026": {
+   "method": "06",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m06_occ_bilayer_sam/seed_2026.py",
+   "resolved_config_sha256": "240ebf87b1afe22386d823f944401ee36f5a06c3201fdf3f3bf37d6d8b6e8abc",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m06_occ_bilayer_sam/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "CLASSES",
+    "EXPERIMENT_SEED",
+    "accumulation_steps",
+    "backend_args",
+    "base_lr",
+    "batch_augments",
+    "batch_size",
+    "batch_size_per_gpu",
+    "code_root",
+    "crop_size",
+    "data_preprocessor",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "evaluator_ann_root",
+    "find_unused_parameters",
+    "hf_sam_pretrain_ckpt_path",
+    "hf_sam_pretrain_name",
+    "indices",
+    "mask_head",
+    "max_epochs",
+    "num_classes",
+    "num_workers",
+    "persistent_workers",
+    "physical_batch_size",
+    "project_root",
+    "prompt_shape",
+    "sam_checkpoint",
+    "sam_model_dir",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": null,
+      "batch_sampler": "ABSENT",
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray-A/annotations/train_occ.json",
+    "test_loader_annotations": "data/PIXray-A/annotations/test_occ.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "OcBatchFixedSizePad",
+     "OcDataPreprocessor",
+     "OcFeatureAggregator",
+     "OcLoadAnnotations",
+     "OcPackDetInputs",
+     "OcPrompterAnchorRoIPromptHead",
+     "OcRSSamMaskDecoder",
+     "OcRandomCrop",
+     "OcRandomFlip",
+     "PIXrayOcclusionDataset",
+     "WeightedOcPrompterAnchorMaskHead"
+    ],
+    "occluder_config_keys": [
+     "bo_loss_weight"
+    ],
+    "train_dataset_type": "PIXrayOcclusionDataset",
+    "sam_init_checkpoints": [
+     "pretrained/sam_vit_large/pytorch_model_new.bin"
+    ],
+    "sam_adaptation": {
+     "peft_type": "LORA",
+     "r": 16,
+     "target_modules": [
+      "qkv"
+     ],
+     "lora_alpha": 32,
+     "lora_dropout": 0.05,
+     "bias": "none"
+    }
+   },
+   "problems": []
+  },
+  "m07_bilayer_fcn_recall_rpn/seed_42": {
+   "method": "07",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m07_bilayer_fcn_recall_rpn/seed_42.py",
+   "resolved_config_sha256": "47b3de14922d6bef5a57aaf9ade4aa443f963f12960fab1c4ddcdae817f19a00",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m07_bilayer_fcn_recall_rpn/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray-A/annotations/train_occ.json",
+    "test_loader_annotations": "data/PIXray-A/annotations/test_occ.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "BilayerCascadeRoIHead",
+     "BilayerFCNMaskHead",
+     "OcDataPreprocessor",
+     "OcLoadAnnotations",
+     "OcPackDetInputs",
+     "OcRandomCrop",
+     "OcRandomFlip",
+     "PIXrayOcclusionDataset"
+    ],
+    "occluder_config_keys": [
+     "bo_class_agnostic",
+     "bo_loss_weight"
+    ],
+    "train_dataset_type": "PIXrayOcclusionDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m07_bilayer_fcn_recall_rpn/seed_123": {
+   "method": "07",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m07_bilayer_fcn_recall_rpn/seed_123.py",
+   "resolved_config_sha256": "fbe19aeae207995575764559423e8d174f6ba4a61c1d3f9323094f1a1a3fbdeb",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m07_bilayer_fcn_recall_rpn/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray-A/annotations/train_occ.json",
+    "test_loader_annotations": "data/PIXray-A/annotations/test_occ.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "BilayerCascadeRoIHead",
+     "BilayerFCNMaskHead",
+     "OcDataPreprocessor",
+     "OcLoadAnnotations",
+     "OcPackDetInputs",
+     "OcRandomCrop",
+     "OcRandomFlip",
+     "PIXrayOcclusionDataset"
+    ],
+    "occluder_config_keys": [
+     "bo_class_agnostic",
+     "bo_loss_weight"
+    ],
+    "train_dataset_type": "PIXrayOcclusionDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m07_bilayer_fcn_recall_rpn/seed_2026": {
+   "method": "07",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m07_bilayer_fcn_recall_rpn/seed_2026.py",
+   "resolved_config_sha256": "bdc3cd1993fe681e6bd27627cf1826135824bdc8f84085733cc8ddfbf59adffe",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m07_bilayer_fcn_recall_rpn/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_ann_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray-A/annotations/train_occ.json",
+    "test_loader_annotations": "data/PIXray-A/annotations/test_occ.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [
+     "BilayerCascadeRoIHead",
+     "BilayerFCNMaskHead",
+     "OcDataPreprocessor",
+     "OcLoadAnnotations",
+     "OcPackDetInputs",
+     "OcRandomCrop",
+     "OcRandomFlip",
+     "PIXrayOcclusionDataset"
+    ],
+    "occluder_config_keys": [
+     "bo_class_agnostic",
+     "bo_loss_weight"
+    ],
+    "train_dataset_type": "PIXrayOcclusionDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m08_pidray_r0r1/seed_42": {
+   "method": "08",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m08_pidray_r0r1/seed_42.py",
+   "resolved_config_sha256": "e76c133b5012257b649c3eae3a959ea44ec1bb218f2674d4691562bff244b5b4",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m08_pidray_r0r1/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m08_pidray_r0r1/seed_123": {
+   "method": "08",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m08_pidray_r0r1/seed_123.py",
+   "resolved_config_sha256": "db408b3150b0c0dcd3422f0d85e41d1a56d966c71d7714af62b984231d867d88",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m08_pidray_r0r1/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m08_pidray_r0r1/seed_2026": {
+   "method": "08",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m08_pidray_r0r1/seed_2026.py",
+   "resolved_config_sha256": "3c3f951ca489c4579455011304d8ec2664cb8516ad750dd0480112f1e6c6a15b",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m08_pidray_r0r1/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": null,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m09_point_refine_transformer/seed_42": {
+   "method": "09",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m09_point_refine_transformer/seed_42.py",
+   "resolved_config_sha256": "8d7c1676d14307ee15ab581f79629e009ab5a7fe726b7132a9728e17f04dc62b",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09_point_refine_transformer/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": 596696561,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_num_classes",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    "model.roi_head.seed = point_seed(seed)",
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m09_point_refine_transformer/seed_123": {
+   "method": "09",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m09_point_refine_transformer/seed_123.py",
+   "resolved_config_sha256": "382ab89a653249fd9d28f31ffd83dab883a2a8960a8dde7db25d9e8dfac5d1d3",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09_point_refine_transformer/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": 1626909063,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_num_classes",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    "model.roi_head.seed = point_seed(seed)",
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m09_point_refine_transformer/seed_2026": {
+   "method": "09",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m09_point_refine_transformer/seed_2026.py",
+   "resolved_config_sha256": "92dcbfb824d0cf21b253d0a0487c61a5861f3c4f64d4562b807d09c333a25f43",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09_point_refine_transformer/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": 1497517240,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_num_classes",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    "model.roi_head.seed = point_seed(seed)",
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m09m_point_refine_mlp/seed_42": {
+   "method": "09M",
+   "seed": 42,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m09m_point_refine_mlp/seed_42.py",
+   "resolved_config_sha256": "38443133f2b8d1e36c7455a72f032a103d80a9df0f862dfd774f2046f73735d3",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09m_point_refine_mlp/seed_42",
+   "reload_identical": true,
+   "point_refine_seed": 596696561,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_num_classes",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    "model.roi_head.seed = point_seed(seed)",
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m09m_point_refine_mlp/seed_123": {
+   "method": "09M",
+   "seed": 123,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m09m_point_refine_mlp/seed_123.py",
+   "resolved_config_sha256": "31c2005a4405724e747a52650ca8bf3714f16e26fc488614344b186e7f642beb",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09m_point_refine_mlp/seed_123",
+   "reload_identical": true,
+   "point_refine_seed": 1626909063,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_num_classes",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    "model.roi_head.seed = point_seed(seed)",
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  },
+  "m09m_point_refine_mlp/seed_2026": {
+   "method": "09M",
+   "seed": 2026,
+   "launchable": true,
+   "resolved_config": "output/pixray_multiseed_bs4_e50_2026-09-14/protocol/resolved_configs/m09m_point_refine_mlp/seed_2026.py",
+   "resolved_config_sha256": "97179ac344a8fc24b7c8255c417b00e9619cf725e668f8f8835c1afaf4f08491",
+   "work_dir": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09m_point_refine_mlp/seed_2026",
+   "reload_identical": true,
+   "point_refine_seed": 1497517240,
+   "removed_namespace_keys": [
+    "EXPERIMENT_SEED",
+    "_model_overrides",
+    "_num_classes",
+    "_pidray_default_hooks",
+    "accumulation_steps",
+    "base_lr",
+    "bbox_head",
+    "data_root",
+    "dataset_type",
+    "effective_batch_size",
+    "max_epochs",
+    "metainfo",
+    "physical_batch_size",
+    "project_root",
+    "subset_ann_files",
+    "test_pipeline",
+    "train_num_workers",
+    "train_pipeline",
+    "uses_validation",
+    "vis_backends"
+   ],
+   "changes": [
+    "model.roi_head.seed = point_seed(seed)",
+    {
+     "before": {
+      "batch_size": 8,
+      "num_workers": 2,
+      "sampler": {
+       "type": "DefaultSampler",
+       "shuffle": true
+      },
+      "batch_sampler": null,
+      "accumulative_counts": 2,
+      "warmup_end": 50,
+      "cosine_end_T_max": [
+       60,
+       60
+      ],
+      "max_epochs": 60
+     },
+     "after": {
+      "batch_size": 4,
+      "num_workers": 2,
+      "sampler": "DefaultSampler shuffle=True",
+      "batch_sampler": null,
+      "accumulative_counts": 1,
+      "warmup_end": 25,
+      "cosine_end_T_max": [
+       50,
+       50
+      ],
+      "max_epochs": 50
+     }
+    }
+   ],
+   "policy": {
+    "train_annotations": "data/PIXray/annotations/train.json",
+    "test_loader_annotations": "data/PIXray/annotations/test.json",
+    "evaluator_annotations": [
+     "data/PIXray/annotations/test.json"
+    ],
+    "occlusion_components": [],
+    "occluder_config_keys": [],
+    "train_dataset_type": "PIXrayDataset",
+    "backbone_init": {
+     "type": "Pretrained",
+     "checkpoint": "torchvision://resnet101"
+    }
+   },
+   "problems": []
+  }
+ },
+ "fairness": {
+  "differing_keys": 226,
+  "unexplained": 0,
+  "categories": {
+   "intentional architectural change": 210,
+   "intentional supervision change": 12,
+   "operational difference without effect": 4
+  },
+  "pair_09_09M_only_head_type": true
+ },
+ "loader_lengths": {
+  "01": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "02": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "03": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "04": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "05": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "06": {
+   "dataset": "PIXrayOcclusionDataset",
+   "annotations": "train_occ.json",
+   "images": 3560
+  },
+  "07": {
+   "dataset": "PIXrayOcclusionDataset",
+   "annotations": "train_occ.json",
+   "images": 3560
+  },
+  "08": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "09": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  },
+  "09M": {
+   "dataset": "PIXrayDataset",
+   "annotations": "train.json",
+   "images": 3560
+  }
+ },
+ "schedule": {
+  "iterations_per_epoch": 890,
+  "microbatch_iterations": 44500,
+  "accumulative_counts": 1,
+  "update_opportunities": 44500,
+  "remainder_microbatches": 0,
+  "updates_crossing_epoch_boundary": 0,
+  "warmup_iterations": 25,
+  "warmup_images": 100,
+  "updates_below_base_lr_in_warmup": 24,
+  "first_12_updates": [
+   {
+    "microbatch": 1,
+    "lr": 1.0000000000000001e-07
+   },
+   {
+    "microbatch": 2,
+    "lr": 4.2625e-06
+   },
+   {
+    "microbatch": 3,
+    "lr": 8.425e-06
+   },
+   {
+    "microbatch": 4,
+    "lr": 1.25875e-05
+   },
+   {
+    "microbatch": 5,
+    "lr": 1.675e-05
+   },
+   {
+    "microbatch": 6,
+    "lr": 2.09125e-05
+   },
+   {
+    "microbatch": 7,
+    "lr": 2.5075e-05
+   },
+   {
+    "microbatch": 8,
+    "lr": 2.9237500000000003e-05
+   },
+   {
+    "microbatch": 9,
+    "lr": 3.34e-05
+   },
+   {
+    "microbatch": 10,
+    "lr": 3.75625e-05
+   },
+   {
+    "microbatch": 11,
+    "lr": 4.1725e-05
+   },
+   {
+    "microbatch": 12,
+    "lr": 4.58875e-05
+   }
+  ],
+  "last_update": {
+   "microbatch": 44500,
+   "lr": 4.938706693418356e-07
+  },
+  "per_epoch": [
+   {
+    "epoch": 1,
+    "lr_first_update": 1.0000000000000001e-07,
+    "lr_last_update": 0.00010000000000000002
+   },
+   {
+    "epoch": 2,
+    "lr_first_update": 0.00010000000000000002,
+    "lr_last_update": 0.00010000000000000002
+   },
+   {
+    "epoch": 3,
+    "lr_first_update": 9.990143508499218e-05,
+    "lr_last_update": 9.990143508499218e-05
+   },
+   {
+    "epoch": 4,
+    "lr_first_update": 9.960612933065818e-05,
+    "lr_last_update": 9.960612933065818e-05
+   },
+   {
+    "epoch": 5,
+    "lr_first_update": 9.9115248173898e-05,
+    "lr_last_update": 9.9115248173898e-05
+   },
+   {
+    "epoch": 6,
+    "lr_first_update": 9.843072889837512e-05,
+    "lr_last_update": 9.843072889837512e-05
+   },
+   {
+    "epoch": 7,
+    "lr_first_update": 9.755527298894293e-05,
+    "lr_last_update": 9.755527298894293e-05
+   },
+   {
+    "epoch": 8,
+    "lr_first_update": 9.649233547011817e-05,
+    "lr_last_update": 9.649233547011817e-05
+   },
+   {
+    "epoch": 9,
+    "lr_first_update": 9.524611127067769e-05,
+    "lr_last_update": 9.524611127067769e-05
+   },
+   {
+    "epoch": 10,
+    "lr_first_update": 9.382151866819099e-05,
+    "lr_last_update": 9.382151866819099e-05
+   },
+   {
+    "epoch": 11,
+    "lr_first_update": 9.222417987882566e-05,
+    "lr_last_update": 9.222417987882566e-05
+   },
+   {
+    "epoch": 12,
+    "lr_first_update": 9.046039886902864e-05,
+    "lr_last_update": 9.046039886902864e-05
+   },
+   {
+    "epoch": 13,
+    "lr_first_update": 8.853713647665068e-05,
+    "lr_last_update": 8.853713647665068e-05
+   },
+   {
+    "epoch": 14,
+    "lr_first_update": 8.646198293969951e-05,
+    "lr_last_update": 8.646198293969951e-05
+   },
+   {
+    "epoch": 15,
+    "lr_first_update": 8.4243127941138e-05,
+    "lr_last_update": 8.4243127941138e-05
+   },
+   {
+    "epoch": 16,
+    "lr_first_update": 8.188932828794705e-05,
+    "lr_last_update": 8.188932828794705e-05
+   },
+   {
+    "epoch": 17,
+    "lr_first_update": 7.940987335200905e-05,
+    "lr_last_update": 7.940987335200905e-05
+   },
+   {
+    "epoch": 18,
+    "lr_first_update": 7.681454840920089e-05,
+    "lr_last_update": 7.681454840920089e-05
+   },
+   {
+    "epoch": 19,
+    "lr_first_update": 7.411359602138069e-05,
+    "lr_last_update": 7.411359602138069e-05
+   },
+   {
+    "epoch": 20,
+    "lr_first_update": 7.131767561367539e-05,
+    "lr_last_update": 7.131767561367539e-05
+   },
+   {
+    "epoch": 21,
+    "lr_first_update": 6.843782140659969e-05,
+    "lr_last_update": 6.843782140659969e-05
+   },
+   {
+    "epoch": 22,
+    "lr_first_update": 6.548539886902864e-05,
+    "lr_last_update": 6.548539886902864e-05
+   },
+   {
+    "epoch": 23,
+    "lr_first_update": 6.24720598638845e-05,
+    "lr_last_update": 6.24720598638845e-05
+   },
+   {
+    "epoch": 24,
+    "lr_first_update": 5.940969666355696e-05,
+    "lr_last_update": 5.940969666355696e-05
+   },
+   {
+    "epoch": 25,
+    "lr_first_update": 5.631039501653702e-05,
+    "lr_last_update": 5.631039501653702e-05
+   },
+   {
+    "epoch": 26,
+    "lr_first_update": 5.318638645048922e-05,
+    "lr_last_update": 5.318638645048922e-05
+   },
+   {
+    "epoch": 27,
+    "lr_first_update": 5.005000000000001e-05,
+    "lr_last_update": 5.005000000000001e-05
+   },
+   {
+    "epoch": 28,
+    "lr_first_update": 4.691361354951081e-05,
+    "lr_last_update": 4.691361354951081e-05
+   },
+   {
+    "epoch": 29,
+    "lr_first_update": 4.3789604983463015e-05,
+    "lr_last_update": 4.3789604983463015e-05
+   },
+   {
+    "epoch": 30,
+    "lr_first_update": 4.0690303336443066e-05,
+    "lr_last_update": 4.0690303336443066e-05
+   },
+   {
+    "epoch": 31,
+    "lr_first_update": 3.762794013611551e-05,
+    "lr_last_update": 3.762794013611551e-05
+   },
+   {
+    "epoch": 32,
+    "lr_first_update": 3.461460113097141e-05,
+    "lr_last_update": 3.461460113097141e-05
+   },
+   {
+    "epoch": 33,
+    "lr_first_update": 3.1662178593400366e-05,
+    "lr_last_update": 3.1662178593400366e-05
+   },
+   {
+    "epoch": 34,
+    "lr_first_update": 2.8782324386324632e-05,
+    "lr_last_update": 2.8782324386324632e-05
+   },
+   {
+    "epoch": 35,
+    "lr_first_update": 2.5986403978619323e-05,
+    "lr_last_update": 2.5986403978619323e-05
+   },
+   {
+    "epoch": 36,
+    "lr_first_update": 2.3285451590799113e-05,
+    "lr_last_update": 2.3285451590799113e-05
+   },
+   {
+    "epoch": 37,
+    "lr_first_update": 2.0690126647990977e-05,
+    "lr_last_update": 2.0690126647990977e-05
+   },
+   {
+    "epoch": 38,
+    "lr_first_update": 1.821067171205295e-05,
+    "lr_last_update": 1.821067171205295e-05
+   },
+   {
+    "epoch": 39,
+    "lr_first_update": 1.5856872058862e-05,
+    "lr_last_update": 1.5856872058862e-05
+   },
+   {
+    "epoch": 40,
+    "lr_first_update": 1.3638017060300508e-05,
+    "lr_last_update": 1.3638017060300508e-05
+   },
+   {
+    "epoch": 41,
+    "lr_first_update": 1.1562863523349335e-05,
+    "lr_last_update": 1.1562863523349335e-05
+   },
+   {
+    "epoch": 42,
+    "lr_first_update": 9.639601130971381e-06,
+    "lr_last_update": 9.639601130971381e-06
+   },
+   {
+    "epoch": 43,
+    "lr_first_update": 7.87582012117436e-06,
+    "lr_last_update": 7.87582012117436e-06
+   },
+   {
+    "epoch": 44,
+    "lr_first_update": 6.278481331809015e-06,
+    "lr_last_update": 6.278481331809015e-06
+   },
+   {
+    "epoch": 45,
+    "lr_first_update": 4.8538887293223345e-06,
+    "lr_last_update": 4.8538887293223345e-06
+   },
+   {
+    "epoch": 46,
+    "lr_first_update": 3.6076645298818458e-06,
+    "lr_last_update": 3.6076645298818458e-06
+   },
+   {
+    "epoch": 47,
+    "lr_first_update": 2.5447270110570813e-06,
+    "lr_last_update": 2.5447270110570813e-06
+   },
+   {
+    "epoch": 48,
+    "lr_first_update": 1.6692711016248832e-06,
+    "lr_last_update": 1.6692711016248832e-06
+   },
+   {
+    "epoch": 49,
+    "lr_first_update": 9.847518261019983e-07,
+    "lr_last_update": 9.847518261019983e-07
+   },
+   {
+    "epoch": 50,
+    "lr_first_update": 4.938706693418356e-07,
+    "lr_last_update": 4.938706693418356e-07
+   }
+  ]
+ },
+ "annotations": {
+  "train": {
+   "path": "data/PIXray/annotations/train.json",
+   "sha256": "8475b9bc321cefd5f4d012b9742fec75f62064d03c1f5f425bf22d34b27108e4"
+  },
+  "test": {
+   "path": "data/PIXray/annotations/test.json",
+   "sha256": "51b911c74e03f005a0de09d78da78c7704ba47ad7ecd163e182630b1caad1a28"
+  },
+  "occ_train": {
+   "path": "data/PIXray-A/annotations/train_occ.json",
+   "sha256": "51a0977c39e0c7b7b3f6fe795f69a1a9b572f00bb93f403d43b6602d6b9abdb2"
+  },
+  "occ_test": {
+   "path": "data/PIXray-A/annotations/test_occ.json",
+   "sha256": "b31e3b082db23b00c9efec2850e3cabcb4cfdcb3faa405685ea4c149b65c43d7"
+  }
+ },
+ "annotation_identity": {
+  "train": {
+   "images_identical": true,
+   "categories_identical": true,
+   "target_instances_identical": true,
+   "target_field_mismatches_in_order": {
+    "image_id": 0,
+    "category_id": 0,
+    "segmentation": 0,
+    "iscrowd": 0,
+    "bbox_beyond_1e-6": 0,
+    "area_beyond_0.05": 0
+   },
+   "float_representation_differences": {
+    "count": {
+     "bbox": 9418,
+     "area": 10525
+    },
+    "max_bbox_abs": 1.1368683772161603e-13,
+    "max_area_abs": 0.03062500001396984
+   },
+   "annotation_id_offsets_occ_minus_original": {
+    "1": 10709
+   },
+   "annotation_ids_renumbered": true,
+   "instances": 10709,
+   "images": 3560,
+   "occluder_masks_nonempty": 4114,
+   "occ_file_info": {
+    "date_created": "2024-11-10 20:59:33.523540",
+    "description": "Automatically generated COCO json file for Detectron2."
+   }
+  },
+  "test": {
+   "images_identical": true,
+   "categories_identical": true,
+   "target_instances_identical": true,
+   "target_field_mismatches_in_order": {
+    "image_id": 0,
+    "category_id": 0,
+    "segmentation": 0,
+    "iscrowd": 0,
+    "bbox_beyond_1e-6": 0,
+    "area_beyond_0.05": 0
+   },
+   "float_representation_differences": {
+    "count": {
+     "bbox": 3970,
+     "area": 4419
+    },
+    "max_bbox_abs": 1.1368683772161603e-13,
+    "max_area_abs": 0.029375000041909516
+   },
+   "annotation_id_offsets_occ_minus_original": {
+    "1": 4508
+   },
+   "annotation_ids_renumbered": true,
+   "instances": 4508,
+   "images": 1486,
+   "occluder_masks_nonempty": 1765,
+   "occ_file_info": {
+    "date_created": "2024-11-10 21:00:10.798949",
+    "description": "Automatically generated COCO json file for Detectron2."
+   }
+  }
+ },
+ "images": {
+  "aggregate_sha256": "307d1c844fcccbbbdc7264c4c33b83310555810ad9f6c3079be3359bf9f3a1e8",
+  "count": 5046
+ },
+ "pretrained": {
+  "resnet101_imagenet": {
+   "path": "pretrained/torch/hub/checkpoints/resnet101-63fe2227.pth",
+   "sha256": "63fe2227b86e8f1f2063f43a75c84d195911b6a0eace650907dd3dc62dd49a0a",
+   "bytes": 178793939
+  },
+  "sam_vit_large_converted": {
+   "path": "pretrained/sam_vit_large/pytorch_model_new.bin",
+   "sha256": "4488acf8d807e1710a9d132ebbb93bd4378958c42f617c70b7e57974e5d53735",
+   "bytes": 1265806762
+  },
+  "sam_vit_large_hf": {
+   "path": "pretrained/sam_vit_large/pytorch_model.bin",
+   "sha256": "216dff9febd2ab9787353f6bd4627e06318c8ee9a1bf5d24393979b857db615c",
+   "bytes": 1249529874
+  },
+  "sam_vit_large_config": {
+   "path": "pretrained/sam_vit_large/config.json",
+   "sha256": "62b22c9f4e37fd4df6ccb3f43b528be49f04c85eca33cc53e58f58c32f3f97a0",
+   "bytes": 649
+  }
+ },
+ "dev_split": {
+  "status": "inactive",
+  "referenced_by_campaign_configs": false
+ },
+ "source_snapshot": {
+  "aggregate_sha256": "c5a6544dd7719ea25a8992cfb3b03bdf0c0062145ee2d8be568ed6a039247c94",
+  "file_count": 1163,
+  "tarball_sha256": "592cd3532ad6442286fee0896fb624c788713cc6029813a2484c4eef5ce84cb5"
+ },
+ "environment": {
+  "python": "3.10.21 | packaged by conda-forge | (main, Aug 21 2026, 22:42:31) [GCC 14.4.0]",
+  "executable": ".venv/bin/python",
+  "platform": "Linux-6.17.0-40-generic-x86_64-with-glibc2.39",
+  "torch": {
+   "version": "2.1.2+cu118",
+   "path": ".venv/lib/python3.10/site-packages/torch/__init__.py"
+  },
+  "torchvision": {
+   "version": "0.16.2+cu118",
+   "path": ".venv/lib/python3.10/site-packages/torchvision/__init__.py"
+  },
+  "mmengine": {
+   "version": "0.10.7",
+   "path": ".venv/lib/python3.10/site-packages/mmengine/__init__.py"
+  },
+  "mmcv": {
+   "version": "2.1.0",
+   "path": ".venv/lib/python3.10/site-packages/mmcv/__init__.py"
+  },
+  "mmdet": {
+   "version": "3.2.0",
+   "path": "mmdet/__init__.py"
+  },
+  "mmpretrain": {
+   "version": "1.1.1",
+   "path": "mmpretrain/__init__.py"
+  },
+  "numpy": {
+   "version": "1.24.0",
+   "path": ".venv/lib/python3.10/site-packages/numpy/__init__.py"
+  },
+  "pycocotools": {
+   "version": "?",
+   "path": ".venv/lib/python3.10/site-packages/pycocotools/__init__.py"
+  },
+  "transformers": {
+   "version": "4.38.1",
+   "path": ".venv/lib/python3.10/site-packages/transformers/__init__.py"
+  },
+  "peft": {
+   "version": "0.8.2",
+   "path": ".venv/lib/python3.10/site-packages/peft/__init__.py"
+  },
+  "cv2": {
+   "version": "4.8.1",
+   "path": ".venv/lib/python3.10/site-packages/cv2/__init__.py"
+  },
+  "torch_cuda": "11.8",
+  "cudnn": 8700,
+  "pip_freeze_sha256": "0fe652ba86f3b5b8afa10415fe53bb38623e2a5faee136bfafa71ba08e3fed55"
+ },
+ "problems": []
+}

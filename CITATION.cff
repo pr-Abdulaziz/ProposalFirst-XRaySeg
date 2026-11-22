@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the paper below."
+title: "ProposalFirst-XRaySeg: shared point-based mask refinement for X-ray baggage instance segmentation"
+type: software
+authors:
+  - family-names: Alqahtani
+    given-names: Abdulaziz
+  - family-names: Umer
+    given-names: Qasim
+repository-code: "https://github.com/pr-Abdulaziz/ProposalFirst-XRaySeg"
+url: "https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/"
+preferred-citation:
+  type: article
+  title: "Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement"
+  authors:
+    - family-names: Alqahtani
+      given-names: Abdulaziz
+    - family-names: Umer
+      given-names: Qasim
+  journal: "arXiv preprint arXiv:2611.20476"
+  year: 2026
+  doi: "10.48550/arXiv.2611.20476"
+  url: "https://arxiv.org/abs/2611.20476"

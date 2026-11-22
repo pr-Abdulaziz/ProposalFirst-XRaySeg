@@ -1,0 +1,3701 @@
+{
+ "classified": {
+  "custom_imports.imports": {
+   "category": "operational difference without effect",
+   "rationale": "SAM methods additionally import mmdet.occlu to register their model and transform classes. Importing registers classes and performs no computation.",
+   "values": {
+    "01": "[\"projects.proposal_first_pidray_occ\"]",
+    "02": "[\"projects.proposal_first_pidray_occ\"]",
+    "03": "[\"projects.proposal_first_pidray_occ\"]",
+    "04": "[\"projects.proposal_first_pidray_occ\"]",
+    "05": "[\"mmdet.occlu\", \"projects.proposal_first_pidray_occ\"]",
+    "06": "[\"mmdet.occlu\", \"projects.proposal_first_pidray_occ\"]",
+    "07": "[\"mmdet.occlu\", \"projects.proposal_first_pidray_occ\"]",
+    "08": "[\"projects.proposal_first_pidray_occ\"]",
+    "09": "[\"projects.proposal_first_pidray_occ\"]",
+    "09M": "[\"projects.proposal_first_pidray_occ\"]"
+   }
+  },
+  "default_hooks.visualization.type": {
+   "category": "operational difference without effect",
+   "rationale": "Detector configs carry DetVisualizationHook with draw=False (writes nothing, touches no tensor); the SAM configs do not declare it.",
+   "values": {
+    "01": "\"DetVisualizationHook\"",
+    "02": "\"DetVisualizationHook\"",
+    "03": "\"DetVisualizationHook\"",
+    "04": "\"DetVisualizationHook\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"DetVisualizationHook\"",
+    "08": "\"DetVisualizationHook\"",
+    "09": "\"DetVisualizationHook\"",
+    "09M": "\"DetVisualizationHook\""
+   }
+  },
+  "model.backbone.depth": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "101",
+    "02": "101",
+    "03": "101",
+    "04": "101",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "101",
+    "08": "101",
+    "09": "101",
+    "09M": "101"
+   }
+  },
+  "model.backbone.frozen_stages": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "1",
+    "02": "1",
+    "03": "1",
+    "04": "1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1",
+    "08": "1",
+    "09": "1",
+    "09M": "1"
+   }
+  },
+  "model.backbone.hf_pretrain_name": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"pretrained/sam_vit_large\"",
+    "06": "\"pretrained/sam_vit_large\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.img_size": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "512",
+    "06": "512",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.init_cfg.checkpoint": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "\"torchvision://resnet101\"",
+    "02": "\"torchvision://resnet101\"",
+    "03": "\"torchvision://resnet101\"",
+    "04": "\"torchvision://resnet101\"",
+    "05": "\"pretrained/sam_vit_large/pytorch_model_new.bin\"",
+    "06": "\"pretrained/sam_vit_large/pytorch_model_new.bin\"",
+    "07": "\"torchvision://resnet101\"",
+    "08": "\"torchvision://resnet101\"",
+    "09": "\"torchvision://resnet101\"",
+    "09M": "\"torchvision://resnet101\""
+   }
+  },
+  "model.backbone.norm_cfg.requires_grad": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "true",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.backbone.norm_cfg.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "\"BN\"",
+    "02": "\"BN\"",
+    "03": "\"BN\"",
+    "04": "\"BN\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"BN\"",
+    "08": "\"BN\"",
+    "09": "\"BN\"",
+    "09M": "\"BN\""
+   }
+  },
+  "model.backbone.norm_eval": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "true",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.backbone.num_stages": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "4",
+    "02": "4",
+    "03": "4",
+    "04": "4",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "4",
+    "08": "4",
+    "09": "4",
+    "09M": "4"
+   }
+  },
+  "model.backbone.out_indices": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "[0, 1, 2, 3]",
+    "02": "[0, 1, 2, 3]",
+    "03": "[0, 1, 2, 3]",
+    "04": "[0, 1, 2, 3]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0, 1, 2, 3]",
+    "08": "[0, 1, 2, 3]",
+    "09": "[0, 1, 2, 3]",
+    "09M": "[0, 1, 2, 3]"
+   }
+  },
+  "model.backbone.peft_config.bias": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"none\"",
+    "06": "\"none\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.peft_config.lora_alpha": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "32",
+    "06": "32",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.peft_config.lora_dropout": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0.05",
+    "06": "0.05",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.peft_config.peft_type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"LORA\"",
+    "06": "\"LORA\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.peft_config.r": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "16",
+    "06": "16",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.peft_config.target_modules": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "[\"qkv\"]",
+    "06": "[\"qkv\"]",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.backbone.style": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "\"pytorch\"",
+    "02": "\"pytorch\"",
+    "03": "\"pytorch\"",
+    "04": "\"pytorch\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"pytorch\"",
+    "08": "\"pytorch\"",
+    "09": "\"pytorch\"",
+    "09M": "\"pytorch\""
+   }
+  },
+  "model.backbone.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "\"ResNet\"",
+    "02": "\"ResNet\"",
+    "03": "\"ResNet\"",
+    "04": "\"ResNet\"",
+    "05": "\"MMPretrainSamVisionEncoder\"",
+    "06": "\"MMPretrainSamVisionEncoder\"",
+    "07": "\"ResNet\"",
+    "08": "\"ResNet\"",
+    "09": "\"ResNet\"",
+    "09M": "\"ResNet\""
+   }
+  },
+  "model.data_preprocessor.batch_augments[0].img_pad_value": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0",
+    "06": "0",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.data_preprocessor.batch_augments[0].mask_pad_value": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0",
+    "06": "0",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.data_preprocessor.batch_augments[0].pad_mask": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.data_preprocessor.batch_augments[0].pad_seg": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "false",
+    "06": "false",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.data_preprocessor.batch_augments[0].size": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "[512, 512]",
+    "06": "[512, 512]",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.data_preprocessor.batch_augments[0].type": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"BatchFixedSizePad\"",
+    "06": "\"OcBatchFixedSizePad\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.data_preprocessor.type": {
+   "category": "intentional architectural change",
+   "rationale": "Pretrained-weight-matched input handling. Detectors: ImageNet caffe-style mean/std as ResNet-101 expects, pad to a multiple of 32. SAM methods: SAM's RGB mean/std and fixed 512x512 padding required by the ViT-L positional embedding (06 uses the Oc variant that also pads occluder masks).",
+   "values": {
+    "01": "\"DetDataPreprocessor\"",
+    "02": "\"DetDataPreprocessor\"",
+    "03": "\"DetDataPreprocessor\"",
+    "04": "\"DetDataPreprocessor\"",
+    "05": "\"DetDataPreprocessor\"",
+    "06": "\"OcDataPreprocessor\"",
+    "07": "\"OcDataPreprocessor\"",
+    "08": "\"DetDataPreprocessor\"",
+    "09": "\"DetDataPreprocessor\"",
+    "09M": "\"DetDataPreprocessor\""
+   }
+  },
+  "model.decoder_freeze": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "false",
+    "06": "false",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.gate_during_inference": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "true",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_aggregator.hidden_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "512",
+    "06": "512",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_aggregator.in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "256",
+    "06": "256",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_aggregator.out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "256",
+    "06": "256",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_aggregator.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"OcFeatureAggregator\"",
+    "06": "\"OcFeatureAggregator\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.backbone_channel": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "256",
+    "06": "256",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "[64, 128, 256, 256]",
+    "06": "[64, 128, 256, 256]",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.norm_cfg.requires_grad": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.norm_cfg.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"LN2d\"",
+    "06": "\"LN2d\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.num_outs": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "5",
+    "06": "5",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "256",
+    "06": "256",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.feature_spliter.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"RSSimpleFPN\"",
+    "06": "\"RSSimpleFPN\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.neck.in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "[256, 512, 1024, 2048]",
+    "02": "[256, 512, 1024, 2048]",
+    "03": "[256, 512, 1024, 2048]",
+    "04": "[256, 512, 1024, 2048]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[256, 512, 1024, 2048]",
+    "08": "[256, 512, 1024, 2048]",
+    "09": "[256, 512, 1024, 2048]",
+    "09M": "[256, 512, 1024, 2048]"
+   }
+  },
+  "model.neck.num_outs": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "5",
+    "02": "5",
+    "03": "5",
+    "04": "5",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "5",
+    "08": "5",
+    "09": "5",
+    "09M": "5"
+   }
+  },
+  "model.neck.out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "256",
+    "02": "256",
+    "03": "256",
+    "04": "256",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "256",
+    "08": "256",
+    "09": "256",
+    "09M": "256"
+   }
+  },
+  "model.neck.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "\"FPN\"",
+    "02": "\"FPN\"",
+    "03": "\"AttFPN\"",
+    "04": "\"AttFPN\"",
+    "05": "\"RSFPN\"",
+    "06": "\"RSFPN\"",
+    "07": "\"AttFPN\"",
+    "08": "\"AttFPN\"",
+    "09": "\"AttFPN\"",
+    "09M": "\"AttFPN\""
+   }
+  },
+  "model.r0_head.hidden_dim": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "256",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.r0_head.loss_type": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "\"bce\"",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.r0_head.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "0.1",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.r0_head.threshold": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "0.5",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.r0_head.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "\"PIDrayR0Head\"",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.bbox_coder.target_means": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "[0.0, 0.0, 0.0, 0.0]",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "[0.0, 0.0, 0.0, 0.0]",
+    "06": "[0.0, 0.0, 0.0, 0.0]",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.bbox_coder.target_stds": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "[0.1, 0.1, 0.2, 0.2]",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "[0.1, 0.1, 0.2, 0.2]",
+    "06": "[0.1, 0.1, 0.2, 0.2]",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.bbox_coder.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"DeltaXYWHBBoxCoder\"",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"DeltaXYWHBBoxCoder\"",
+    "06": "\"DeltaXYWHBBoxCoder\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.fc_out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "1024",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "1024",
+    "06": "1024",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "256",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "256",
+    "06": "256",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.loss_bbox.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "1.0",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "1.0",
+    "06": "1.0",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.loss_bbox.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"L1Loss\"",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"SmoothL1Loss\"",
+    "06": "\"SmoothL1Loss\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.loss_cls.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "1.0",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "1.0",
+    "06": "1.0",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.loss_cls.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"CrossEntropyLoss\"",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"CrossEntropyLoss\"",
+    "06": "\"CrossEntropyLoss\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.loss_cls.use_sigmoid": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "false",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "false",
+    "06": "false",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.num_classes": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "15",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "15",
+    "06": "15",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.reg_class_agnostic": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "false",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "false",
+    "06": "false",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.roi_feat_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "7",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "7",
+    "06": "7",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"Shared2FCBBoxHead\"",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"Shared2FCBBoxHead\"",
+    "06": "\"Shared2FCBBoxHead\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.bbox_head[0].bbox_coder.target_means": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[0.0, 0.0, 0.0, 0.0]",
+    "03": "[0.0, 0.0, 0.0, 0.0]",
+    "04": "[0.0, 0.0, 0.0, 0.0]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0.0, 0.0, 0.0, 0.0]",
+    "08": "[0.0, 0.0, 0.0, 0.0]",
+    "09": "[0.0, 0.0, 0.0, 0.0]",
+    "09M": "[0.0, 0.0, 0.0, 0.0]"
+   }
+  },
+  "model.roi_head.bbox_head[0].bbox_coder.target_stds": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[0.1, 0.1, 0.2, 0.2]",
+    "03": "[0.1, 0.1, 0.2, 0.2]",
+    "04": "[0.1, 0.1, 0.2, 0.2]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0.1, 0.1, 0.2, 0.2]",
+    "08": "[0.1, 0.1, 0.2, 0.2]",
+    "09": "[0.1, 0.1, 0.2, 0.2]",
+    "09M": "[0.1, 0.1, 0.2, 0.2]"
+   }
+  },
+  "model.roi_head.bbox_head[0].bbox_coder.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"DeltaXYWHBBoxCoder\"",
+    "03": "\"DeltaXYWHBBoxCoder\"",
+    "04": "\"DeltaXYWHBBoxCoder\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"DeltaXYWHBBoxCoder\"",
+    "08": "\"DeltaXYWHBBoxCoder\"",
+    "09": "\"DeltaXYWHBBoxCoder\"",
+    "09M": "\"DeltaXYWHBBoxCoder\""
+   }
+  },
+  "model.roi_head.bbox_head[0].fc_out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1024",
+    "03": "1024",
+    "04": "1024",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1024",
+    "08": "1024",
+    "09": "1024",
+    "09M": "1024"
+   }
+  },
+  "model.roi_head.bbox_head[0].in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "256",
+    "03": "256",
+    "04": "256",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "256",
+    "08": "256",
+    "09": "256",
+    "09M": "256"
+   }
+  },
+  "model.roi_head.bbox_head[0].loss_bbox.beta": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[0].loss_bbox.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[0].loss_bbox.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"SmoothL1Loss\"",
+    "03": "\"SmoothL1Loss\"",
+    "04": "\"SmoothL1Loss\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"SmoothL1Loss\"",
+    "08": "\"SmoothL1Loss\"",
+    "09": "\"SmoothL1Loss\"",
+    "09M": "\"SmoothL1Loss\""
+   }
+  },
+  "model.roi_head.bbox_head[0].loss_cls.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[0].loss_cls.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"CrossEntropyLoss\"",
+    "03": "\"CrossEntropyLoss\"",
+    "04": "\"CrossEntropyLoss\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"CrossEntropyLoss\"",
+    "08": "\"CrossEntropyLoss\"",
+    "09": "\"CrossEntropyLoss\"",
+    "09M": "\"CrossEntropyLoss\""
+   }
+  },
+  "model.roi_head.bbox_head[0].loss_cls.use_sigmoid": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.roi_head.bbox_head[0].num_classes": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "15",
+    "03": "15",
+    "04": "15",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "15",
+    "08": "15",
+    "09": "15",
+    "09M": "15"
+   }
+  },
+  "model.roi_head.bbox_head[0].reg_class_agnostic": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.roi_head.bbox_head[0].roi_feat_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "7",
+    "03": "7",
+    "04": "7",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "7",
+    "08": "7",
+    "09": "7",
+    "09M": "7"
+   }
+  },
+  "model.roi_head.bbox_head[0].type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"Shared2FCBBoxHead\"",
+    "03": "\"Shared2FCBBoxHead\"",
+    "04": "\"Shared2FCBBoxHead\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"Shared2FCBBoxHead\"",
+    "08": "\"Shared2FCBBoxHead\"",
+    "09": "\"Shared2FCBBoxHead\"",
+    "09M": "\"Shared2FCBBoxHead\""
+   }
+  },
+  "model.roi_head.bbox_head[1].bbox_coder.target_means": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[0.0, 0.0, 0.0, 0.0]",
+    "03": "[0.0, 0.0, 0.0, 0.0]",
+    "04": "[0.0, 0.0, 0.0, 0.0]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0.0, 0.0, 0.0, 0.0]",
+    "08": "[0.0, 0.0, 0.0, 0.0]",
+    "09": "[0.0, 0.0, 0.0, 0.0]",
+    "09M": "[0.0, 0.0, 0.0, 0.0]"
+   }
+  },
+  "model.roi_head.bbox_head[1].bbox_coder.target_stds": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[0.05, 0.05, 0.1, 0.1]",
+    "03": "[0.05, 0.05, 0.1, 0.1]",
+    "04": "[0.05, 0.05, 0.1, 0.1]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0.05, 0.05, 0.1, 0.1]",
+    "08": "[0.05, 0.05, 0.1, 0.1]",
+    "09": "[0.05, 0.05, 0.1, 0.1]",
+    "09M": "[0.05, 0.05, 0.1, 0.1]"
+   }
+  },
+  "model.roi_head.bbox_head[1].bbox_coder.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"DeltaXYWHBBoxCoder\"",
+    "03": "\"DeltaXYWHBBoxCoder\"",
+    "04": "\"DeltaXYWHBBoxCoder\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"DeltaXYWHBBoxCoder\"",
+    "08": "\"DeltaXYWHBBoxCoder\"",
+    "09": "\"DeltaXYWHBBoxCoder\"",
+    "09M": "\"DeltaXYWHBBoxCoder\""
+   }
+  },
+  "model.roi_head.bbox_head[1].fc_out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1024",
+    "03": "1024",
+    "04": "1024",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1024",
+    "08": "1024",
+    "09": "1024",
+    "09M": "1024"
+   }
+  },
+  "model.roi_head.bbox_head[1].in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "256",
+    "03": "256",
+    "04": "256",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "256",
+    "08": "256",
+    "09": "256",
+    "09M": "256"
+   }
+  },
+  "model.roi_head.bbox_head[1].loss_bbox.beta": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[1].loss_bbox.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[1].loss_bbox.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"SmoothL1Loss\"",
+    "03": "\"SmoothL1Loss\"",
+    "04": "\"SmoothL1Loss\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"SmoothL1Loss\"",
+    "08": "\"SmoothL1Loss\"",
+    "09": "\"SmoothL1Loss\"",
+    "09M": "\"SmoothL1Loss\""
+   }
+  },
+  "model.roi_head.bbox_head[1].loss_cls.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[1].loss_cls.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"CrossEntropyLoss\"",
+    "03": "\"CrossEntropyLoss\"",
+    "04": "\"CrossEntropyLoss\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"CrossEntropyLoss\"",
+    "08": "\"CrossEntropyLoss\"",
+    "09": "\"CrossEntropyLoss\"",
+    "09M": "\"CrossEntropyLoss\""
+   }
+  },
+  "model.roi_head.bbox_head[1].loss_cls.use_sigmoid": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.roi_head.bbox_head[1].num_classes": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "15",
+    "03": "15",
+    "04": "15",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "15",
+    "08": "15",
+    "09": "15",
+    "09M": "15"
+   }
+  },
+  "model.roi_head.bbox_head[1].reg_class_agnostic": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.roi_head.bbox_head[1].roi_feat_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "7",
+    "03": "7",
+    "04": "7",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "7",
+    "08": "7",
+    "09": "7",
+    "09M": "7"
+   }
+  },
+  "model.roi_head.bbox_head[1].type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"Shared2FCBBoxHead\"",
+    "03": "\"Shared2FCBBoxHead\"",
+    "04": "\"Shared2FCBBoxHead\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"Shared2FCBBoxHead\"",
+    "08": "\"Shared2FCBBoxHead\"",
+    "09": "\"Shared2FCBBoxHead\"",
+    "09M": "\"Shared2FCBBoxHead\""
+   }
+  },
+  "model.roi_head.bbox_head[2].bbox_coder.target_means": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[0.0, 0.0, 0.0, 0.0]",
+    "03": "[0.0, 0.0, 0.0, 0.0]",
+    "04": "[0.0, 0.0, 0.0, 0.0]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0.0, 0.0, 0.0, 0.0]",
+    "08": "[0.0, 0.0, 0.0, 0.0]",
+    "09": "[0.0, 0.0, 0.0, 0.0]",
+    "09M": "[0.0, 0.0, 0.0, 0.0]"
+   }
+  },
+  "model.roi_head.bbox_head[2].bbox_coder.target_stds": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[0.033, 0.033, 0.067, 0.067]",
+    "03": "[0.033, 0.033, 0.067, 0.067]",
+    "04": "[0.033, 0.033, 0.067, 0.067]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[0.033, 0.033, 0.067, 0.067]",
+    "08": "[0.033, 0.033, 0.067, 0.067]",
+    "09": "[0.033, 0.033, 0.067, 0.067]",
+    "09M": "[0.033, 0.033, 0.067, 0.067]"
+   }
+  },
+  "model.roi_head.bbox_head[2].bbox_coder.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"DeltaXYWHBBoxCoder\"",
+    "03": "\"DeltaXYWHBBoxCoder\"",
+    "04": "\"DeltaXYWHBBoxCoder\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"DeltaXYWHBBoxCoder\"",
+    "08": "\"DeltaXYWHBBoxCoder\"",
+    "09": "\"DeltaXYWHBBoxCoder\"",
+    "09M": "\"DeltaXYWHBBoxCoder\""
+   }
+  },
+  "model.roi_head.bbox_head[2].fc_out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1024",
+    "03": "1024",
+    "04": "1024",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1024",
+    "08": "1024",
+    "09": "1024",
+    "09M": "1024"
+   }
+  },
+  "model.roi_head.bbox_head[2].in_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "256",
+    "03": "256",
+    "04": "256",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "256",
+    "08": "256",
+    "09": "256",
+    "09M": "256"
+   }
+  },
+  "model.roi_head.bbox_head[2].loss_bbox.beta": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[2].loss_bbox.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[2].loss_bbox.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"SmoothL1Loss\"",
+    "03": "\"SmoothL1Loss\"",
+    "04": "\"SmoothL1Loss\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"SmoothL1Loss\"",
+    "08": "\"SmoothL1Loss\"",
+    "09": "\"SmoothL1Loss\"",
+    "09M": "\"SmoothL1Loss\""
+   }
+  },
+  "model.roi_head.bbox_head[2].loss_cls.loss_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "1.0",
+    "03": "1.0",
+    "04": "1.0",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "1.0",
+    "08": "1.0",
+    "09": "1.0",
+    "09M": "1.0"
+   }
+  },
+  "model.roi_head.bbox_head[2].loss_cls.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"CrossEntropyLoss\"",
+    "03": "\"CrossEntropyLoss\"",
+    "04": "\"CrossEntropyLoss\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"CrossEntropyLoss\"",
+    "08": "\"CrossEntropyLoss\"",
+    "09": "\"CrossEntropyLoss\"",
+    "09M": "\"CrossEntropyLoss\""
+   }
+  },
+  "model.roi_head.bbox_head[2].loss_cls.use_sigmoid": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.roi_head.bbox_head[2].num_classes": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "15",
+    "03": "15",
+    "04": "15",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "15",
+    "08": "15",
+    "09": "15",
+    "09M": "15"
+   }
+  },
+  "model.roi_head.bbox_head[2].reg_class_agnostic": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.roi_head.bbox_head[2].roi_feat_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "7",
+    "03": "7",
+    "04": "7",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "7",
+    "08": "7",
+    "09": "7",
+    "09M": "7"
+   }
+  },
+  "model.roi_head.bbox_head[2].type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"Shared2FCBBoxHead\"",
+    "03": "\"Shared2FCBBoxHead\"",
+    "04": "\"Shared2FCBBoxHead\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"Shared2FCBBoxHead\"",
+    "08": "\"Shared2FCBBoxHead\"",
+    "09": "\"Shared2FCBBoxHead\"",
+    "09M": "\"Shared2FCBBoxHead\""
+   }
+  },
+  "model.roi_head.fine_level": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "0",
+    "09M": "0"
+   }
+  },
+  "model.roi_head.mask_head.bo_class_agnostic": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.bo_loss_weight": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 only: weight 0.25 on the occluder-mask loss computed from PIXray-A bg_object_segmentation (07 kept with occluder supervision by user decision, 2026-09-14). No other method has an occluder loss.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "0.25",
+    "07": "0.25",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.class_agnostic": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.conv_out_channels": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "256",
+    "02": "256",
+    "03": "256",
+    "04": "256",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "256",
+    "08": "256",
+    "09": "256",
+    "09M": "256"
+   }
+  },
+  "model.roi_head.mask_head.mask_decoder.hf_pretrain_name": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"pretrained/sam_vit_large\"",
+    "06": "\"pretrained/sam_vit_large\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.mask_decoder.init_cfg.checkpoint": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"pretrained/sam_vit_large/pytorch_model_new.bin\"",
+    "06": "\"pretrained/sam_vit_large/pytorch_model_new.bin\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.mask_decoder.init_cfg.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"Pretrained\"",
+    "06": "\"Pretrained\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.mask_decoder.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"RSSamMaskDecoder\"",
+    "06": "\"OcRSSamMaskDecoder\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.multimask_output": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "false",
+    "06": "false",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.num_classes": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "15",
+    "02": "15",
+    "03": "15",
+    "04": "15",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "15",
+    "08": "15",
+    "09": "15",
+    "09M": "15"
+   }
+  },
+  "model.roi_head.mask_head.num_convs": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "4",
+    "02": "4",
+    "03": "4",
+    "04": "4",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "4",
+    "08": "4",
+    "09": "4",
+    "09M": "4"
+   }
+  },
+  "model.roi_head.mask_head.per_pointset_point": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "5",
+    "06": "5",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.roi_feat_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "14",
+    "06": "14",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"FCNMaskHead\"",
+    "02": "\"FCNMaskHead\"",
+    "03": "\"FCNMaskHead\"",
+    "04": "\"FCNMaskHead\"",
+    "05": "\"RSPrompterAnchorMaskHead\"",
+    "06": "\"WeightedOcPrompterAnchorMaskHead\"",
+    "07": "\"BilayerFCNMaskHead\"",
+    "08": "\"FCNMaskHead\"",
+    "09": "\"FCNMaskHead\"",
+    "09M": "\"FCNMaskHead\""
+   }
+  },
+  "model.roi_head.mask_head.with_residual_guidance": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.mask_head.with_sincos": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.roi_head.num_stages": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "3",
+    "03": "3",
+    "04": "3",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "3",
+    "08": "3",
+    "09": "3",
+    "09M": "3"
+   }
+  },
+  "model.roi_head.point_refine_head.embed_dim": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "128",
+    "09M": "128"
+   }
+  },
+  "model.roi_head.point_refine_head.feature_stride": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "4",
+    "09M": "4"
+   }
+  },
+  "model.roi_head.point_refine_head.ffn_dim": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "512",
+    "09M": "512"
+   }
+  },
+  "model.roi_head.point_refine_head.infer_points": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "784",
+    "09M": "784"
+   }
+  },
+  "model.roi_head.point_refine_head.num_blocks": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "2",
+    "09M": "2"
+   }
+  },
+  "model.roi_head.point_refine_head.num_classes": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "15",
+    "09M": "15"
+   }
+  },
+  "model.roi_head.point_refine_head.num_heads": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "4",
+    "09M": "4"
+   }
+  },
+  "model.roi_head.point_refine_head.output_sizes": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "[56, 112]",
+    "09M": "[56, 112]"
+   }
+  },
+  "model.roi_head.point_refine_head.oversample_ratio": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "3",
+    "09M": "3"
+   }
+  },
+  "model.roi_head.point_refine_head.train_points": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "196",
+    "09M": "196"
+   }
+  },
+  "model.roi_head.point_refine_head.type": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "\"PointRefineHead\"",
+    "09M": "\"PointRefineMLPHead\""
+   }
+  },
+  "model.roi_head.point_refine_head.uncertain_fraction": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "0.75",
+    "09M": "0.75"
+   }
+  },
+  "model.roi_head.point_refine_head.use_stage_embedding": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.roi_head.refine_enabled": {
+   "category": "intentional architectural change",
+   "rationale": "09 / 09M only: shared point-refinement head on Method 03 (P2 features, 196 training / 784 inference points, output grids 56 and 112). 09 and 09M differ only in the head type (attention vs matched MLP); verified separately.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.roi_head.stage_loss_weights": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "[1, 0.5, 0.25]",
+    "03": "[1, 0.5, 0.25]",
+    "04": "[1, 0.5, 0.25]",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "[1, 0.5, 0.25]",
+    "08": "[1, 0.5, 0.25]",
+    "09": "[1, 0.5, 0.25]",
+    "09M": "[1, 0.5, 0.25]"
+   }
+  },
+  "model.roi_head.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"StandardRoIHead\"",
+    "02": "\"CascadeRoIHead\"",
+    "03": "\"CascadeRoIHead\"",
+    "04": "\"CascadeRoIHead\"",
+    "05": "\"RSPrompterAnchorRoIPromptHead\"",
+    "06": "\"OcPrompterAnchorRoIPromptHead\"",
+    "07": "\"BilayerCascadeRoIHead\"",
+    "08": "\"CascadeRoIHead\"",
+    "09": "\"PointRefineCascadeRoIHead\"",
+    "09M": "\"PointRefineCascadeRoIHead\""
+   }
+  },
+  "model.roi_head.with_extra_pe": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.rpn_head.anchor_generator.scales": {
+   "category": "intentional architectural change",
+   "rationale": "Proposal budgets. 04: recall-enhanced RPN (anchor scales 4 and 8; 3000 pre-NMS / 3000 kept in training, 2000 / 2000 at test). 01: standard Mask R-CNN keeps 1000 training proposals against 2000 for the cascades (disclosed in the registry). 05 / 06: RSPrompter's anchor scales 4 and 8 and 1000 training proposals. Test-time detection settings (score 0.05, NMS 0.5, 100 detections, mask threshold 0.5) are identical for all.",
+   "values": {
+    "01": "[8]",
+    "02": "[8]",
+    "03": "[8]",
+    "04": "[4, 8]",
+    "05": "[4, 8]",
+    "06": "[4, 8]",
+    "07": "[4, 8]",
+    "08": "[8]",
+    "09": "[8]",
+    "09M": "[8]"
+   }
+  },
+  "model.rpn_head.loss_bbox.beta": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.111111111111111",
+    "03": "0.111111111111111",
+    "04": "0.111111111111111",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.111111111111111",
+    "08": "0.111111111111111",
+    "09": "0.111111111111111",
+    "09M": "0.111111111111111"
+   }
+  },
+  "model.rpn_head.loss_bbox.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"L1Loss\"",
+    "02": "\"SmoothL1Loss\"",
+    "03": "\"SmoothL1Loss\"",
+    "04": "\"SmoothL1Loss\"",
+    "05": "\"SmoothL1Loss\"",
+    "06": "\"SmoothL1Loss\"",
+    "07": "\"SmoothL1Loss\"",
+    "08": "\"SmoothL1Loss\"",
+    "09": "\"SmoothL1Loss\"",
+    "09M": "\"SmoothL1Loss\""
+   }
+  },
+  "model.shared_image_embedding.hf_pretrain_name": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"pretrained/sam_vit_large\"",
+    "06": "\"pretrained/sam_vit_large\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.shared_image_embedding.init_cfg.checkpoint": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"pretrained/sam_vit_large/pytorch_model_new.bin\"",
+    "06": "\"pretrained/sam_vit_large/pytorch_model_new.bin\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.shared_image_embedding.init_cfg.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"Pretrained\"",
+    "06": "\"Pretrained\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.shared_image_embedding.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detectors: ResNet-101 from torchvision ImageNet weights, stem and stage 1 frozen, BatchNorm statistics frozen (norm_eval), with FPN (01, 02) or AttFPN (03, 04, 08, 09, 09M). SAM methods: SAM ViT-L image encoder frozen except LoRA r=16 on qkv, parameter-free passthrough aggregator, RSSimpleFPN with LayerNorm, SAM positional embedding.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"RSSamPositionalEmbedding\"",
+    "06": "\"RSSamPositionalEmbedding\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.test_cfg.rpn.max_per_img": {
+   "category": "intentional architectural change",
+   "rationale": "Proposal budgets. 04: recall-enhanced RPN (anchor scales 4 and 8; 3000 pre-NMS / 3000 kept in training, 2000 / 2000 at test). 01: standard Mask R-CNN keeps 1000 training proposals against 2000 for the cascades (disclosed in the registry). 05 / 06: RSPrompter's anchor scales 4 and 8 and 1000 training proposals. Test-time detection settings (score 0.05, NMS 0.5, 100 detections, mask threshold 0.5) are identical for all.",
+   "values": {
+    "01": "1000",
+    "02": "1000",
+    "03": "1000",
+    "04": "2000",
+    "05": "1000",
+    "06": "1000",
+    "07": "2000",
+    "08": "1000",
+    "09": "1000",
+    "09M": "1000"
+   }
+  },
+  "model.test_cfg.rpn.nms_pre": {
+   "category": "intentional architectural change",
+   "rationale": "Proposal budgets. 04: recall-enhanced RPN (anchor scales 4 and 8; 3000 pre-NMS / 3000 kept in training, 2000 / 2000 at test). 01: standard Mask R-CNN keeps 1000 training proposals against 2000 for the cascades (disclosed in the registry). 05 / 06: RSPrompter's anchor scales 4 and 8 and 1000 training proposals. Test-time detection settings (score 0.05, NMS 0.5, 100 detections, mask threshold 0.5) are identical for all.",
+   "values": {
+    "01": "1000",
+    "02": "1000",
+    "03": "1000",
+    "04": "2000",
+    "05": "1000",
+    "06": "1000",
+    "07": "2000",
+    "08": "1000",
+    "09": "1000",
+    "09M": "1000"
+   }
+  },
+  "model.train_cfg.rcnn.assigner.ignore_iof_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "-1",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "-1",
+    "06": "-1",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.assigner.match_low_quality": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "true",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.assigner.min_pos_iou": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "0.5",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0.5",
+    "06": "0.5",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.assigner.neg_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "0.5",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0.5",
+    "06": "0.5",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.assigner.pos_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "0.5",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0.5",
+    "06": "0.5",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.assigner.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"MaxIoUAssigner\"",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"MaxIoUAssigner\"",
+    "06": "\"MaxIoUAssigner\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.debug": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "false",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "false",
+    "06": "false",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.mask_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "28",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "[512, 512]",
+    "06": "[512, 512]",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.pos_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "-1",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "-1",
+    "06": "-1",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.sampler.add_gt_as_proposals": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "true",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "true",
+    "06": "true",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.sampler.neg_pos_ub": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "-1",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "-1",
+    "06": "-1",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.sampler.num": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "512",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "256",
+    "06": "256",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.sampler.pos_fraction": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "0.25",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "0.25",
+    "06": "0.25",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn.sampler.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "\"RandomSampler\"",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "\"RandomSampler\"",
+    "06": "\"RandomSampler\"",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.train_cfg.rcnn[0].assigner.ignore_iof_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[0].assigner.match_low_quality": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.train_cfg.rcnn[0].assigner.min_pos_iou": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.5",
+    "03": "0.5",
+    "04": "0.5",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.5",
+    "08": "0.5",
+    "09": "0.5",
+    "09M": "0.5"
+   }
+  },
+  "model.train_cfg.rcnn[0].assigner.neg_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.5",
+    "03": "0.5",
+    "04": "0.5",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.5",
+    "08": "0.5",
+    "09": "0.5",
+    "09M": "0.5"
+   }
+  },
+  "model.train_cfg.rcnn[0].assigner.pos_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.5",
+    "03": "0.5",
+    "04": "0.5",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.5",
+    "08": "0.5",
+    "09": "0.5",
+    "09M": "0.5"
+   }
+  },
+  "model.train_cfg.rcnn[0].assigner.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"MaxIoUAssigner\"",
+    "03": "\"MaxIoUAssigner\"",
+    "04": "\"MaxIoUAssigner\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"MaxIoUAssigner\"",
+    "08": "\"MaxIoUAssigner\"",
+    "09": "\"MaxIoUAssigner\"",
+    "09M": "\"MaxIoUAssigner\""
+   }
+  },
+  "model.train_cfg.rcnn[0].debug": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.train_cfg.rcnn[0].mask_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "28",
+    "03": "28",
+    "04": "28",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "28",
+    "08": "28",
+    "09": "28",
+    "09M": "28"
+   }
+  },
+  "model.train_cfg.rcnn[0].pos_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[0].sampler.add_gt_as_proposals": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.train_cfg.rcnn[0].sampler.neg_pos_ub": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[0].sampler.num": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "512",
+    "03": "512",
+    "04": "512",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "512",
+    "08": "512",
+    "09": "512",
+    "09M": "512"
+   }
+  },
+  "model.train_cfg.rcnn[0].sampler.pos_fraction": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.25",
+    "03": "0.25",
+    "04": "0.25",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.25",
+    "08": "0.25",
+    "09": "0.25",
+    "09M": "0.25"
+   }
+  },
+  "model.train_cfg.rcnn[0].sampler.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"RandomSampler\"",
+    "03": "\"RandomSampler\"",
+    "04": "\"RandomSampler\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"RandomSampler\"",
+    "08": "\"RandomSampler\"",
+    "09": "\"RandomSampler\"",
+    "09M": "\"RandomSampler\""
+   }
+  },
+  "model.train_cfg.rcnn[1].assigner.ignore_iof_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[1].assigner.match_low_quality": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.train_cfg.rcnn[1].assigner.min_pos_iou": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.6",
+    "03": "0.6",
+    "04": "0.6",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.6",
+    "08": "0.6",
+    "09": "0.6",
+    "09M": "0.6"
+   }
+  },
+  "model.train_cfg.rcnn[1].assigner.neg_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.6",
+    "03": "0.6",
+    "04": "0.6",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.6",
+    "08": "0.6",
+    "09": "0.6",
+    "09M": "0.6"
+   }
+  },
+  "model.train_cfg.rcnn[1].assigner.pos_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.6",
+    "03": "0.6",
+    "04": "0.6",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.6",
+    "08": "0.6",
+    "09": "0.6",
+    "09M": "0.6"
+   }
+  },
+  "model.train_cfg.rcnn[1].assigner.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"MaxIoUAssigner\"",
+    "03": "\"MaxIoUAssigner\"",
+    "04": "\"MaxIoUAssigner\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"MaxIoUAssigner\"",
+    "08": "\"MaxIoUAssigner\"",
+    "09": "\"MaxIoUAssigner\"",
+    "09M": "\"MaxIoUAssigner\""
+   }
+  },
+  "model.train_cfg.rcnn[1].debug": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.train_cfg.rcnn[1].mask_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "28",
+    "03": "28",
+    "04": "28",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "28",
+    "08": "28",
+    "09": "28",
+    "09M": "28"
+   }
+  },
+  "model.train_cfg.rcnn[1].pos_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[1].sampler.add_gt_as_proposals": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.train_cfg.rcnn[1].sampler.neg_pos_ub": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[1].sampler.num": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "512",
+    "03": "512",
+    "04": "512",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "512",
+    "08": "512",
+    "09": "512",
+    "09M": "512"
+   }
+  },
+  "model.train_cfg.rcnn[1].sampler.pos_fraction": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.25",
+    "03": "0.25",
+    "04": "0.25",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.25",
+    "08": "0.25",
+    "09": "0.25",
+    "09M": "0.25"
+   }
+  },
+  "model.train_cfg.rcnn[1].sampler.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"RandomSampler\"",
+    "03": "\"RandomSampler\"",
+    "04": "\"RandomSampler\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"RandomSampler\"",
+    "08": "\"RandomSampler\"",
+    "09": "\"RandomSampler\"",
+    "09M": "\"RandomSampler\""
+   }
+  },
+  "model.train_cfg.rcnn[2].assigner.ignore_iof_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[2].assigner.match_low_quality": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.train_cfg.rcnn[2].assigner.min_pos_iou": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.7",
+    "03": "0.7",
+    "04": "0.7",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.7",
+    "08": "0.7",
+    "09": "0.7",
+    "09M": "0.7"
+   }
+  },
+  "model.train_cfg.rcnn[2].assigner.neg_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.7",
+    "03": "0.7",
+    "04": "0.7",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.7",
+    "08": "0.7",
+    "09": "0.7",
+    "09M": "0.7"
+   }
+  },
+  "model.train_cfg.rcnn[2].assigner.pos_iou_thr": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.7",
+    "03": "0.7",
+    "04": "0.7",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.7",
+    "08": "0.7",
+    "09": "0.7",
+    "09M": "0.7"
+   }
+  },
+  "model.train_cfg.rcnn[2].assigner.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"MaxIoUAssigner\"",
+    "03": "\"MaxIoUAssigner\"",
+    "04": "\"MaxIoUAssigner\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"MaxIoUAssigner\"",
+    "08": "\"MaxIoUAssigner\"",
+    "09": "\"MaxIoUAssigner\"",
+    "09M": "\"MaxIoUAssigner\""
+   }
+  },
+  "model.train_cfg.rcnn[2].debug": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "false",
+    "03": "false",
+    "04": "false",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "false",
+    "08": "false",
+    "09": "false",
+    "09M": "false"
+   }
+  },
+  "model.train_cfg.rcnn[2].mask_size": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "28",
+    "03": "28",
+    "04": "28",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "28",
+    "08": "28",
+    "09": "28",
+    "09M": "28"
+   }
+  },
+  "model.train_cfg.rcnn[2].pos_weight": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[2].sampler.add_gt_as_proposals": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "true",
+    "03": "true",
+    "04": "true",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "true",
+    "08": "true",
+    "09": "true",
+    "09M": "true"
+   }
+  },
+  "model.train_cfg.rcnn[2].sampler.neg_pos_ub": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "-1",
+    "03": "-1",
+    "04": "-1",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "-1",
+    "08": "-1",
+    "09": "-1",
+    "09M": "-1"
+   }
+  },
+  "model.train_cfg.rcnn[2].sampler.num": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "512",
+    "03": "512",
+    "04": "512",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "512",
+    "08": "512",
+    "09": "512",
+    "09M": "512"
+   }
+  },
+  "model.train_cfg.rcnn[2].sampler.pos_fraction": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "0.25",
+    "03": "0.25",
+    "04": "0.25",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "0.25",
+    "08": "0.25",
+    "09": "0.25",
+    "09M": "0.25"
+   }
+  },
+  "model.train_cfg.rcnn[2].sampler.type": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "<absent>",
+    "02": "\"RandomSampler\"",
+    "03": "\"RandomSampler\"",
+    "04": "\"RandomSampler\"",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "\"RandomSampler\"",
+    "08": "\"RandomSampler\"",
+    "09": "\"RandomSampler\"",
+    "09M": "\"RandomSampler\""
+   }
+  },
+  "model.train_cfg.rpn.allowed_border": {
+   "category": "intentional architectural change",
+   "rationale": "RoI-head design with its standard training targets. 01: one Mask R-CNN stage, L1 box losses, 512 sampled RoIs, 28x28 mask targets. 02-04, 08, 09, 09M: three cascade stages at IoU 0.5/0.6/0.7, SmoothL1 (RPN beta 1/9), stage weights 1/0.5/0.25, 28x28 FCN mask targets. 05: RSPrompter anchor prompt head with the SAM mask decoder, 256 sampled RoIs and 512x512 mask targets. 06: the Occ bilayer SAM decoder and prompt head on the same design (with occluder supervision listed separately).",
+   "values": {
+    "01": "-1",
+    "02": "0",
+    "03": "0",
+    "04": "0",
+    "05": "-1",
+    "06": "-1",
+    "07": "0",
+    "08": "0",
+    "09": "0",
+    "09M": "0"
+   }
+  },
+  "model.train_cfg.rpn_proposal.max_per_img": {
+   "category": "intentional architectural change",
+   "rationale": "Proposal budgets. 04: recall-enhanced RPN (anchor scales 4 and 8; 3000 pre-NMS / 3000 kept in training, 2000 / 2000 at test). 01: standard Mask R-CNN keeps 1000 training proposals against 2000 for the cascades (disclosed in the registry). 05 / 06: RSPrompter's anchor scales 4 and 8 and 1000 training proposals. Test-time detection settings (score 0.05, NMS 0.5, 100 detections, mask threshold 0.5) are identical for all.",
+   "values": {
+    "01": "1000",
+    "02": "2000",
+    "03": "2000",
+    "04": "3000",
+    "05": "1000",
+    "06": "1000",
+    "07": "3000",
+    "08": "2000",
+    "09": "2000",
+    "09M": "2000"
+   }
+  },
+  "model.train_cfg.rpn_proposal.nms_pre": {
+   "category": "intentional architectural change",
+   "rationale": "Proposal budgets. 04: recall-enhanced RPN (anchor scales 4 and 8; 3000 pre-NMS / 3000 kept in training, 2000 / 2000 at test). 01: standard Mask R-CNN keeps 1000 training proposals against 2000 for the cascades (disclosed in the registry). 05 / 06: RSPrompter's anchor scales 4 and 8 and 1000 training proposals. Test-time detection settings (score 0.05, NMS 0.5, 100 detections, mask threshold 0.5) are identical for all.",
+   "values": {
+    "01": "2000",
+    "02": "2000",
+    "03": "2000",
+    "04": "3000",
+    "05": "2000",
+    "06": "2000",
+    "07": "3000",
+    "08": "2000",
+    "09": "2000",
+    "09M": "2000"
+   }
+  },
+  "model.training_gate": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "<absent>",
+    "07": "<absent>",
+    "08": "\"legacy\"",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "model.type": {
+   "category": "intentional architectural change",
+   "rationale": "Detector family (MaskRCNN, CascadeRCNN, RSPrompterAnchor) and 08's PIDray R0/R1 image-level gate (BCE weight 0.1, gate applied at inference).",
+   "values": {
+    "01": "\"MaskRCNN\"",
+    "02": "\"CascadeRCNN\"",
+    "03": "\"CascadeRCNN\"",
+    "04": "\"CascadeRCNN\"",
+    "05": "\"RSPrompterAnchor\"",
+    "06": "\"RSPrompterAnchor\"",
+    "07": "\"CascadeRCNN\"",
+    "08": "\"PIDrayCascadeRCNN\"",
+    "09": "\"CascadeRCNN\"",
+    "09M": "\"CascadeRCNN\""
+   }
+  },
+  "test_dataloader.dataset.ann_file": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 train on PIXray-A train_occ.json (same images and target instances plus occluder masks). Their test loaders read test_occ.json only because the Oc* pipeline requires the field; every method, 06 and 07 included, is scored against data/PIXray/annotations/test.json.",
+   "values": {
+    "01": "\"data/PIXray/annotations/test.json\"",
+    "02": "\"data/PIXray/annotations/test.json\"",
+    "03": "\"data/PIXray/annotations/test.json\"",
+    "04": "\"data/PIXray/annotations/test.json\"",
+    "05": "\"data/PIXray/annotations/test.json\"",
+    "06": "\"data/PIXray-A/annotations/test_occ.json\"",
+    "07": "\"data/PIXray-A/annotations/test_occ.json\"",
+    "08": "\"data/PIXray/annotations/test.json\"",
+    "09": "\"data/PIXray/annotations/test.json\"",
+    "09M": "\"data/PIXray/annotations/test.json\""
+   }
+  },
+  "test_dataloader.dataset.pipeline[0].backend_args": {
+   "category": "operational difference without effect",
+   "rationale": "06 states backend_args=None explicitly; the other configs omit it and LoadImageFromFile defaults to None.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "null",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "test_dataloader.dataset.pipeline[3].type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "\"LoadAnnotations\"",
+    "02": "\"LoadAnnotations\"",
+    "03": "\"LoadAnnotations\"",
+    "04": "\"LoadAnnotations\"",
+    "05": "\"LoadAnnotations\"",
+    "06": "\"OcLoadAnnotations\"",
+    "07": "\"OcLoadAnnotations\"",
+    "08": "\"LoadAnnotations\"",
+    "09": "\"LoadAnnotations\"",
+    "09M": "\"LoadAnnotations\""
+   }
+  },
+  "test_dataloader.dataset.pipeline[4].type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "\"PackDetInputs\"",
+    "02": "\"PackDetInputs\"",
+    "03": "\"PackDetInputs\"",
+    "04": "\"PackDetInputs\"",
+    "05": "\"PackDetInputs\"",
+    "06": "\"OcPackDetInputs\"",
+    "07": "\"OcPackDetInputs\"",
+    "08": "\"PackDetInputs\"",
+    "09": "\"PackDetInputs\"",
+    "09M": "\"PackDetInputs\""
+   }
+  },
+  "test_dataloader.dataset.type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 train on PIXray-A train_occ.json (same images and target instances plus occluder masks). Their test loaders read test_occ.json only because the Oc* pipeline requires the field; every method, 06 and 07 included, is scored against data/PIXray/annotations/test.json.",
+   "values": {
+    "01": "\"PIXrayDataset\"",
+    "02": "\"PIXrayDataset\"",
+    "03": "\"PIXrayDataset\"",
+    "04": "\"PIXrayDataset\"",
+    "05": "\"PIXrayDataset\"",
+    "06": "\"PIXrayOcclusionDataset\"",
+    "07": "\"PIXrayOcclusionDataset\"",
+    "08": "\"PIXrayDataset\"",
+    "09": "\"PIXrayDataset\"",
+    "09M": "\"PIXrayDataset\""
+   }
+  },
+  "train_dataloader.dataset.ann_file": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 train on PIXray-A train_occ.json (same images and target instances plus occluder masks). Their test loaders read test_occ.json only because the Oc* pipeline requires the field; every method, 06 and 07 included, is scored against data/PIXray/annotations/test.json.",
+   "values": {
+    "01": "\"data/PIXray/annotations/train.json\"",
+    "02": "\"data/PIXray/annotations/train.json\"",
+    "03": "\"data/PIXray/annotations/train.json\"",
+    "04": "\"data/PIXray/annotations/train.json\"",
+    "05": "\"data/PIXray/annotations/train.json\"",
+    "06": "\"data/PIXray-A/annotations/train_occ.json\"",
+    "07": "\"data/PIXray-A/annotations/train_occ.json\"",
+    "08": "\"data/PIXray/annotations/train.json\"",
+    "09": "\"data/PIXray/annotations/train.json\"",
+    "09M": "\"data/PIXray/annotations/train.json\""
+   }
+  },
+  "train_dataloader.dataset.pipeline[0].backend_args": {
+   "category": "operational difference without effect",
+   "rationale": "06 states backend_args=None explicitly; the other configs omit it and LoadImageFromFile defaults to None.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "null",
+    "07": "<absent>",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "train_dataloader.dataset.pipeline[1].type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "\"LoadAnnotations\"",
+    "02": "\"LoadAnnotations\"",
+    "03": "\"LoadAnnotations\"",
+    "04": "\"LoadAnnotations\"",
+    "05": "\"LoadAnnotations\"",
+    "06": "\"OcLoadAnnotations\"",
+    "07": "\"OcLoadAnnotations\"",
+    "08": "\"LoadAnnotations\"",
+    "09": "\"LoadAnnotations\"",
+    "09M": "\"LoadAnnotations\""
+   }
+  },
+  "train_dataloader.dataset.pipeline[2].type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "\"RandomFlip\"",
+    "02": "\"RandomFlip\"",
+    "03": "\"RandomFlip\"",
+    "04": "\"RandomFlip\"",
+    "05": "\"RandomFlip\"",
+    "06": "\"OcRandomFlip\"",
+    "07": "\"OcRandomFlip\"",
+    "08": "\"RandomFlip\"",
+    "09": "\"RandomFlip\"",
+    "09M": "\"RandomFlip\""
+   }
+  },
+  "train_dataloader.dataset.pipeline[3].resize_type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "<absent>",
+    "02": "<absent>",
+    "03": "<absent>",
+    "04": "<absent>",
+    "05": "<absent>",
+    "06": "\"OcResize\"",
+    "07": "\"OcResize\"",
+    "08": "<absent>",
+    "09": "<absent>",
+    "09M": "<absent>"
+   }
+  },
+  "train_dataloader.dataset.pipeline[4].type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "\"RandomCrop\"",
+    "02": "\"RandomCrop\"",
+    "03": "\"RandomCrop\"",
+    "04": "\"RandomCrop\"",
+    "05": "\"RandomCrop\"",
+    "06": "\"OcRandomCrop\"",
+    "07": "\"OcRandomCrop\"",
+    "08": "\"RandomCrop\"",
+    "09": "\"RandomCrop\"",
+    "09M": "\"RandomCrop\""
+   }
+  },
+  "train_dataloader.dataset.pipeline[6].type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 use the Oc* variants of LoadAnnotations / RandomFlip / Resize / RandomCrop / PackDetInputs, which apply the same geometric operation to the occluder masks as to the target masks. Every transform parameter (flip probability, scale 512, ratio 0.5-1.5, crop 512, filter thresholds) is identical across all methods; only the type names differ.",
+   "values": {
+    "01": "\"PackDetInputs\"",
+    "02": "\"PackDetInputs\"",
+    "03": "\"PackDetInputs\"",
+    "04": "\"PackDetInputs\"",
+    "05": "\"PackDetInputs\"",
+    "06": "\"OcPackDetInputs\"",
+    "07": "\"OcPackDetInputs\"",
+    "08": "\"PackDetInputs\"",
+    "09": "\"PackDetInputs\"",
+    "09M": "\"PackDetInputs\""
+   }
+  },
+  "train_dataloader.dataset.type": {
+   "category": "intentional supervision change",
+   "rationale": "06 and 07 train on PIXray-A train_occ.json (same images and target instances plus occluder masks). Their test loaders read test_occ.json only because the Oc* pipeline requires the field; every method, 06 and 07 included, is scored against data/PIXray/annotations/test.json.",
+   "values": {
+    "01": "\"PIXrayDataset\"",
+    "02": "\"PIXrayDataset\"",
+    "03": "\"PIXrayDataset\"",
+    "04": "\"PIXrayDataset\"",
+    "05": "\"PIXrayDataset\"",
+    "06": "\"PIXrayOcclusionDataset\"",
+    "07": "\"PIXrayOcclusionDataset\"",
+    "08": "\"PIXrayDataset\"",
+    "09": "\"PIXrayDataset\"",
+    "09M": "\"PIXrayDataset\""
+   }
+  }
+ },
+ "unexplained": [],
+ "pair_09_09M": {
+  "model.roi_head.point_refine_head.type": {
+   "09": "\"PointRefineHead\"",
+   "09M": "\"PointRefineMLPHead\""
+  }
+ },
+ "historical_07_vs_04": {
+  "custom_imports.imports": {
+   "04": "[\"projects.proposal_first_pidray_occ\"]",
+   "07": "[\"mmdet.occlu\", \"projects.proposal_first_pidray_occ\"]"
+  },
+  "model.data_preprocessor.type": {
+   "04": "\"DetDataPreprocessor\"",
+   "07": "\"OcDataPreprocessor\""
+  },
+  "model.roi_head.mask_head.bo_class_agnostic": {
+   "04": "<absent>",
+   "07": "true"
+  },
+  "model.roi_head.mask_head.bo_loss_weight": {
+   "04": "<absent>",
+   "07": "0.25"
+  },
+  "model.roi_head.mask_head.type": {
+   "04": "\"FCNMaskHead\"",
+   "07": "\"BilayerFCNMaskHead\""
+  },
+  "model.roi_head.mask_head.with_residual_guidance": {
+   "04": "<absent>",
+   "07": "true"
+  },
+  "model.roi_head.type": {
+   "04": "\"CascadeRoIHead\"",
+   "07": "\"BilayerCascadeRoIHead\""
+  },
+  "test_dataloader.dataset.ann_file": {
+   "04": "\"data/PIXray/annotations/test.json\"",
+   "07": "\"data/PIXray-A/annotations/test_occ.json\""
+  },
+  "test_dataloader.dataset.pipeline[3].type": {
+   "04": "\"LoadAnnotations\"",
+   "07": "\"OcLoadAnnotations\""
+  },
+  "test_dataloader.dataset.pipeline[4].type": {
+   "04": "\"PackDetInputs\"",
+   "07": "\"OcPackDetInputs\""
+  },
+  "test_dataloader.dataset.type": {
+   "04": "\"PIXrayDataset\"",
+   "07": "\"PIXrayOcclusionDataset\""
+  },
+  "train_dataloader.dataset.ann_file": {
+   "04": "\"data/PIXray/annotations/train.json\"",
+   "07": "\"data/PIXray-A/annotations/train_occ.json\""
+  },
+  "train_dataloader.dataset.pipeline[1].type": {
+   "04": "\"LoadAnnotations\"",
+   "07": "\"OcLoadAnnotations\""
+  },
+  "train_dataloader.dataset.pipeline[2].type": {
+   "04": "\"RandomFlip\"",
+   "07": "\"OcRandomFlip\""
+  },
+  "train_dataloader.dataset.pipeline[3].resize_type": {
+   "04": "<absent>",
+   "07": "\"OcResize\""
+  },
+  "train_dataloader.dataset.pipeline[4].type": {
+   "04": "\"RandomCrop\"",
+   "07": "\"OcRandomCrop\""
+  },
+  "train_dataloader.dataset.pipeline[6].type": {
+   "04": "\"PackDetInputs\"",
+   "07": "\"OcPackDetInputs\""
+  },
+  "train_dataloader.dataset.type": {
+   "04": "\"PIXrayDataset\"",
+   "07": "\"PIXrayOcclusionDataset\""
+  }
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "purpose": "inference-time ablation",
+ "variant": "laststage",
+ "applied": {
+  "refine_enabled": true,
+  "output_sizes": [
+   56,
+   112
+  ],
+  "infer_points": 784,
+  "selector": "select_inference_points",
+  "last_stage_only": true
+ },
+ "run_key": "m09m_point_refine_mlp/seed_123",
+ "method": "09M",
+ "seed": 123,
+ "checkpoint": "work_dirs/pixray_multiseed_bs4_e50_2026-09-14/m09m_point_refine_mlp/seed_123/epoch_50.pth",
+ "checkpoint_sha256": "9916cad0f166ab3db0221b16b8fe6678046e04fefd0b3013f6363e55330aacdf",
+ "resolved_config_sha256": "31c2005a4405724e747a52650ca8bf3714f16e26fc488614344b186e7f642beb",
+ "predictions": "output/pixray_multiseed_bs4_e50_2026-09-14/revision_2026-11/ablation/laststage/m09m_point_refine_mlp/seed_123/predictions.pkl",
+ "predictions_sha256": "07f6adad758cc8fbd1f5ac8ff445c2f217044fde384b0aba4b7d7e6e9c38fad5",
+ "evaluator": {
+  "implementation": "pycocotools COCOeval",
+  "iouThrs": "0.50:0.05:0.95",
+  "maxDets": [
+   1,
+   10,
+   100
+  ],
+  "areaRng": "COCO default (all, <32^2, 32^2-96^2, >96^2)",
+  "area_field_semantics": "PIXray 'area' = bounding-box area",
+  "zero_id_policy": "official values primary; ZeroIdSafeCOCOeval reported separately",
+  "prf_matching": "ZeroIdSafeCOCOeval dtMatches, area all, maxDet 100"
+ },
+ "coverage": {
+  "prediction_images": 1486,
+  "unique_images": 1486,
+  "test_images": 1486,
+  "images_match": true,
+  "max_detections_per_image": 10,
+  "total_detections": 4935,
+  "min_score": 0.050298042595386505,
+  "categories": 15
+ },
+ "seconds": 56.23241895623505,
+ "finished": "2026-11-21T08:27:24"
+}

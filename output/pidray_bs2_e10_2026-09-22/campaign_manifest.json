@@ -1,0 +1,502 @@
+{
+ "campaign": "pidray_bs2_e10_2026-09-22",
+ "frozen": "2026-09-22T21:03:39",
+ "instructions": {
+  "dated": "2026-09-21 to 2026-09-22",
+  "dataset": "PIDray-30, a separate campaign from the PIXray one, comparing the same architectures",
+  "physical_batch": 2,
+  "gradient_accumulation": "none",
+  "epochs": 10,
+  "precision": "fp32 for every method",
+  "warmup_iterations": 500,
+  "methods": [
+   "01",
+   "02",
+   "03",
+   "04",
+   "05",
+   "06",
+   "07",
+   "08",
+   "09",
+   "09M"
+  ],
+  "seeds": [
+   42
+  ],
+  "history": "batch 1 / 50 epochs diverged (job 12317); batch 2 fp16 diverged on 08; fp32 + warmup 500 adopted; 15-epoch run superseded by 10 epochs"
+ },
+ "protocol": {
+  "physical_batch": 2,
+  "accumulation": 1,
+  "effective_batch": 2,
+  "epochs": 10,
+  "iterations_per_epoch": 11495,
+  "total_iterations": 114950,
+  "warmup_iterations": 500,
+  "seeds": [
+   42
+  ],
+  "optimizer": "AdamW lr=1e-4 wd=0.05",
+  "precision": "fp32 (AMP disabled for every method)",
+  "clip_grad": "max_norm 1.0",
+  "validation": "disabled",
+  "checkpoint": "final epoch (interval 1, max_keep_ckpts 1)"
+ },
+ "dataset": {
+  "name": "PIDray-30",
+  "train_images": 22990,
+  "released_train_images": 23074,
+  "test_images": {
+   "easy": 24758,
+   "hard": 9746,
+   "hidden": 13069
+  },
+  "classes": [
+   "Baton",
+   "Pliers",
+   "Hammer",
+   "Powerbank",
+   "Scissors",
+   "Wrench",
+   "Gun",
+   "Bullet",
+   "Sprayer",
+   "HandCuffs",
+   "Knife",
+   "Lighter"
+  ],
+  "empty_images": "kept (filter_empty_gt=False); PIDray normal images are part of the benchmark"
+ },
+ "leakage": {
+  "audit": "scripts/audit_pidray.py --check-content-hashes",
+  "result_as_released": "FAIL: 84 training images byte-identical to test images (50 easy, 19 hard, 15 hidden; 11 annotated)",
+  "decision": "exclude_train_duplicates",
+  "decided": "2026-09-21 by the user",
+  "derived_training_files": {
+   "policy": "exclude_train_duplicates",
+   "decided": "2026-09-21",
+   "excluded_images": 84,
+   "excluded_annotated_images": 11,
+   "excluded_instances": 11,
+   "standard": {
+    "path": "output/pidray_bs1_e50_2026-09-21/annotations/train_deleaked.json",
+    "sha256": "27ee052fa877c82aa2ab965fb45d4d26f4a16c43b3ffd7c836b687a05a8e2734",
+    "images": 22990,
+    "annotations": 12014,
+    "images_removed": 84,
+    "annotations_removed": 11,
+    "source": "data/PIDray/annotations/train.json",
+    "source_sha256": "fcc0164d5d7f70fc14817b814bc5fa44e2016438ba6b2bb3dbd25d3b92e62f5a",
+    "source_images": 23074,
+    "source_annotations": 12025
+   },
+   "occluder": {
+    "path": "output/pidray_bs1_e50_2026-09-21/annotations/train_occ_deleaked.json",
+    "sha256": "d591147ed9cf5d1bdaa8ddb31e03a9feb1696341528cf15e83107ad5f7be6ad3",
+    "images": 22990,
+    "annotations": 12014,
+    "images_removed": 84,
+    "annotations_removed": 11,
+    "source": "data/PIDray-A/annotations/train_occ.json",
+    "source_sha256": "f2d8e57523eae1074e24ea4ea2a68a1dcf866714d9ce3da70beeac86e432b563",
+    "source_images": 23074,
+    "source_annotations": 12025
+   },
+   "test_splits": "untouched; evaluation uses the released easy/hard/hidden files"
+  },
+  "verification": {
+   "gate": "PIDray train/test byte isolation",
+   "policy": "exclude_train_duplicates",
+   "checks": {
+    "train_images": 22990,
+    "occluder_matches_standard": true,
+    "subset_of_released_train": true,
+    "removed": 84,
+    "train_test_duplicate_groups_remaining": 0,
+    "filename_overlap_train_easy": 0,
+    "filename_overlap_train_hard": 0,
+    "filename_overlap_train_hidden": 0,
+    "test_internal_duplicate_groups": 38
+   },
+   "failures": [],
+   "status": "PASS"
+  },
+  "released_files_unchanged": {
+   "train": {
+    "path": "data/PIDray/annotations/train.json",
+    "sha256": "fcc0164d5d7f70fc14817b814bc5fa44e2016438ba6b2bb3dbd25d3b92e62f5a"
+   },
+   "occ_train": {
+    "path": "data/PIDray-A/annotations/train_occ.json",
+    "sha256": "f2d8e57523eae1074e24ea4ea2a68a1dcf866714d9ce3da70beeac86e432b563"
+   }
+  },
+  "test_splits": "released easy/hard/hidden files, untouched"
+ },
+ "methods": [
+  {
+   "id": "01",
+   "slug": "m01_mask_rcnn_r101_fpn",
+   "name": "Mask R-CNN, ResNet-101 + FPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_b2_mask_rcnn_r101.py",
+   "historical_id": "B2",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "02",
+   "slug": "m02_cascade_r101_fpn",
+   "name": "Cascade Mask R-CNN, ResNet-101 + FPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_p1_cascade_fpn.py",
+   "historical_id": "P1",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "03",
+   "slug": "m03_cascade_r101_attfpn",
+   "name": "Cascade Mask R-CNN, ResNet-101 + AttFPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_p2_cascade_attfpn.py",
+   "historical_id": "P2",
+   "supervision": "original",
+   "family": "detector",
+   "role": "parent of 04, 08, 09, 09M",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "04",
+   "slug": "m04_cascade_attfpn_recall_rpn",
+   "name": "Cascade + AttFPN + recall-enhanced RPN",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_p3_cascade_attfpn_recall_rpn.py",
+   "historical_id": "P3",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "05",
+   "slug": "m05_rsprompter_sam_lora",
+   "name": "RSPrompter-style SAM ViT-L + LoRA adaptation",
+   "historical_config": "configs/occlusion/pixray_b5_rsprompter.py",
+   "historical_id": "B5",
+   "supervision": "original",
+   "family": "sam",
+   "role": "SAM comparison (not an untouched SAM release)",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "06",
+   "slug": "m06_occ_bilayer_sam",
+   "name": "Occ bilayer SAM (Occ paper method)",
+   "historical_config": "configs/occlusion/pixray_s2_occ_bisam.py",
+   "historical_id": "S2",
+   "supervision": "occ",
+   "family": "sam",
+   "role": "additional-supervision comparison",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "07",
+   "slug": "m07_bilayer_fcn_recall_rpn",
+   "name": "Bilayer FCN mask head on Method 04",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_b8_bilayer_fcn_recall_rpn.py",
+   "historical_id": "B8",
+   "supervision": "occ",
+   "family": "detector",
+   "role": "additional-supervision comparison",
+   "launchable": true,
+   "note": "keeps PIXray-A occluder supervision by user decision (2026-09-14); reported beside 06, not as a target-only method"
+  },
+  {
+   "id": "08",
+   "slug": "m08_pidray_r0r1",
+   "name": "PIDray R0/R1 adapted to PIXray",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_08_pidray_r0r1.py",
+   "historical_id": "",
+   "supervision": "original",
+   "family": "detector",
+   "role": "PIDray mechanism on Method 03",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "09",
+   "slug": "m09_point_refine_transformer",
+   "name": "Transformer point refinement on Method 03",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_09_point_refine.py",
+   "historical_id": "",
+   "supervision": "original",
+   "family": "detector",
+   "role": "proposed",
+   "launchable": true,
+   "note": ""
+  },
+  {
+   "id": "09M",
+   "slug": "m09m_point_refine_mlp",
+   "name": "Matched MLP point-refinement control on Method 03",
+   "historical_config": "projects/proposal_first_pidray_occ/configs/pixray_09m_point_refine_mlp.py",
+   "historical_id": "",
+   "supervision": "original",
+   "family": "detector",
+   "role": "matched control for 09",
+   "launchable": true,
+   "note": ""
+  }
+ ],
+ "scope": {
+  "decided": "2026-09-21 by the user",
+  "included": [
+   "01",
+   "02",
+   "03",
+   "04",
+   "05",
+   "06",
+   "07",
+   "08",
+   "09",
+   "09M"
+  ],
+  "excluded": {},
+  "order_rationale": "run order given by the user",
+  "note": "the three excluded architectures are reported from the PIXray campaign only"
+ },
+ "runs": {
+  "m01_mask_rcnn_r101_fpn/seed_42": {
+   "method": "01",
+   "seed": 42,
+   "slug": "m01_mask_rcnn_r101_fpn",
+   "name": "Mask R-CNN, ResNet-101 + FPN",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_b2_mask_rcnn_r101.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m01_mask_rcnn_r101_fpn/seed_42.py",
+   "resolved_config_sha256": "896fbe50030cd2c94227acc99d8bd2cf0116f925ba0d573b6024ada0be906079",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m01_mask_rcnn_r101_fpn/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m01_mask_rcnn_r101_fpn/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m01_mask_rcnn_r101_fpn/seed_42"
+  },
+  "m02_cascade_r101_fpn/seed_42": {
+   "method": "02",
+   "seed": 42,
+   "slug": "m02_cascade_r101_fpn",
+   "name": "Cascade Mask R-CNN, ResNet-101 + FPN",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_p1_cascade_fpn.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m02_cascade_r101_fpn/seed_42.py",
+   "resolved_config_sha256": "936cc3ad01125f87768486f54f47414e27241bd708811d11017bd63dc6d28ecd",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m02_cascade_r101_fpn/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m02_cascade_r101_fpn/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m02_cascade_r101_fpn/seed_42"
+  },
+  "m03_cascade_r101_attfpn/seed_42": {
+   "method": "03",
+   "seed": 42,
+   "slug": "m03_cascade_r101_attfpn",
+   "name": "Cascade Mask R-CNN, ResNet-101 + AttFPN",
+   "supervision": "original",
+   "family": "detector",
+   "role": "parent of 04, 08, 09, 09M",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_p2_cascade_attfpn.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m03_cascade_r101_attfpn/seed_42.py",
+   "resolved_config_sha256": "7c1cb8bedde10f641d7e52161f51ae01f0683154de3267270c55a722f90aff9a",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m03_cascade_r101_attfpn/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m03_cascade_r101_attfpn/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m03_cascade_r101_attfpn/seed_42"
+  },
+  "m04_cascade_attfpn_recall_rpn/seed_42": {
+   "method": "04",
+   "seed": 42,
+   "slug": "m04_cascade_attfpn_recall_rpn",
+   "name": "Cascade + AttFPN + recall-enhanced RPN",
+   "supervision": "original",
+   "family": "detector",
+   "role": "detector baseline",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_p3_cascade_attfpn_recall_rpn.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m04_cascade_attfpn_recall_rpn/seed_42.py",
+   "resolved_config_sha256": "943868eb440f7f79cb26b58a11fa1b3282b22fbf4baa78227f2279668a29888c",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m04_cascade_attfpn_recall_rpn/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m04_cascade_attfpn_recall_rpn/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m04_cascade_attfpn_recall_rpn/seed_42"
+  },
+  "m05_rsprompter_sam_lora/seed_42": {
+   "method": "05",
+   "seed": 42,
+   "slug": "m05_rsprompter_sam_lora",
+   "name": "RSPrompter-style SAM ViT-L + LoRA adaptation",
+   "supervision": "original",
+   "family": "sam",
+   "role": "SAM comparison (not an untouched SAM release)",
+   "launchable": true,
+   "source_config": "configs/occlusion/pixray_b5_rsprompter.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m05_rsprompter_sam_lora/seed_42.py",
+   "resolved_config_sha256": "be8f767ab8e054a6da3a7f15af62317eed855f1d66551f061c3017fcb07b2922",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m05_rsprompter_sam_lora/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m05_rsprompter_sam_lora/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m05_rsprompter_sam_lora/seed_42"
+  },
+  "m06_occ_bilayer_sam/seed_42": {
+   "method": "06",
+   "seed": 42,
+   "slug": "m06_occ_bilayer_sam",
+   "name": "Occ bilayer SAM (Occ paper method)",
+   "supervision": "occ",
+   "family": "sam",
+   "role": "additional-supervision comparison",
+   "launchable": true,
+   "source_config": "configs/occlusion/pixray_s2_occ_bisam.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m06_occ_bilayer_sam/seed_42.py",
+   "resolved_config_sha256": "ec1ce15f69c048087dc8d26765b0121100b8a02a6617f2ed7ac2606d1c1e0a11",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m06_occ_bilayer_sam/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m06_occ_bilayer_sam/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m06_occ_bilayer_sam/seed_42"
+  },
+  "m07_bilayer_fcn_recall_rpn/seed_42": {
+   "method": "07",
+   "seed": 42,
+   "slug": "m07_bilayer_fcn_recall_rpn",
+   "name": "Bilayer FCN mask head on Method 04",
+   "supervision": "occ",
+   "family": "detector",
+   "role": "additional-supervision comparison",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_b8_bilayer_fcn_recall_rpn.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m07_bilayer_fcn_recall_rpn/seed_42.py",
+   "resolved_config_sha256": "aafce8f09d59c9a2c73a997d9d6f53a61ee3dbed24d061ccbbd238df60248566",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m07_bilayer_fcn_recall_rpn/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m07_bilayer_fcn_recall_rpn/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m07_bilayer_fcn_recall_rpn/seed_42"
+  },
+  "m08_pidray_r0r1/seed_42": {
+   "method": "08",
+   "seed": 42,
+   "slug": "m08_pidray_r0r1",
+   "name": "PIDray R0/R1 adapted to PIXray",
+   "supervision": "original",
+   "family": "detector",
+   "role": "PIDray mechanism on Method 03",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_08_pidray_r0r1.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m08_pidray_r0r1/seed_42.py",
+   "resolved_config_sha256": "0113c875eecd1877d6c3a510d3c58a06b8d5fe0df99388e45f36c26863d84356",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m08_pidray_r0r1/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m08_pidray_r0r1/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m08_pidray_r0r1/seed_42"
+  },
+  "m09_point_refine_transformer/seed_42": {
+   "method": "09",
+   "seed": 42,
+   "slug": "m09_point_refine_transformer",
+   "name": "Transformer point refinement on Method 03",
+   "supervision": "original",
+   "family": "detector",
+   "role": "proposed",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_09_point_refine.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m09_point_refine_transformer/seed_42.py",
+   "resolved_config_sha256": "554e2d6861baeda3fd9803e8e5906fdc4846b5d68a39fff544e5f289beb74831",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m09_point_refine_transformer/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m09_point_refine_transformer/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m09_point_refine_transformer/seed_42"
+  },
+  "m09m_point_refine_mlp/seed_42": {
+   "method": "09M",
+   "seed": 42,
+   "slug": "m09m_point_refine_mlp",
+   "name": "Matched MLP point-refinement control on Method 03",
+   "supervision": "original",
+   "family": "detector",
+   "role": "matched control for 09",
+   "launchable": true,
+   "source_config": "projects/proposal_first_pidray_occ/configs/pixray_09m_point_refine_mlp.py",
+   "resolved_config": "output/pidray_bs2_e10_2026-09-22/protocol/resolved_configs/m09m_point_refine_mlp/seed_42.py",
+   "resolved_config_sha256": "9de185612cec56a0f7d117dd068c892c33bbccd23ab1823384f0e91b0bc32f4e",
+   "work_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/work_dirs/pidray_bs2_e10_2026-09-22/m09m_point_refine_mlp/seed_42",
+   "run_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/runs/m09m_point_refine_mlp/seed_42",
+   "eval_dir": "/nfs/ahalqahtani/ProposalFirst-XRaySeg/output/pidray_bs2_e10_2026-09-22/evaluations/m09m_point_refine_mlp/seed_42"
+  }
+ },
+ "annotations": {
+  "train": {
+   "path": "output/pidray_deleaked_2026-09-21/annotations/train_deleaked.json",
+   "sha256": "27ee052fa877c82aa2ab965fb45d4d26f4a16c43b3ffd7c836b687a05a8e2734",
+   "role": "target-only training"
+  },
+  "occ_train": {
+   "path": "output/pidray_deleaked_2026-09-21/annotations/train_occ_deleaked.json",
+   "sha256": "d591147ed9cf5d1bdaa8ddb31e03a9feb1696341528cf15e83107ad5f7be6ad3",
+   "role": "occluder-supervised training (methods 06, 07)"
+  },
+  "test_easy": {
+   "path": "data/PIDray/annotations/test_easy.json",
+   "sha256": "7c829eb2445920dc1f167d24490baff252a6564490e59c82cafc3fa4cd90aa92",
+   "role": "evaluation, easy split, as released"
+  },
+  "test_hard": {
+   "path": "data/PIDray/annotations/test_hard.json",
+   "sha256": "c5e3a3309acbbaa3a32365efd075b5d1aa86e0540c16ae3dcb99cdc0223e8e25",
+   "role": "evaluation, hard split, as released"
+  },
+  "test_hidden": {
+   "path": "data/PIDray/annotations/test_hidden.json",
+   "sha256": "7012987cc0098eeb4c41fbd3f6528a256edee3ea20f56746694593c8d21d0c92",
+   "role": "evaluation, hidden split, as released"
+  }
+ },
+ "pretrained": {
+  "resnet101_imagenet": {
+   "path": "pretrained/torch/hub/checkpoints/resnet101-63fe2227.pth",
+   "sha256": "63fe2227b86e8f1f2063f43a75c84d195911b6a0eace650907dd3dc62dd49a0a"
+  },
+  "sam_vit_large_converted": {
+   "path": "pretrained/sam_vit_large/pytorch_model_new.bin",
+   "sha256": "4488acf8d807e1710a9d132ebbb93bd4378958c42f617c70b7e57974e5d53735"
+  },
+  "sam_vit_large_hf": {
+   "path": "pretrained/sam_vit_large/pytorch_model.bin",
+   "sha256": "216dff9febd2ab9787353f6bd4627e06318c8ee9a1bf5d24393979b857db615c"
+  },
+  "sam_vit_large_config": {
+   "path": "pretrained/sam_vit_large/config.json",
+   "sha256": "62b22c9f4e37fd4df6ccb3f43b528be49f04c85eca33cc53e58f58c32f3f97a0"
+  }
+ },
+ "source_snapshot": {
+  "aggregate_sha256": "1d147c5affdb285650b3fb219834649838b4d846d85522fd7db746c0ed5b7933",
+  "file_count": 1167,
+  "per_file": "output/pidray_bs2_e10_2026-09-22/protocol/source_snapshot.json",
+  "guarded_runtime_files": [
+   "scripts/common.sh",
+   "scripts/campaign_pidray_bs1/campaign_common.py",
+   "scripts/campaign_pidray_bs1/build_campaign.py",
+   "scripts/campaign_multiseed/train_run.py",
+   "scripts/campaign_pidray_bs1/run_guard.py",
+   "scripts/campaign_pidray_bs1/evaluate_run.py",
+   "scripts/campaign_multiseed/score_predictions.py",
+   "scripts/campaign_pidray_bs1/slurm_train.sh",
+   "scripts/campaign_pidray_bs1/slurm_eval.sh"
+  ]
+ },
+ "evaluation_policy": "each run is scored on all three released test splits (easy, hard, hidden) with the campaign scorer; no evaluation starts until every approved training run has completed",
+ "schedule_basis": "output/pidray_bs2_e10_2026-09-22/profile/*.json (batch-1 measurement, 2026-09-21)"
+}
