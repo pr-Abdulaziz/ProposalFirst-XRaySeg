@@ -1,15 +1,26 @@
+<div align="center">
+
 # ProposalFirst-XRaySeg
 
-### Shared point-based mask refinement for X-ray instance segmentation
+### Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement
 
-**Improving X-Ray Baggage Instance Segmentation with Shared Point-Based Mask Refinement**<br>
-Abdulaziz Alqahtani and Qasim Umer
+Abdulaziz Alqahtani and Qasim Umer<br>
+King Fahd University of Petroleum & Minerals (KFUPM)
 
-[Project page](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) · [arXiv:2611.20476](https://arxiv.org/abs/2611.20476) · [Project context and architecture](docs/README.md) · [Reproduction guide](docs/REPRODUCIBILITY.md) · [Checkpoint status](CHECKPOINTS.md)
+[![arXiv](https://img.shields.io/badge/arXiv-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.20476) [![Checkpoints on Hugging Face](https://img.shields.io/badge/Checkpoints-2f9e6a?style=for-the-badge&logo=huggingface&logoColor=FFD21E)](https://huggingface.co/abdulaziz-alqahtani/xray-point-refinement) [![Project page](https://img.shields.io/badge/Project%20page-1f2328?style=for-the-badge&logo=github&logoColor=white)](https://pr-abdulaziz.github.io/ProposalFirst-XRaySeg/) [![Reproduction guide](https://img.shields.io/badge/Reproduce-d9822b?style=for-the-badge&logo=readthedocs&logoColor=white)](docs/REPRODUCIBILITY.md)
+
+![Under review at the Journal of Undergraduate Research International](https://img.shields.io/badge/Under%20review-Journal%20of%20Undergraduate%20Research%20International-1f8a70?style=for-the-badge)
+
+[Architecture](#architecture) · [Results](#manuscript-reported-results) · [Dataset](#dataset) · [Start here](#start-here) · [Citation](#citation)
+
+</div>
+
+> [!NOTE]
+> This work is currently under review at the *Journal of Undergraduate Research International* (KFUPM). The preprint is available on [arXiv:2611.20476](https://arxiv.org/abs/2611.20476).
 
 This project studies whether refining uncertain mask locations improves the segmentation of prohibited items in X-ray baggage images. It extends **Cascade Mask R-CNN with ResNet-101 and AttFPN** using a shared point refiner and compares **Transformer** and **MLP** processors under a common experimental protocol.
 
-The paper study uses the official **PIXray** split, ten configurations and three training seeds. This repository provides the implementation, frozen experiment configurations, architecture figures and the paper's results. Dataset images are excluded from Git; trained weights are on [Hugging Face](https://huggingface.co/abdulaziz-alqahtani/xray-point-refinement).
+The paper study uses the official **PIXray** split, ten configurations and three training seeds. This repository provides the implementation, frozen experiment configurations, architecture figures and the paper's results. Dataset images are excluded from Git (see [Dataset](#dataset)); trained weights are on [Hugging Face](https://huggingface.co/abdulaziz-alqahtani/xray-point-refinement).
 
 ## Architecture
 
@@ -49,6 +60,40 @@ Official PIXray test split; **1,486 images, 15 categories, seeds 42/123/2026**. 
 
 These are historical results reported in the supplied manuscript, not new measurements from a fresh repository clone. The findings concern the tested PIXray configuration: they do not establish improved clean-baggage rejection, cross-dataset generalization or higher efficiency. The refiners add computation, and the manuscript does not establish a corresponding positive detection gain. [Scope and limitations](docs/README.md#scope-and-limitations) explains the comparison boundaries.
 
+## Dataset
+
+The experiments use **PIXray**, a prohibited-item X-ray segmentation dataset with instance masks for 15 categories, on its official split: 3,560 training images (10,709 instances) and 1,486 test images (4,508 instances). Two reference experiments, Occ bilayer SAM and Bilayer FCN, additionally use the **PIXray-A** occluder annotations during training; every model is evaluated on the original PIXray annotations.
+
+Neither dataset is redistributed in this repository. Please obtain them from their authors and follow their terms of use:
+
+| Dataset | Where to obtain it | Reference |
+|---|---|---|
+| PIXray | Download link in the authors' repository, [Mbwslib/DDoAS](https://github.com/Mbwslib/DDoAS) | Ma et al., *IEEE Transactions on Multimedia* 25, 4374–4386 (2023). [doi:10.1109/TMM.2022.3174339](https://doi.org/10.1109/TMM.2022.3174339) |
+| PIXray-A (occluder annotations) | "Prepare Datasets" section of [Ryh1218/Occ](https://github.com/Ryh1218/Occ#prepare-datasets) | Ren et al., *IEEE International Conference on Multimedia and Expo (ICME)*, 1–6 (2025). [doi:10.1109/ICME59968.2025.11209473](https://doi.org/10.1109/ICME59968.2025.11209473) |
+
+The expected folder layout is under [Paper results and trained models](#paper-results-and-trained-models), and the [reproduction guide](docs/REPRODUCIBILITY.md) explains how to audit the assets. If you use these datasets, please cite the original papers:
+
+```bibtex
+@article{ma2023pixray,
+  title   = {Automated Segmentation of Prohibited Items in X-Ray Baggage Images Using Dense De-Overlap Attention Snake},
+  author  = {Ma, Bowen and Jia, Tong and Su, Min and Jia, Xiaodong and Chen, Dongyue and Zhang, Yichun},
+  journal = {IEEE Transactions on Multimedia},
+  volume  = {25},
+  pages   = {4374--4386},
+  year    = {2023},
+  doi     = {10.1109/TMM.2022.3174339}
+}
+
+@inproceedings{ren2025occlusion,
+  title     = {Prohibited Items Segmentation via Occlusion-Aware Bilayer Modeling},
+  author    = {Ren, Yunhan and Li, Ruihuang and Liu, Lingbo and Chen, Changwen},
+  booktitle = {Proceedings of the IEEE International Conference on Multimedia and Expo (ICME)},
+  pages     = {1--6},
+  year      = {2025},
+  doi       = {10.1109/ICME59968.2025.11209473}
+}
+```
+
 ## Start here
 
 ```bash
@@ -85,7 +130,7 @@ python scripts/research.py prepare --dataset pixray --method 09 --seed 42 --name
 
 ## Paper
 
-The paper is available as [arXiv:2611.20476](https://arxiv.org/abs/2611.20476). Use it together with the frozen campaign when interpreting the result table above. Manuscript files are not stored in this repository.
+The paper is available as [arXiv:2611.20476](https://arxiv.org/abs/2611.20476) and is currently under review at the *Journal of Undergraduate Research International* (KFUPM). Use it together with the frozen campaign when interpreting the result table above. Manuscript files are not stored in this repository.
 
 ## Citation
 
@@ -127,7 +172,7 @@ Trained weights for the seed-42 run of every experiment are on Hugging Face: [ab
 
 **Environment.** Linux, Python 3.10, PyTorch 2.1.2 + CUDA 11.8, torchvision 0.16.2, MMEngine 0.10.7, MMCV 2.1.0, MMDetection 3.2.0, MMPretrain 1.1.1 and pycocotools 2.0.7. The SAM-based experiments also need transformers 4.38.1 and peft 0.8.2. Exact versions are in [`environment/pip_freeze.txt`](environment/pip_freeze.txt); installation steps are in the [reproduction guide](docs/REPRODUCIBILITY.md#4-use-a-supported-execution-environment).
 
-**Data layout.** PIXray and PIXray-A are not redistributed; obtain them from their authors.
+**Data layout.** PIXray and PIXray-A are not redistributed; see [Dataset](#dataset) for where to obtain them.
 
 ```
 data/PIXray/{train,test}/                            images
